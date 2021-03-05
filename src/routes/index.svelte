@@ -2,7 +2,7 @@
 	import successkid from 'images/successkid.jpg';
 </script>
 
-<style>
+<style lang="scss">
 	h1, figure, p {
 		text-align: center;
 		margin: 0 auto;
@@ -27,6 +27,9 @@
 
 	p {
 		margin: 1em auto;
+		i {
+			color: red;
+		}
 	}
 
 	@media (min-width: 480px) {
@@ -47,4 +50,4 @@
 	<figcaption>Have fun with Sapper!</figcaption>
 </figure>
 
-<p><strong>Try editing this file (src/routes/index.svelte) to test live reloading.</strong></p>
+<p><i>this should be red</i><strong>Try editing this file (src/routes/index.svelte) to test live reloading.</strong></p>

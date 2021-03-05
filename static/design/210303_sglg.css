@@ -1,0 +1,49 @@
+/* FARBEN
+
+Dunkelgrün: rgb(0,68,68)
+Hellgrün: rgb(58,255,163)
+Orange: rgb(230,147,2) Für SGLG Einträge, Titel & Icon
+
+Linien: rgba(0,68,68,0.25)
+Grau hinterlegte Sections: rgba(0,68,68,0.06)
+Buttons hover: opacity: 0.9
+
+*/
+
+
+body {
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale; }
+
+h1, h2, .lead {
+font-family: 'BasicCommercialW01-Bold'
+font-size: 26px;
+line-height: 1.2em;
+letter-spacing: 0.005em; }
+
+h3, a {
+font-family: 'BasicCommercialW01-Bold'
+font-size: 16px;
+line-height: 1.3em;
+letter-spacing: 0.005em; }
+
+p, li {
+font-family: 'GT-Alpina-Standard-Regular'
+font-size: 16px;
+line-height: 1.3em;
+letter-spacing: 0; }
+
+
+@media screen and (max-width: 800px) {
+
+h1, h2, .lead {
+font-size: 19px; }
+
+h3, a, p, li {
+font-size: 14px; }
+
+header p, footer p, .sticker p, .sticker h3, header .sprachswitch a {
+font-size: 12px }
+
+
+}
