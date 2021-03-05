@@ -1,3 +1,12 @@
+<script context="module">
+	import { waitLocale } from 'svelte-i18n'
+
+	export async function preload() {
+		// awaits for the loading of the default dictionaries
+		return waitLocale()
+	}
+</script>
+
 <script>
 	import Nav from '../components/Nav.svelte';
 	import { onMount } from 'svelte';
@@ -16,10 +25,6 @@
 
 </script>
 
-<style lang="scss" global>
-	@import "./style/global.scss";
-</style>
-
 <svelte:head>
 
 </svelte:head>
@@ -29,3 +34,7 @@
 <main>
 	<slot></slot>
 </main>
+
+<style lang="scss" global>
+	@import "./style/global.scss";
+</style>
