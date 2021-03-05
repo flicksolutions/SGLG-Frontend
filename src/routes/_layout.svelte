@@ -1,19 +1,28 @@
 <script>
 	import Nav from '../components/Nav.svelte';
+	import { onMount } from 'svelte';
 
 	export let segment;
+
+	let FontTracker;
+
+	onMount(async () => {
+		//code for font-tracking
+		window.MTFontIds = ['691880'];
+		window.MTUserId ='002422c7-d577-4caf-966e-d57cdfef6b8b';
+		const module = await import('../../static/fonts/mtiFontTrackingCode.js');
+		FontTracker = module.default;
+	});
+
 </script>
 
-<style>
-	main {
-		position: relative;
-		max-width: 56em;
-		background-color: white;
-		padding: 2em;
-		margin: 0 auto;
-		box-sizing: border-box;
-	}
+<style lang="scss" global>
+	@import "./style/global.scss";
 </style>
+
+<svelte:head>
+
+</svelte:head>
 
 <Nav {segment}/>
 

@@ -1,0 +1,44 @@
+@import "./theme.scss";
+@import "./fonts.scss";
+
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+h1, h2, .lead {
+  font-family: $title-font;
+  font-size: 26px;
+  line-height: 1.2em;
+  letter-spacing: 0.005em;
+  @media screen and (max-width: $medium) {
+    font-size: 19px;
+  }
+}
+
+h3, a, p, li {
+  font-size: 16px;
+  line-height: 1.3em;
+  @media screen and (max-width: $medium) {
+    font-size: 14px;
+  }
+}
+h3, a {
+  font-family: $title-font;
+  letter-spacing: 0.005em;
+}
+
+p, li {
+  font-family: $text-font;
+  letter-spacing: 0;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+@media screen and (max-width: $medium) {
+  header p, footer p, .sticker p, .sticker h3, header .langswitch a {
+    font-size: 12px;
+  }
+}
