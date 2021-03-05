@@ -8,7 +8,7 @@
 </script>
 
 <script>
-	import Nav from '../components/Nav.svelte';
+	import Header from '../components/Header.svelte';
 	import Footer from '../components/Footer.svelte';
 	import { onMount } from 'svelte';
 
@@ -26,13 +26,13 @@
 
 </script>
 
-<Nav {segment}/>
+<Header {segment}/>
 
 <main>
 	<slot></slot>
 </main>
 
-<Footer/>
+<Footer {segment}/>
 
 <style lang="scss" global>
 	@import "./style/global.scss";

@@ -1,6 +1,5 @@
 <script>
 	import { _ } from 'svelte-i18n';
-	import successkid from 'images/successkid.jpg';
 </script>
 
 
@@ -11,7 +10,6 @@
 <h1>Great success!{$_('page_title')}</h1>
 
 <figure>
-	<img alt="Success Kid" src="{successkid}">
 	<figcaption>Have fun with Sapper!</figcaption>
 </figure>
 
