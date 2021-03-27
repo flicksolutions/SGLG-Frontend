@@ -1,37 +1,53 @@
+<script context="module">
+	import DirectusSDK from '@directus/sdk-js';
+	const directus = new DirectusSDK('https://backend.ruralhistory.ch');
+
+	export async function preload(page, session) {
+		let directories = (await directus.items('directories').read()).data.directories; //get the collections that are relevant as a directory
+
+
+		return { directus, directories };
+	}
+</script>
+
 <script>
 	import { _ } from 'svelte-i18n';
-	import DirectusSDK from '@directus/sdk-js';
 	import Sticker from '../components/Sticker.svelte';
 	import { onMount } from 'svelte';
 	import { locale } from 'svelte-i18n';
 
-	const directus = new DirectusSDK('https://backend.ruralhistory.ch');
+	export let directus;
+	export let directories;
 
-	let directories;
+
 	let items = [];
 
 
-	onMount(async () => {
-		directories = (await directus.items('directories').read()).data.directories; //get the collections that are relevant as a directory
+	const getItems = async locale => {
+		const readItem = {};
+		let returnItems = []
+		if (locale === 'de') {
+			readItem.fields = ['title','id','date'];//get only these fields
+		} else {
+			readItem.fields = ['translations.title', 'id','date'];
+			readItem['deep[translations][_filter][languages_code][_eq]'] = locale;
+		}
 		for (const directory of directories) {
-			items = [...items, ...(await directus.items(directory).read({ //get each item in every relevant collection
-				fields: ['title','id','date'] //get only these fields
-			})).data.map(i => {
+			returnItems = [...returnItems, ...(await directus.items(directory).read(readItem)).data.map(i => { //get each item in every relevant collection
 				i.collection = directory //add the collection to the item
-				if ($locale.slice(0,2) !== 'de') {
-					directus.items(`${directory}_translations`).read({ //get the translated title and set it as the new title
-						filter: {
-							[`${directory}_id`]: i.id,
-							languages_code: $locale.slice(0,2)
-						},
-						fields: 'title'
-					}).then(r => i.title = r.data[0].title)
+				if (!i.title) {
+					//i.title = i.translations[0]?.title;
 				}
-
 				return i
 			})];
 		}
-	})
+		return returnItems
+	}
+
+	$: {
+		$locale = $locale;
+		getItems($locale.slice(0, 2)).then(i => items = i);
+	}
 </script>
 
 
@@ -45,6 +61,7 @@
 		<h2>Aktuell</h2>
 		<ol>
 			{#each items as item}
+				{JSON.stringify(item)}
 			<li>
 				<a href="{`/directory/detail/${item.collection}/${item.id}`}" class="{item.collection}">{item.title}</a>
 				<div><p>{item.date}</p><p>{item.collection}</p></div>
