@@ -8,6 +8,6 @@
 
 <ul class="langswitch">
     {#each $locales as locale}
-        <li><a href="" on:click|preventDefault={() => setLocale(locale)}>{locale}</a></li>
+        <li><a href="{`/${locale}`}" on:click|preventDefault={() => setLocale(locale)}>{locale}</a></li>
     {/each}
 </ul>

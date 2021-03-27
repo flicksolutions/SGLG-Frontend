@@ -4,9 +4,7 @@
 
 	export async function preload(page, session) {
 		let directories = (await directus.items('directories').read()).data.directories; //get the collections that are relevant as a directory
-
-
-		return { directus, directories };
+		return { directories };
 	}
 </script>
 
@@ -16,7 +14,6 @@
 	import { onMount } from 'svelte';
 	import { locale } from 'svelte-i18n';
 
-	export let directus;
 	export let directories;
 
 
