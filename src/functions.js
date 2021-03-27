@@ -16,13 +16,17 @@ export async function getItems ({
         readItem['deep[translations][_filter][languages_code][_eq]'] = locale;
     }
     for (const directory of collections) {
-        returnItems = [...returnItems, ...(await directus.items(directory).read(readItem)).data.map(i => { //get each item in every relevant collection
-            i.collection = directory //add the collection to the item
-            if (!i.title) {
-                //i.title = i.translations[0]?.title;
-            }
-            return i
-        })];
+        let responseItem = await directus.items(directory).read(readItem); //get each item in every relevant collection
+        if (Array.isArray(responseItem)) {
+            responseItem = responseItem.data.map(i => {
+                i.collection = directory; //add the collection to the item
+                return i;
+            })
+            returnItems = [...returnItems, ...responseItem];
+        } else {
+            responseItem.data.collection = directory;
+            returnItems = [...returnItems, responseItem];
+        }
     }
     return returnItems
 }
