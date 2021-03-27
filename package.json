@@ -9,7 +9,7 @@
     "start": "node __sapper__/build"
   },
   "dependencies": {
-    "@directus/sdk-js": "^9.0.0-rc.45",
+    "@directus/sdk-js": "^9.0.0-rc.51",
     "compression": "^1.7.1",
     "polka": "^0.5.2",
     "sirv": "^1.0.0",
@@ -21,6 +21,7 @@
     "@babel/plugin-transform-runtime": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/runtime": "^7.0.0",
+    "@formatjs/icu-messageformat-parser": "^0.2.1",
     "@rollup/plugin-babel": "^5.0.0",
     "@rollup/plugin-commonjs": "^17.1.0",
     "@rollup/plugin-json": "^4.1.0",

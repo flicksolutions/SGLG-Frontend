@@ -19,6 +19,7 @@ const onwarn = (warning, onwarn) =>
 	(warning.code === 'MISSING_EXPORT' && /'preload'/.test(warning.message)) ||
 	(warning.code === 'CIRCULAR_DEPENDENCY' && /[/\\]@sapper[/\\]/.test(warning.message)) ||
 	(warning.code === 'EVAL') ||
+	(warning.message === 'No directory provided. Skipping CSS generation') || //is already fixed. therefore suppressing the warning here
 	onwarn(warning);
 
 const preprocess = sveltePreprocess({
