@@ -17,14 +17,18 @@ export async function getItems ({
     }
     for (const directory of collections) {
         let responseItem = await directus.items(directory).read(readItem); //get each item in every relevant collection
+        responseItem = responseItem.data;
         if (Array.isArray(responseItem)) {
-            responseItem = responseItem.data.map(i => {
-                i.collection = directory; //add the collection to the item
+            responseItem = responseItem.map(i => {
+                i = {collection: directory, ...i?.translations?.[0], ...i};
+                delete i.translations
                 return i;
             })
             returnItems = [...returnItems, ...responseItem];
         } else {
-            responseItem.data.collection = directory;
+            responseItem.collection = directory;
+            responseItem = {collection: directory, ...responseItem?.translations?.[0], ...responseItem};
+            delete responseItem.translations;
             returnItems = [...returnItems, responseItem];
         }
     }
