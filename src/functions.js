@@ -1,4 +1,6 @@
 import DirectusSDK from '@directus/sdk-js';
+import { locales } from 'svelte-i18n';
+import { get } from 'svelte/store';
 const directus = new DirectusSDK('https://backend.ruralhistory.ch');
 
 export async function getItems ({
@@ -6,7 +8,7 @@ export async function getItems ({
                        fields= ['title','id','date'],
                        translatedFields,
                        collections
-}) {
+    }) {
     const readItem = {};
     let returnItems = [];
     if (locale === 'de') {
@@ -33,4 +35,12 @@ export async function getItems ({
         }
     }
     return returnItems
+}
+
+export function checkLocale (lang) {
+    if (get(locales).includes(lang)) {
+        return { lang };
+    } else {
+        return { lang: 'de' }
+    }
 }

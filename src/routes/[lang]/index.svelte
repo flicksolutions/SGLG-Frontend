@@ -1,7 +1,8 @@
 <script context="module">
+    import { checkLocale } from '../../functions';
     export async function preload(page, session) {
         const { lang } = page.params;
-        return { lang };
+        return checkLocale(lang);
     }
 </script>
 
@@ -13,7 +14,7 @@
 
     export let lang;
 
-    $locale = lang;
+    $locale !== lang && ($locale = lang);
     let items = [];
     let content = [];
 
