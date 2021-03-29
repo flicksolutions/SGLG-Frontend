@@ -1,13 +1,9 @@
 <script>
-    import { locale, locales } from 'svelte-i18n';
-
-    const setLocale = (target) => {
-        $locale = target;
-    }
+    import { locales } from 'svelte-i18n';
 </script>
 
 <ul class="langswitch">
     {#each $locales as locale}
-        <li><a href="{`/${locale}`}" on:click|preventDefault={() => setLocale(locale)}>{locale}</a></li>
+        <li><a href="{`/${locale}/`}">{locale}</a></li>
     {/each}
 </ul>
