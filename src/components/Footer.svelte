@@ -14,7 +14,7 @@
 		<p>Società svizzera di storia rurale</p>
 		<p>Swiss Rural History Society</p>
 	</div>
-	<Langswitch />
+	<Langswitch {segment} />
 	<Nav {segment} location="footer"/>
 	<a href="/imprint" >Impressum</a>
 </footer>

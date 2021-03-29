@@ -1,9 +1,9 @@
 <script context="module">
-    import { checkLocale } from '../../functions';
+    /*import { checkLocale } from '../../functions';
     export async function preload(page, session) {
         const { lang } = page.params;
         return checkLocale(lang);
-    }
+    }*/
 </script>
 
 <script>
@@ -14,7 +14,7 @@
 
     export let lang;
 
-    $locale !== lang && ($locale = lang);
+    //$locale !== lang && ($locale = lang);
     let items = [];
     let content = [];
 
@@ -52,7 +52,7 @@
 <div><!-- this element needs the background-img -->
     <Sticker />
     <section>
-        <h2>Aktuell</h2>
+        <h2>Aktuell {$locale} {lang}</h2>
         <ol>
             {#each items as item}
                 <li>
