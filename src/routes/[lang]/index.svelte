@@ -47,7 +47,7 @@
 <div><!-- this element needs the background-img -->
     <Sticker />
     <section>
-        <h2>Aktuell</h2>
+        <h2>Aktuell {$locale}</h2>
         <ol>
             {#each items as item}
                 <li>
