@@ -6,7 +6,6 @@
         const { lang } = page.params;
         // awaits for the loading of the default dictionaries
         await waitLocale()
-        return checkLocale(lang);
     }
 </script>
 
@@ -14,11 +13,8 @@
     import Header from '../../components/Header.svelte';
     import Footer from '../../components/Footer.svelte';
     import { onMount } from 'svelte';
-    import { locale } from "svelte-i18n";
 
     export let segment;
-    export let lang;
-    $locale !== lang && ($locale = lang);
 
     let FontTracker;
 

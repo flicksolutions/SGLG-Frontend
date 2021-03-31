@@ -12,36 +12,31 @@
     import Sticker from '../../components/Sticker.svelte';
     import { getItems } from '../../functions';
 
-    export let lang;
 
     //$locale !== lang && ($locale = lang);
     let items = [];
     let content = [];
 
-
-    $: {
-        $locale = $locale;
-        let fields = ['content','items.item.*','items.collection'];
-        $locale !== 'de' && fields.push('items.item.translations.*'); // if we are not in default locale, we need to get the translations of the items
-        getItems({
-            locale: $locale.slice(0, 2),
-            fields: fields,
-            translatedFields: ['content'],
-            collections: ['homepage']
-        }).then(i => {
-            items = i[0].items.map(i => { //we set the items to display on the page. For that we consume the items from the response.
-                return {                  //it may look funny to fiddle around with the items. but the reason is translation. I do this here because I want my html nice and understandable.
-                    ...i,
-                    item: {
-                        ...i.item,
-                        ...i.item.translations?.[0],  //but also replace any translatable fields with the translated ones.
-                        id: i.item.id                 //exept for the id
-                    }
+    let fields = ['content','items.item.*','items.collection'];
+    $locale !== 'de' && fields.push('items.item.translations.*'); // if we are not in default locale, we need to get the translations of the items
+    getItems({
+        locale: $locale.slice(0, 2),
+        fields: fields,
+        translatedFields: ['content'],
+        collections: ['homepage']
+    }).then(i => {
+        items = i[0].items.map(i => { //we set the items to display on the page. For that we consume the items from the response.
+            return {                  //it may look funny to fiddle around with the items. but the reason is translation. I do this here because I want my html nice and understandable.
+                ...i,
+                item: {
+                    ...i.item,
+                    ...i.item.translations?.[0],  //but also replace any translatable fields with the translated ones.
+                    id: i.item.id                 //exept for the id
                 }
-            });
-            content = i[0].content;
+            }
         });
-    }
+        content = i[0].content;
+    });
 </script>
 
 
@@ -52,7 +47,7 @@
 <div><!-- this element needs the background-img -->
     <Sticker />
     <section>
-        <h2>Aktuell {$locale} {lang}</h2>
+        <h2>Aktuell</h2>
         <ol>
             {#each items as item}
                 <li>

@@ -8,12 +8,14 @@
 
     const setLocale = (target) => {
         $locale = target;
-        goto(`${$locale}/${route}`);
+        goto(`${$locale}/${route}`).then(i => location.reload());
     }
 </script>
 
 <ul class="langswitch">
     {#each $locales as lang}
-        <li><a href="{`${lang}/${route}`}" on:click|preventDefault={() => setLocale(lang)}>{lang}</a></li>
+        {#if lang !== $locale}
+            <li><a href="{`${lang}/${route}`}" on:click={() => setLocale(lang)}>{lang}</a></li>
+        {/if}
     {/each}
 </ul>
