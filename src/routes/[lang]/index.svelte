@@ -1,19 +1,9 @@
-<script context="module">
-    /*import { checkLocale } from '../../functions';
-    export async function preload(page, session) {
-        const { lang } = page.params;
-        return checkLocale(lang);
-    }*/
-</script>
-
 <script>
     import { locale } from 'svelte-i18n';
     import { _ } from 'svelte-i18n';
     import Sticker from '../../components/Sticker.svelte';
     import { getItems } from '../../functions';
 
-
-    //$locale !== lang && ($locale = lang);
     let items = [];
     let content = [];
 
