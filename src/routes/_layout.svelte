@@ -6,7 +6,9 @@
 		return waitLocale()
 	}
 </script>
-
+<script>
+    export let segment;
+</script>
 
 <slot></slot>
 
