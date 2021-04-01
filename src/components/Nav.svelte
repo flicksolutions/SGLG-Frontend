@@ -1,25 +1,108 @@
 <script>
+	import {locale, _} from 'svelte-i18n';
+	import {onMount} from 'svelte';
+	import Langswitch from "./Langswitch.svelte";
+
 	export let segment;
-	import { locale } from 'svelte-i18n';
+	export let location = 'header';
+
+
+	let showMobileMenu = false;
+
+	// Media match query handler
+	const mediaQueryHandler = e => {
+		// Reset mobile state
+		if (!e.matches) {
+			showMobileMenu = false;
+		}
+	};
+
+	let pages = [
+		{name: "home", slug: ""},
+		{name: 'directory', slug: 'directory', subPages: [
+				{name: 'Call for Papers', slug: 'call-for-papers'}
+		]},
+		{name: "imprint", slug:"imprint"},
+		{name: "about", slug:"about"},
+		]
+
+	// Attach media query listener on mount hook
+	onMount(() => {
+		const mediaListener = window.matchMedia("(max-width: 767px)");
+		mediaListener.addEventListener("change", mediaQueryHandler);
+	});
 </script>
 
 <nav>
-	<ul>
-		<li><a aria-current="{segment === undefined ? 'page' : undefined}" href="{$locale}">home</a></li>
-		<li><a aria-current="{segment === 'about' ? 'page' : undefined}" href="{$locale}/about">about</a></li>
-		<li><a aria-current="{segment === 'imprint' ? 'page' : undefined}" href="{$locale}/imprint">imprint</a></li>
+	{#if showMobileMenu}
+		<div class="mobile">
+			<button class="close"></button>
+			<div class="inner">
+			<div class="titles">
+				<p>Schweizerische Gesellschaft für ländliche Geschichte</p>
+				<p>Société suisse d’histoire rurale</p>
+				<p>Società svizzera di storia rurale</p>
+				<p>Swiss Rural History Society</p>
+			</div>
+			<Langswitch />
+			<div class="pages">
+			{#each pages as page}
+				<a aria-current="{segment === page.slug ? 'page' : undefined}" href="{$locale}/{page.slug}">{page.name}</a>
+				{#if page.subPages}
+				<ul>
+					{#each page.subPages as subpage}
+						<li><a aria-current="{segment === subpage.slug ? 'page' : undefined}" href="{$locale}/{subpage.slug}">{subpage.name}</a></li>
+					{/each}
+					<!--<li><a aria-current="{segment === undefined ? 'page' : undefined}" href="{$locale}">home</a></li>
+					<li><a aria-current="{segment === 'about' ? 'page' : undefined}" href="{$locale}/about">about</a></li>
+					<li><a aria-current="{segment === 'imprint' ? 'page' : undefined}" href="{$locale}/imprint">imprint</a></li>
 
-		<!-- for the blog link, we're using rel=prefetch so that Sapper prefetches
-			 the blog data when we hover over the link or tap it on a touchscreen
-		<li><a rel=prefetch aria-current="{segment === 'blog' ? 'page' : undefined}" href="blog">blog</a></li>-->
-	</ul>
+					 for the blog link, we're using rel=prefetch so that Sapper prefetches
+						 the blog data when we hover over the link or tap it on a touchscreen
+					<li><a rel=prefetch aria-current="{segment === 'blog' ? 'page' : undefined}" href="blog">blog</a></li>-->
+				</ul>
+				{/if}
+			{/each}
+			</div>
+			</div>
+		</div>
+	{:else }
+		<div on:click={() => showMobileMenu = !showMobileMenu}>
+			thats the button
+		</div>
+	{/if}
+
 </nav>
 
-<style>
+<style lang="scss">
+	@import "../style/theme.scss";
 	nav {
 		border-bottom: 1px solid rgba(255,62,0,0.1);
 		font-weight: 300;
 		padding: 0 1em;
+		color: $dark-green;
+	}
+
+	.mobile {
+		.inner {
+			@include gutters;
+			display: grid;
+			grid-template-columns: 1fr;
+			grid-template-rows: 30% min-content auto;
+			height: 100%;
+		}
+		position: absolute;
+		width: 100%;
+		height: 100vh;
+		left: 0;
+		top: 0;
+		background-color: $bg-grey;
+		.titles {
+			margin: 0 auto;
+			max-width: 250px;
+			text-align: center;
+			font-family: $text-font;
+		}
 	}
 
 	ul {
@@ -39,7 +122,7 @@
 		float: left;
 	}
 
-	[aria-current] {
+	/*[aria-current] {
 		position: relative;
 		display: inline-block;
 	}
@@ -52,11 +135,12 @@
 		background-color: rgb(255,62,0);
 		display: block;
 		bottom: -1px;
-	}
+	}*/
 
 	a {
 		text-decoration: none;
 		padding: 1em 0.5em;
 		display: block;
+		color: $dark-green;
 	}
 </style>

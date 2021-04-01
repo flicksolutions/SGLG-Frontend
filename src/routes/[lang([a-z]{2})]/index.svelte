@@ -37,7 +37,7 @@
 
 
 <svelte:head>
-    <title>{$_('Schweizerische Gesellschaft für ländliche Geschichte')}</title>
+    <title>{$_('SGLG')}</title>
 </svelte:head>
 
 <div use:setBg class="bg-container">

@@ -1,6 +1,7 @@
 <script>
 	import Langswitch from './Langswitch.svelte';
 	import Nav from './Nav.svelte';
+	import { _ } from 'svelte-i18n';
 
 
 	export let segment;
@@ -8,12 +9,21 @@
 
 <header>
 	<img src="svg/SGLG-Logo.svg" style="max-width: 10em;" alt="Logo" />
-	<p>Schweizere Gesellschaft für ländliche Geschichte</p>
+	<div>
+		<p>{$_('SGLG')}</p>
+		<Langswitch {segment} />
+	</div>
 	<Nav {segment} location="header" />
-	<Langswitch {segment} />
 </header>
 
 <style lang="scss">
+	@import "../style/theme.scss";
+	header {
+		background-color: $light-green;
+		@include gutters;
+		display: grid;
+		grid-template-columns: 1fr 2fr 1fr;
+	}
 
 </style>
 

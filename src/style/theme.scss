@@ -2,8 +2,10 @@
 $dark-green: rgb(0,68,68);
 $light-green: rgb(58,255,163);
 $sglg-orange: rgb(230,147,2);
-$line-grey: rgba(0,68,68,0.25);
-$bg-grey: rgba(0,68,68,0.06);
+//$line-grey: rgba(0,68,68,0.25);
+$line-grey: rgb(191,208,208);
+//$bg-grey: rgba(0,68,68,0.06);
+$bg-grey: rgb(240,244,244);
 
 
 
@@ -35,3 +37,15 @@ $large: 1200px;
 @mixin text-columns() {
   grid-template-columns: minmax(40px, 8%) 5% [center] 82% minmax(40px, 5%);
 }
+
+@mixin gutters() {
+  padding: 20px;
+  @media (min-width: $large) {
+    //write breakpoint gutters...
+  }
+
+}
+
+//CONSTANTS
+
+$gutter: 20px;

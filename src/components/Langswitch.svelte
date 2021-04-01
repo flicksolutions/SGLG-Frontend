@@ -14,8 +14,24 @@
 
 <ul class="langswitch">
     {#each $locales as lang}
-        {#if lang !== $locale}
-            <li><a href="{`${lang}/${route}`}" on:click={() => setLocale(lang)}>{lang}</a></li>
-        {/if}
+            <li><a href="{`${lang}/${route}`}" class:selected={lang === $locale} on:click={() => setLocale(lang)}>{lang.toUpperCase()}</a></li>
     {/each}
 </ul>
+
+<style lang="scss">
+  .langswitch {
+    list-style: none;
+    padding: 0;
+    display: flex;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+    padding: 0 0.8em;
+    text-underline-offset: 4px;
+    font-size: 1.15em;
+    &.selected {
+      text-decoration: underline;
+    }
+  }
+</style>
