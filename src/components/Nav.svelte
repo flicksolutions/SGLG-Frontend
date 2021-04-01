@@ -2,9 +2,14 @@
 	import {locale, _} from 'svelte-i18n';
 	import {onMount} from 'svelte';
 	import Langswitch from "./Langswitch.svelte";
+	import Icon from 'fa-svelte';
+	import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes'
+	import { faBars } from '@fortawesome/free-solid-svg-icons/faBars'
 
 	export let segment;
 	export let location = 'header';
+
+	let icon = faTimes;
 
 
 	let showMobileMenu = false;
@@ -36,7 +41,7 @@
 <nav>
 	{#if showMobileMenu}
 		<div class="mobile">
-			<button class="close"></button>
+			<button class="noButtonStyles close" on:click={() => showMobileMenu = !showMobileMenu}><Icon icon={faTimes}></Icon></button>
 			<div class="inner">
 			<div class="titles">
 				<p>Schweizerische Gesellschaft für ländliche Geschichte</p>
@@ -67,19 +72,30 @@
 			</div>
 		</div>
 	{:else }
-		<div on:click={() => showMobileMenu = !showMobileMenu}>
-			thats the button
-		</div>
+		<button class="noButtonStyles" on:click={() => showMobileMenu = !showMobileMenu}>
+			<Icon icon={faBars}></Icon>
+		</button>
 	{/if}
-
 </nav>
 
 <style lang="scss">
 	@import "../style/theme.scss";
+	.noButtonStyles {
+		font-size: 40px;
+		text-align: right;
+		padding: 0;
+		margin: 0;
+		background: none;
+		border: none;
+		float: right;
+	}
+	.close {
+		position: absolute;
+		right: $gutter;
+		top: $gutter;
+	}
 	nav {
-		border-bottom: 1px solid rgba(255,62,0,0.1);
 		font-weight: 300;
-		padding: 0 1em;
 		color: $dark-green;
 	}
 
@@ -99,7 +115,7 @@
 		background-color: $bg-grey;
 		.titles {
 			margin: 0 auto;
-			max-width: 250px;
+			max-width: 200px;
 			text-align: center;
 			font-family: $text-font;
 		}

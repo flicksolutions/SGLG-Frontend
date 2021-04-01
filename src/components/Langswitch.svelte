@@ -23,13 +23,14 @@
     list-style: none;
     padding: 0;
     display: flex;
+    justify-content: center;
   }
   a {
     color: inherit;
     text-decoration: none;
     padding: 0 0.8em;
     text-underline-offset: 4px;
-    font-size: 1.15em;
+    font-size: 1em;
     &.selected {
       text-decoration: underline;
     }

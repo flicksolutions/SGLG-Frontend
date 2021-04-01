@@ -22,8 +22,14 @@
 		background-color: $light-green;
 		@include gutters;
 		display: grid;
-		grid-template-columns: 1fr 2fr 1fr;
+		grid-template-columns: 1fr 3fr min-content;
+		color: $dark-green;
+
 	}
 
+	p {
+		text-align: center;
+		margin-top: 0;
+	}
 </style>
 
