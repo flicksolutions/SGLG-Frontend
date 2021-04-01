@@ -6,6 +6,7 @@
 
     let items = [];
     let content = [];
+    let bgContainer;
 
     let fields = ['content','items.item.*','items.collection'];
     $locale !== 'de' && fields.push('items.item.translations.*'); // if we are not in default locale, we need to get the translations of the items
@@ -27,6 +28,11 @@
         });
         content = i[0].content;
     });
+    function setBg(node) {
+        getBg().then(url => {
+            node.style.backgroundImage = `url("${url}")`;
+            })
+    }
 </script>
 
 
@@ -34,13 +40,10 @@
     <title>{$_('Schweizerische Gesellschaft für ländliche Geschichte')}</title>
 </svelte:head>
 
-<div><!-- this element needs the background-img -->
+<div use:setBg class="bg-container">
     <Sticker />
     <section>
         <h2>Aktuell {$locale}</h2>
-        {#await getBg() then value}
-            <img src={value} />
-        {/await}
         <ol>
             {#each items as item}
                 <li>
