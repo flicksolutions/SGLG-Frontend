@@ -7,7 +7,7 @@
 	}
 </script>
 <script>
-    export let segment;
+    export const segment = "";
 </script>
 
 <slot></slot>

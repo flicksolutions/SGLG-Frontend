@@ -2,7 +2,7 @@
     import { locale } from 'svelte-i18n';
     import { _ } from 'svelte-i18n';
     import Sticker from '../../components/Sticker.svelte';
-    import { getItems } from '../../functions';
+    import { getItems, getBg } from '../../functions';
 
     let items = [];
     let content = [];
@@ -38,6 +38,9 @@
     <Sticker />
     <section>
         <h2>Aktuell {$locale}</h2>
+        {#await getBg() then value}
+            <img src={value} />
+        {/await}
         <ol>
             {#each items as item}
                 <li>

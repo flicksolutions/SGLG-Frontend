@@ -37,6 +37,22 @@ export async function getItems ({
     return returnItems
 }
 
+export async function getBg () {
+    const { data } = await directus.files.read({
+        fields: ['id'],
+        filter: {
+            folder: {
+                name: {
+                    _eq: 'bg'
+                }
+            }
+        }
+    })
+    const randomIndex = Math.floor(Math.random() * data.length);
+    const fileId = data[randomIndex].id;
+    return `https://backend.ruralhistory.ch/assets/${fileId}`
+}
+
 export function checkLocale (lang) {
     if (get(locales).includes(lang)) {
         return { lang };
