@@ -57,19 +57,18 @@
 		}
 		.inner {
 			@include gutters;
-			max-width: 600px;
-			margin: 0 auto;
+			@include max-width;
 			display: grid;
 			grid-template-columns: 1fr 4fr min-content;
 			color: $dark-green;
 			@media (min-width: $medium) {
-				grid-template-columns: 1fr 2fr max-content;
+				grid-template-columns: 3fr 4fr 5fr;
 				grid-gap: 1em;
 			}
 		}
 	}
 	img {
-		//max-width: 5em;
+		max-width: 8em;
 		@media (min-width: $medium) {
 			//display: initial;
 		}
