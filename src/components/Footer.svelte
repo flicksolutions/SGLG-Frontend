@@ -19,7 +19,7 @@
 			<div class="langswitch">
 				<Langswitch  {segment} />
 			</div>
-			<!--<Nav {segment} location="footer"/>--> here be nav
+			<Nav {segment} location="footer" />
 		</div>
 	</div>
 </footer>

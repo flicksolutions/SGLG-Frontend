@@ -40,7 +40,7 @@
 		<button class="noButtonStyles" class:close={showMobileMenu} on:click={() => showMobileMenu = !showMobileMenu}>
 			<Icon icon={showMobileMenu ? faTimes : faBars}></Icon>
 		</button>
-		<div class="nav"><!--<Nav {segment} location="header" />-->here's nav</div>
+		<div class="nav"><Nav {segment} location="header"/></div>
 	</div>
 </header>
 
