@@ -14,16 +14,6 @@
 
 	let showMobileMenu = location !== 'header';
 
-	// Media match query handler
-	const mediaQueryHandler = e => {
-		console.log("query handler called")
-		console.log(e)
-		// Reset mobile state
-		if (!e.matches) { // < 800px
-			showMobileMenu = location !== 'header';
-		}
-	};
-
 	let pages = [
 		{name: "home", slug: ""},
 		{name: 'directory', slug: 'directory', subPages: [
@@ -32,12 +22,6 @@
 		{name: "imprint", slug:"imprint"},
 		{name: "about", slug:"about"},
 		]
-
-	// Attach media query listener on mount hook
-	onMount(() => {
-		const mediaListener = window.matchMedia("(max-width: 800px)");
-		mediaListener.addEventListener("change", mediaQueryHandler);
-	});
 </script>
 
 <nav>

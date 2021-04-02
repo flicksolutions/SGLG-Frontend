@@ -63,8 +63,10 @@ export default {
 				dedupe: ['svelte']
 			}),
 			commonjs(),
-			json(),
-
+			json({
+				namedExports: false,
+				compact: !dev,
+			}),
 			legacy && babel({
 				extensions: ['.js', '.mjs', '.html', '.svelte'],
 				babelHelpers: 'runtime',
@@ -120,7 +122,10 @@ export default {
 				dedupe: ['svelte']
 			}),
 			commonjs(),
-			json()
+			json({
+				namedExports: false,
+				compact: !dev,
+			})
 		],
 		external: Object.keys(pkg.dependencies).concat(require('module').builtinModules),
 		preserveEntrySignatures: 'strict',
