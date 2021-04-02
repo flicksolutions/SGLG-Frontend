@@ -1,10 +1,5 @@
 <script context="module">
-	import { waitLocale } from 'svelte-i18n'
 
-	export async function preload(page) {
-		// awaits for the loading of the default dictionaries
-		return waitLocale()
-	}
 </script>
 <script>
     export const segment = "";
