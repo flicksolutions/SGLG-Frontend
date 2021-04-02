@@ -9,17 +9,19 @@
 	export let segment;
 	export let location = 'header';
 
-	let icon = faTimes;
+	let isMobile;
 
 
 	let showMobileMenu = location !== 'header';
 
 	// Media match query handler
 	const mediaQueryHandler = e => {
+		console.log("query handler called")
+		console.log(e)
 		// Reset mobile state
-		/*if (!e.matches) {
-			showMobileMenu = false;
-		}*/
+		if (!e.matches) { // < 800px
+			showMobileMenu = location !== 'header';
+		}
 	};
 
 	let pages = [
@@ -33,19 +35,21 @@
 
 	// Attach media query listener on mount hook
 	onMount(() => {
-		const mediaListener = window.matchMedia("(max-width: 767px)");
+		const mediaListener = window.matchMedia("(max-width: 800px)");
 		mediaListener.addEventListener("change", mediaQueryHandler);
 	});
 </script>
 
 <nav>
-	{#if showMobileMenu}
-		<div class="mobile {location}">
-			{#if location === 'header'}
-				<button class="noButtonStyles close" on:click={() => showMobileMenu = !showMobileMenu}><Icon icon={faTimes}></Icon></button>
-			{/if}
+		{#if location === 'header' && showMobileMenu}
+			<button class="noButtonStyles close" on:click={() => showMobileMenu = !showMobileMenu}><Icon icon={faTimes}></Icon></button>
+		{:else if location === 'header' && !showMobileMenu}
+			<button class="noButtonStyles" on:click={() => showMobileMenu = !showMobileMenu}>
+				<Icon icon={faBars}></Icon>
+			</button>
+		{/if}
+		<div class="menu {location}">
 			<div class="inner">
-
 				<div class="branding-{location}">
 					{#if location !== 'header'}
 						<img src="svg/SGLG-Logo.svg" style="max-width: 10em;" alt="Logo" />
@@ -58,11 +62,11 @@
 					</div>
 				</div>
 				<div class="langswitch-{location}">
-					<Langswitch />
+					<Langswitch  {segment} />
 				</div>
-				<div class="pages">
+				<ul class="pages">
 				{#each pages as page}
-					<div class="page">
+					<li class="page">
 						<a aria-current="{segment === page.slug ? 'page' : undefined}" href="{$locale}/{page.slug}">{page.name}</a>
 						{#if page.subPages}
 						<ul>
@@ -78,16 +82,11 @@
 							<li><a rel=prefetch aria-current="{segment === 'blog' ? 'page' : undefined}" href="blog">blog</a></li>-->
 						</ul>
 						{/if}
-					</div>
+					</li>
 				{/each}
-				</div>
+				</ul>
 			</div>
 		</div>
-	{:else }
-		<button class="noButtonStyles" on:click={() => showMobileMenu = !showMobileMenu}>
-			<Icon icon={faBars}></Icon>
-		</button>
-	{/if}
 </nav>
 
 <style lang="scss">
@@ -109,6 +108,11 @@
 			width: 60%;
 		}
 	}
+	.branding-header, .langswitch-header {
+		@media (min-width: $medium) {
+			display: none;
+		}
+	}
 	.noButtonStyles {
 		font-size: 40px;
 		text-align: right;
@@ -117,6 +121,9 @@
 		background: none;
 		border: none;
 		float: right;
+		@media (min-width: $medium) {
+			display: none;
+		}
 	}
 	.close {
 		position: absolute;
@@ -133,7 +140,10 @@
 				grid-row: 2;
 			}
 			.inner{
-				grid-template-columns: 1fr 1fr;
+				grid-template-columns: 3fr 2fr;
+				.pages {
+					grid-auto-flow: column;
+				}
 			}
 		}
 
@@ -152,13 +162,26 @@
 		height: 100vh;
 		left: 0;
 		top: 0;
+		@media (min-width: $medium) {
+			position: initial;
+			height: initial;
+		}
+		.page{
+			@media (min-width: $medium) {
+				grid-row: 1;
+				margin: 0 1em;
+			}
+		}
 	}
-	.mobile {
+	.menu {
 
 		background-color: $bg-grey;
+		@media (min-width: $medium) {
+			background: none;
+		}
 		.titles {
 			margin: 0 auto;
-			max-width: 200px;
+			max-width: 280px;
 			text-align: center;
 			font-family: $text-font;
 		}
@@ -167,9 +190,17 @@
 	.pages {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
+		list-style: none;
+		padding: 0;
+		@media (min-width: $medium) {
+			grid-template-columns: initial;
+		}
 		ul {
 			list-style-position: inside;
 			padding: 0;
+			@media (min-width: $medium) {
+				display: none;
+			}
 		}
 		a {
 			text-decoration: none;
