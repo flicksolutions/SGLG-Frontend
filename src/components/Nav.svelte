@@ -17,9 +17,9 @@
 	// Media match query handler
 	const mediaQueryHandler = e => {
 		// Reset mobile state
-		if (!e.matches) {
+		/*if (!e.matches) {
 			showMobileMenu = false;
-		}
+		}*/
 	};
 
 	let pages = [
@@ -126,6 +126,17 @@
 	nav {
 		font-weight: 300;
 		color: $dark-green;
+	}
+	.footer {
+		@media (min-width: $medium) {
+			.langswitch-footer {
+				grid-row: 2;
+			}
+			.inner{
+				grid-template-columns: 1fr 1fr;
+			}
+		}
+
 	}
 
 	.inner {
