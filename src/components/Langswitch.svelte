@@ -1,6 +1,7 @@
 <script>
     import { locale, locales } from 'svelte-i18n';
     import { goto } from '@sapper/app';
+    import { waitLocale } from 'svelte-i18n'
 
     export let segment;
 
@@ -8,13 +9,20 @@
 
     const setLocale = (target) => {
         $locale = target;
-        goto(`${$locale}/${route}`).then(i => location.reload());
+        goto(`${$locale}/${route}`).then(i => {
+            if (target !== 'de') {
+                waitLocale(target).then(i => location.reload())
+            } else {
+                location.reload()
+            }
+        }
+        );
     }
 </script>
 
 <ul class="langswitch">
     {#each $locales as lang}
-            <li><a href="{`${lang}/${route}`}" class:selected={lang === $locale} on:click={() => setLocale(lang)}>{lang.toUpperCase()}</a></li>
+            <li><a href="{`${lang}/${route}`}" class:selected={lang === $locale} on:click|preventDefault={() => setLocale(lang)}>{lang.toUpperCase()}</a></li>
     {/each}
 </ul>
 
