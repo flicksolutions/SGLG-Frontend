@@ -46,6 +46,7 @@
 		position: fixed;
 		top: 0;
 		width: 100vw;
+		height: $header-height;
 		background-color: $light-green;
 		@media (min-width: $medium) {
 			background-color: unset;

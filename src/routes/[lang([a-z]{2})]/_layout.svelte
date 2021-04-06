@@ -36,4 +36,7 @@
 
 <style lang="scss" global>
   @import "./style/global.scss";
+  main {
+    margin-top: $header-height;
+  }
 </style>

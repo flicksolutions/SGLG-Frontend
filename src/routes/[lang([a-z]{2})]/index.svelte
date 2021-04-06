@@ -2,11 +2,13 @@
     import { locale, _ } from 'svelte-i18n';
     import { onMount } from 'svelte';
     import Sticker from '../../components/Sticker.svelte';
-    import { getItems, setBg } from '../../functions';
+    import { getItems, setBg, getBg } from '../../functions';
 
     let items = [];
     let content = [];
     let bgContainer;
+    let windowWidth;
+    let featuredImg;
 
     let fields = ['content','items.item.*','items.collection'];
     $locale !== 'de' && fields.push('items.item.translations.*'); // if we are not in default locale, we need to get the translations of the items
@@ -29,18 +31,28 @@
         content = i[0].content;
     });
 
-    onMount(() => {
-       setBg(document.querySelector('body')); // set a new background image for the body
+    onMount(async () => {
+        if (windowWidth > 800) {
+            setBg(document.querySelector('body')); // set a new background image for the body
+        } else {
+            featuredImg = await getBg();
+        }
     });
 </script>
 
+<svelte:window bind:innerWidth={windowWidth} />
 
 <svelte:head>
     <title>{$_('SGLG')}</title>
 </svelte:head>
 
 <Sticker />
-<div class="spacer"></div>
+
+{#if featuredImg}
+    <img src="{featuredImg}" alt="featured" class="featured">
+{:else }
+    <div class="spacer"></div>
+{/if}
 <section>
     <h2>Aktuell {$locale}</h2>
     <ol>
@@ -63,10 +75,10 @@
 
 <style lang="scss">
   @import "../../style/theme.scss";
-    .spacer {
-      width: 100%;
-      height: 51vw;
-    }
+
+  .featured {
+    max-width: 100%;
+  }
   section {
     @include gutters;
     @include max-width;
