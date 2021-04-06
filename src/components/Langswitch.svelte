@@ -8,8 +8,8 @@
     $: route = segment ? segment : '';
 
     const setLocale = (target) => {
-        $locale = target;
-        goto(`${$locale}/${route}`).then(i => {
+        //$locale = target;
+        goto(`${target}/${route}`).then(i => {
             if (target !== 'de') {
                 waitLocale(target).then(i => location.reload())
             } else {
