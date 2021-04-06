@@ -1,8 +1,8 @@
 <script>
-    import { locale } from 'svelte-i18n';
-    import { _ } from 'svelte-i18n';
+    import { locale, _ } from 'svelte-i18n';
+    import { onMount } from 'svelte';
     import Sticker from '../../components/Sticker.svelte';
-    import { getItems, getBg } from '../../functions';
+    import { getItems, setBg } from '../../functions';
 
     let items = [];
     let content = [];
@@ -28,11 +28,10 @@
         });
         content = i[0].content;
     });
-    function setBg(node) {
-        getBg().then(url => {
-            node.style.backgroundImage = `url("${url}")`;
-            })
-    }
+
+    onMount(() => {
+       setBg(document.querySelector('body')); // set a new background image for the body
+    });
 </script>
 
 
@@ -40,30 +39,38 @@
     <title>{$_('SGLG')}</title>
 </svelte:head>
 
-<div use:setBg class="bg-container">
-    <Sticker />
-    <section>
-        <h2>Aktuell {$locale}</h2>
-        <ol>
-            {#each items as item}
-                <li>
-                    <a href="{`/directory/detail/${item.collection}/${item.item.id}`}" class="{item.collection}">{item.item.title}</a>
-                    <div><p>{item.item.date}</p><p>{item.collection}</p></div>
-                </li>
-            {/each}
-        </ol>
-        <a class="button" href="/directory">Alle Einträge</a>
-    </section>
-    <section>
-        {#each content as block}
-            <h3>{block.title}</h3>
-            <div>{@html block.content}</div>
+<Sticker />
+<div class="spacer"></div>
+<section>
+    <h2>Aktuell {$locale}</h2>
+    <ol>
+        {#each items as item}
+            <li>
+                <a href="{`/directory/detail/${item.collection}/${item.item.id}`}" class="{item.collection}">{item.item.title}</a>
+                <div><p>{item.item.date}</p><p>{item.collection}</p></div>
+            </li>
         {/each}
-    </section>
-    <!-- other content -->
-</div>
+    </ol>
+    <a class="button" href="/directory">Alle Einträge</a>
+</section>
+<section>
+    {#each content as block}
+        <h3>{block.title}</h3>
+        <div>{@html block.content}</div>
+    {/each}
+</section>
+<!-- other content -->
 
 <style lang="scss">
-
+  @import "../../style/theme.scss";
+    .spacer {
+      width: 100%;
+      height: 51vw;
+    }
+  section {
+    @include gutters;
+    @include max-width;
+    background-color: white;
+  }
 </style>
 

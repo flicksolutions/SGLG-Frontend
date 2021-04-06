@@ -5,14 +5,19 @@
 	import Icon from 'fa-svelte';
 	import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes'
 	import { faBars } from '@fortawesome/free-solid-svg-icons/faBars'
+	import { onMount } from 'svelte';
 
 	let showMobileMenu = false;
-
+	let y = 0;
+	let ticking = false;
+	let lastKnownScrollPosition = 0;
 
 	export let segment;
 </script>
 
-<header class:showMobileMenu>
+<svelte:window bind:scrollY={y}/>
+
+<header class:showMobileMenu class:scrolled={y > 300}>
 	<div class="inner">
 		<img class:invisible={showMobileMenu} src="svg/SGLG-Logo.svg" alt="Logo" />
 		<div class="titleLangContainer">
@@ -38,13 +43,22 @@
 <style lang="scss">
 	@import "../style/theme.scss";
 	header {
+		position: fixed;
+		top: 0;
+		width: 100vw;
 		background-color: $light-green;
+		@media (min-width: $medium) {
+			background-color: unset;
+		}
 		&.showMobileMenu {
 			background-color: $bg-grey;
 			.inner {
 				grid-template-columns: 1fr;
 				grid-auto-flow: row;
 			}
+		}
+		&.scrolled {
+			background-color: $light-green;
 		}
 		.inner {
 			@include gutters;

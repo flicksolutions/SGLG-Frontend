@@ -53,6 +53,12 @@ export async function getBg () {
     return `https://backend.ruralhistory.ch/assets/${fileId}`
 }
 
+export function setBg(node) {
+    getBg().then(url => {
+        node.style.backgroundImage = `url("${url}")`;
+    })
+}
+
 export function checkLocale (lang) {
     if (get(locales).includes(lang)) {
         return { lang };
