@@ -50,42 +50,6 @@
 			display: contents;
 		}
 	}
-	.branding-header, .langswitch-header {
-		@media (min-width: $medium) {
-			display: none;
-		}
-	}
-	.noButtonStyles {
-		font-size: 40px;
-		text-align: right;
-		padding: 0;
-		margin: 0;
-		background: none;
-		border: none;
-		float: right;
-		@media (min-width: $medium) {
-			display: none;
-		}
-	}
-	.close {
-		position: absolute;
-		right: $gutter;
-		top: $gutter;
-	}
-	.footer {
-		@media (min-width: $medium) {
-			.langswitch-footer {
-				grid-row: 2;
-			}
-			.inner{
-				grid-template-columns: 3fr 2fr;
-				.pages {
-					grid-auto-flow: column;
-				}
-			}
-		}
-
-	}
 	.inner {
 		@include gutters;
 		@include max-width;

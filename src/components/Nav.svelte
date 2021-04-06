@@ -45,6 +45,7 @@
 				}
 				.page:hover ul {
 					display: block;
+					position: absolute;
 				}
 			}
 		}
