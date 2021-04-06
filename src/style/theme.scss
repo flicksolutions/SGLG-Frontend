@@ -46,6 +46,12 @@ $large: 1200px;
 
 }
 
+@mixin max-width() {
+  max-width: $content-max;
+  margin: 0 auto;
+}
+
 //CONSTANTS
 
 $gutter: 20px;
+$content-max: 1200px;

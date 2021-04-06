@@ -1,11 +1,9 @@
 <script context="module">
     import { waitLocale } from 'svelte-i18n'
-    import { checkLocale } from '../../functions';
 
     export async function preload(page) {
-        const { lang } = page.params;
         // awaits for the loading of the default dictionaries
-        await waitLocale()
+        return waitLocale()
     }
 </script>
 
