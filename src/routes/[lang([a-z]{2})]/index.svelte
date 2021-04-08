@@ -3,6 +3,8 @@
     import { onMount } from 'svelte';
     import Sticker from '../../components/Sticker.svelte';
     import { getItems, setBg, getBg } from '../../functions';
+    import { SVGS } from '../../constants';
+    import InlineSVG from 'svelte-inline-svg'
 
     let items = [];
     let content = [];
@@ -53,11 +55,14 @@
 {/if}
 
 <section>
-    <h2>Aktuell {$locale}</h2>
+    <h2>Aktuell</h2>
+
     <ol>
         {#each items as item}
             <li>
-                <a href="{`/directory/detail/${item.collection}/${item.item.id}`}" class="{item.collection}">{item.item.title}</a>
+                <a href="{`/directory/detail/${item.collection}/${item.item.id}`}" class="{item.collection}">
+                    <InlineSVG src={SVGS[item.collection]} class="svg"/> <h2>{item.item.title}</h2>
+                </a>
                 <div><p>{item.item.date}</p><p>{item.collection}</p></div>
             </li>
         {/each}
@@ -75,13 +80,54 @@
 <style lang="scss">
   @import "../../style/theme.scss";
 
-  .featured {
+    .featured {
     max-width: 100%;
-  }
-  section {
+    }
+    section {
     @include gutters;
     @include max-width;
     background-color: white;
-  }
+    }
+    ol {
+      padding: 0;
+      list-style: none;
+      li {
+        border-top: solid $line-grey thin;
+        padding-top: 0.6em;
+        margin-top: 1.5em;
+        a:first-child {
+          color: $dark-green;
+          text-decoration: none;
+          h2 {
+            margin: 0 0 0.2em 0;
+          }
+        }
+        div {
+          display: grid;
+          grid-auto-flow: column;
+          justify-content: flex-start;
+          //grid-gap: 20px;
+          p {
+            color: $dark-green;
+            margin: 0;
+            &:not(:last-child){
+              border-right: solid;
+              border-right-width: thin;
+              margin-right: 0.5em;
+              padding-right: 0.5em;
+            }
+
+          }
+        }
+      }
+    }
+
+    a :global(.svg) {
+      margin-right: 0.6em;
+      width: 22px;
+      display: block;
+      float: left;
+      fill: $dark-green;
+    }
 </style>
 
