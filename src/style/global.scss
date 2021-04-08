@@ -17,26 +17,25 @@ body {
 
 h1, h2, .lead {
   font-family: $title-font;
-  font-size: 26px;
+  font-size: 19px;
   line-height: 1.2em;
   letter-spacing: 0.005em;
   @media screen and (min-width: $medium) {
-    font-size: 19px;
+    font-size: 26px;
   }
 }
 
-h3, p, li {
-  font-size: 16px;
+h3, a, p, li {
+  font-size: 14px;
   line-height: 1.3em;
-  @media screen and (min-width: $medium) {
-    font-size: 14px;
+  @media screen and (max-width: 800px) {
+    font-size: 16px;
   }
 }
 h3, a {
   font-family: $title-font;
   letter-spacing: 0.005em;
 }
-
 p, li {
   font-family: $text-font;
   letter-spacing: 0;
@@ -44,12 +43,6 @@ p, li {
 
 button:hover {
   opacity: 0.9;
-}
-
-@media screen and (min-width: $medium) {
-  header p, footer p, .sticker p, .sticker h3 {
-    font-size: 12px;
-  }
 }
 
 .spacer {
