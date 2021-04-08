@@ -1,5 +1,5 @@
 <script>
-    import { locale, _ } from 'svelte-i18n';
+    import { locale, _, date } from 'svelte-i18n';
     import { onMount } from 'svelte';
     import Sticker from '../../components/Sticker.svelte';
     import { getItems, setBg, getBg } from '../../functions';
@@ -63,7 +63,12 @@
                 <a href="{`/directory/detail/${item.collection}/${item.item.id}`}" class="{item.collection}">
                     <InlineSVG src={SVGS[item.collection]} class="svg"/> <h2>{item.item.title}</h2>
                 </a>
-                <div><p>{item.item.date}</p><p>{item.collection}</p></div>
+                <div>
+                    {#if item.item.date}
+                    <p>{$date(new Date(item.item.date), { month: 'numeric', day: 'numeric', year: 'numeric' })}</p>
+                    {/if}
+                    <p>{item.collection}</p>
+                </div>
             </li>
         {/each}
     </ol>
@@ -106,7 +111,6 @@
           display: grid;
           grid-auto-flow: column;
           justify-content: flex-start;
-          //grid-gap: 20px;
           p {
             color: $dark-green;
             margin: 0;
