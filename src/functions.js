@@ -1,7 +1,7 @@
-import DirectusSDK from '@directus/sdk-js';
+import { Directus } from '@directus/sdk';
 import { locales } from 'svelte-i18n';
 import { get } from 'svelte/store';
-const directus = new DirectusSDK('https://backend.ruralhistory.ch');
+export const directus = new Directus('https://backend.ruralhistory.ch');
 
 export async function getItems ({
                        locale = 'de',
@@ -18,7 +18,7 @@ export async function getItems ({
         readItem['deep[translations][_filter][languages_code][_eq]'] = locale;
     }
     for (const directory of collections) {
-        let responseItem = await directus.items(directory).read(readItem); //get each item in every relevant collection
+        let responseItem = await directus.items(directory).readMany(readItem); //get each item in every relevant collection
         responseItem = responseItem.data;
         if (Array.isArray(responseItem)) {
             responseItem = responseItem.map(i => {
@@ -38,7 +38,7 @@ export async function getItems ({
 }
 
 export async function getBg () {
-    const { data } = await directus.files.read({
+    const { data } = await directus.files.readMany({
         fields: ['id'],
         filter: {
             folder: {

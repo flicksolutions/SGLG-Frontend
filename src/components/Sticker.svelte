@@ -1,3 +1,17 @@
+<script>
+    import { directus } from "../functions";
+    directus.items('disturber').readMany({
+        fields: ['label', 'link'],
+        filter: {
+            status: {
+                _eq: 'published',
+            },
+        },
+        limit: 1
+    }).then(i => console.log(i))
+
+</script>
+
 <a href="/" class="sticker-wrapper">
     <h3>Jetzt anmelden zur Generalversammlung</h3>
     <p>vom 22.06.2021<br>
