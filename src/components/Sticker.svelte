@@ -1,5 +1,9 @@
 <script>
     import { directus } from "../functions";
+    import marked from 'marked';
+    let label = "";
+    let link = "";
+
     directus.items('disturber').readMany({
         fields: ['label', 'link'],
         filter: {
@@ -8,18 +12,19 @@
             },
         },
         limit: 1
-    }).then(i => console.log(i))
+    }).then(i => {
+        label = marked(i.data[0].label);
+        link = i.data[0].link;
+    })
 
 </script>
 
-<a href="/" class="sticker-wrapper">
-    <h3>Jetzt anmelden zur Generalversammlung</h3>
-    <p>vom 22.06.2021<br>
-    13:30 - 17:00</p>
+<a href="{link}" class="sticker-wrapper">
+    {@html label}
 </a>
 
 <style lang="scss">
-  @import "../style/theme.scss";
+    @import "../style/theme.scss";
     .sticker-wrapper {
       display: flex;
       flex-flow: column;
@@ -49,6 +54,5 @@
           font-size: 16px;
         }
       }
-
     }
 </style>

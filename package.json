@@ -12,6 +12,7 @@
     "@directus/sdk": "^9.0.0-rc.55",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "compression": "^1.7.1",
+    "marked": "^2.0.1",
     "polka": "^0.5.2",
     "sirv": "^1.0.0",
     "svelte-i18n": "^3.3.9"
