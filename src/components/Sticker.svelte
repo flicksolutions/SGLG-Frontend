@@ -14,7 +14,7 @@
       text-align: center;
       position: absolute;
       right: $gutter;
-      bottom: 0;
+      bottom: -3em;
       background: $sglg-orange;
       border-radius: 1000000000px;
       height: 150px;
@@ -28,6 +28,9 @@
         margin: 0;
       }
       @media (min-width: $medium) {
+        right: unset;
+        left: 25%;
+        padding: 20px;
         h3, p {
           font-size: 16px;
         }

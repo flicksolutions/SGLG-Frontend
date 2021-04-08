@@ -52,6 +52,7 @@
 			background-color: unset;
 		}
 		&.showMobileMenu {
+			z-index: 99;
 			background-color: $bg-grey;
 			.inner {
 				grid-template-columns: 1fr;
