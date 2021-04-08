@@ -46,13 +46,12 @@
     <title>{$_('SGLG')}</title>
 </svelte:head>
 
-<Sticker />
-
 {#if featuredImg}
-    <img src="{featuredImg}" alt="featured" class="featured">
+    <div style="position: relative"><Sticker /><img src="{featuredImg}" alt="featured" class="featured"></div>
 {:else }
-    <div class="spacer"></div>
+    <div class="spacer"><Sticker /></div>
 {/if}
+
 <section>
     <h2>Aktuell {$locale}</h2>
     <ol>
