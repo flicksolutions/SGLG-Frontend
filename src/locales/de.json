@@ -2,5 +2,7 @@
   "page_title": "Seitentitel",
   "sign_in": "Einloggen",
   "sign_up": "etc",
-  "SGLG": "Schweizerische Gesellschaft für ländliche Geschichte"
+  "SGLG": "Schweizerische Gesellschaft für ländliche Geschichte",
+  "review_title": "Review von {title}",
+  "cfp_title": "Call for Paper für {title}"
 }
