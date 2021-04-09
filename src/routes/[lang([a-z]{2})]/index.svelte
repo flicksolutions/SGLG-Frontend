@@ -59,9 +59,10 @@
 
     <ol>
         {#each items as item}
-            <li>
+            <li class:internal={item.item.internal}>
                 <a href="{`/directory/detail/${item.collection}/${item.item.id}`}" class="{item.collection}">
-                    <InlineSVG src={SVGS[item.collection]} class="svg"/> <h2>{item.item.title}</h2>
+                    {#if SVGS[item.collection]}<InlineSVG src={SVGS[item.collection]} class="svg"/>{/if}
+                    <h2>{item.item.title}</h2>
                 </a>
                 <div>
                     {#if item.item.date}
@@ -121,6 +122,12 @@
               padding-right: 0.5em;
             }
 
+          }
+        }
+        &.internal {
+          a:first-child, a :global(.svg) {
+            color: $sglg-orange;
+            fill: $sglg-orange;
           }
         }
       }
