@@ -50,3 +50,33 @@ button:hover {
   height: 44vw;
   position: relative;
 }
+section {
+  @include gutters;
+  @include max-width;
+  background-color: white;
+  &.colorful {
+    background-color: $sglg-orange;
+    color: $dark-green;
+    @media (min-width: $medium) {
+      width: 100%;
+      max-width: initial;
+      margin: 0;
+      padding: $gutter 0;
+    }
+    div {
+      @media (min-width: $medium) {
+        max-width: $content-max;
+        margin: 0 auto;
+      }
+      p {
+        font-family: $title-font;
+      }
+    }
+    .button {
+      margin: 2em auto;
+      @media (min-width: $medium) {
+        margin-left: 0;
+      }
+    }
+  }
+}

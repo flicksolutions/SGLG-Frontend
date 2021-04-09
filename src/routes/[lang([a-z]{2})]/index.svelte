@@ -107,7 +107,7 @@
 
 <style lang="scss">
     @import "../../style/theme.scss";
-    .button, :global(.button) { //global selector is used to style the content of the homepage
+    :global(.button) { //global selector is used to style the content of the homepage
       background-color: $dark-green;
       color: white;
       text-decoration: none;
@@ -115,27 +115,14 @@
       margin: 0 auto;
       display: block;
       width: max-content;
+      @media (min-width: $medium) {
+        margin-left: 0;
+      }
     }
 
-    .colorful {
-      background-color: $sglg-orange;
-      color: $dark-green;
-      :global(div p) {
-          font-family: $title-font;
-      }
-      :global(.button) {
-        margin: 2em auto;
-      }
-
-    }
 
     .featured {
     max-width: 100%;
-    }
-    section {
-    @include gutters;
-    @include max-width;
-    background-color: white;
     }
     ol {
       padding: 0;
