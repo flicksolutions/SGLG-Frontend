@@ -89,18 +89,41 @@
             </li>
         {/each}
     </ol>
-    <a class="button" href="/directory">Alle Einträge</a>
+    <a class="button" href="/directory" >Alle Einträge</a>
 </section>
-<section>
-    {#each content as block}
+{#each content as block}
+<section class:colorful={block.style} class="content-block">
+    <div>
         <h3>{block.title}</h3>
-        <div>{@html block.content}</div>
-    {/each}
+        {@html block.content}
+    </div>
 </section>
+{/each}
 <!-- other content -->
 
 <style lang="scss">
-  @import "../../style/theme.scss";
+    @import "../../style/theme.scss";
+    .button, :global(.button) { //global selector is used to style the content of the homepage
+      background-color: $dark-green;
+      color: white;
+      text-decoration: none;
+      padding: 0.6em;
+      margin: 0 auto;
+      display: block;
+      width: max-content;
+    }
+
+    .colorful {
+      background-color: $sglg-orange;
+      color: $dark-green;
+      :global(div p) {
+          font-family: $title-font;
+      }
+      :global(.button) {
+        margin: 2em auto;
+      }
+
+    }
 
     .featured {
     max-width: 100%;

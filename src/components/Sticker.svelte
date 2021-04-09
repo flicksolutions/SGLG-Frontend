@@ -42,7 +42,7 @@
       transform: rotate(-15deg);
       color: $dark-green;
       text-decoration: none;
-      h3, p {
+      :global(h3), :global(p) {
         font-size: 12px;
         margin: 0;
       }
@@ -50,7 +50,7 @@
         right: unset;
         left: 25%;
         padding: 20px;
-        h3, p {
+        :global(h3, p) {
           font-size: 16px;
         }
       }

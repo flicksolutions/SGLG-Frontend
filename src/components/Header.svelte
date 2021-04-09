@@ -48,11 +48,11 @@
 		width: 100vw;
 		height: $header-height;
 		background-color: $light-green;
+		z-index: 99;
 		@media (min-width: $medium) {
 			background-color: unset;
 		}
 		&.showMobileMenu {
-			z-index: 99;
 			background-color: $bg-grey;
 			.inner {
 				grid-template-columns: 1fr;
