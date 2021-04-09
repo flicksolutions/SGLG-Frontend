@@ -28,7 +28,7 @@ h1, h2, .lead {
 h3, a, p, li {
   font-size: 14px;
   line-height: 1.3em;
-  @media screen and (max-width: 800px) {
+  @media screen and (min-width: $medium) {
     font-size: 16px;
   }
 }

@@ -4,7 +4,8 @@
     import Sticker from '../../components/Sticker.svelte';
     import { getItems, setBg, getBg } from '../../functions';
     import { SVGS } from '../../constants';
-    import InlineSVG from 'svelte-inline-svg'
+    import InlineSVG from 'svelte-inline-svg';
+    import { truncate } from 'htmlsave';
 
     let items = [];
     let content = [];
@@ -80,11 +81,14 @@
                     {#if SVGS[item.collection]}<InlineSVG src={SVGS[item.collection]} class="svg"/>{/if}
                     <h2>{item.item.title}</h2>
                 </a>
-                <div>
+                <div class="meta">
                     {#if item.item.date}
                     <p>{$date(new Date(item.item.date), { month: 'numeric', day: 'numeric', year: 'numeric' })}</p>
                     {/if}
                     <p>{item.collection.replaceAll('_', ' ')}</p>
+                </div>
+                <div class="content">
+                {#if item.item.content}{@html truncate(item.item.content, 250)}{/if}
                 </div>
             </li>
         {/each}
@@ -147,7 +151,7 @@
             margin: 0 0 0.2em 0;
           }
         }
-        div {
+        .meta {
           display: grid;
           grid-auto-flow: column;
           justify-content: flex-start;
@@ -162,6 +166,9 @@
             }
 
           }
+        }
+        .content{
+
         }
         &.internal {
           a:first-child, a :global(.svg) {
