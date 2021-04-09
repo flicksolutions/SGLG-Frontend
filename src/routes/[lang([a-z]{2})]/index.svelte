@@ -33,16 +33,16 @@
             switch (i.collection) {
                 case "call_for_paper":
                     cleanItem.item.title = $_('cfp_title', { values: {title:i.item.event.title}});
-                    cleanItem.link = `/directory/detail/event/${i.item.event.id}`;
+                    cleanItem.link = `${$locale}/directories/detail/event/${i.item.event.id}`;
                     cleanItem.item.internal = i.item.event.internal;
                     break;
                 case "review":
                     cleanItem.item.title = $_('review_title', { values: {title: i.item.event_publication[0].item.title}});
-                    cleanItem.link = `/directory/detail/${i.item.event_publication[0].collection}/${i.item.event_publication[0].item.id}`;
+                    cleanItem.link = `${$locale}/directories/detail/${i.item.event_publication[0].collection}/${i.item.event_publication[0].item.id}`;
                     cleanItem.item.internal = i.item.event_publication[0].item.internal;
                     break;
                 default:
-                    cleanItem.link = `/directory/detail/${i.collection}/${i.item.id}`
+                    cleanItem.link = `${$locale}/directories/detail/${i.collection}/${i.item.id}`
             }
 
             return cleanItem
