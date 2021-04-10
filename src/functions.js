@@ -6,10 +6,11 @@ export const directus = new Directus('https://backend.ruralhistory.ch');
 export async function getItems ({
                        locale = 'de',
                        fields= ['title','id','date'],
+                       filter = {},
                        translatedFields,
                        collections
     }) {
-    const readItem = {};
+    const readItem = {filter: filter};
     let returnItems = [];
     if (locale === 'de') {
         readItem.fields = fields;//get only these fields
