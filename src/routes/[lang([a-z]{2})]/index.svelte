@@ -19,7 +19,7 @@
         locale: $locale.slice(0, 2),
         fields: fields,
         translatedFields: ['content'],
-        collections: ['homepage']
+        collections: [{directory: 'homepage'}]
     }).then(i => {
         items = i[0].items.map(i => {//we set the items to display on the page. For that we consume the items from the response.
             let cleanItem = {                  //it may look funny to fiddle around with the items. but the reason is translation. I do this here because I want my html nice and understandable.
