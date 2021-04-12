@@ -26,29 +26,36 @@ export async function getItems ({
     }
     return returnItems
 }
-function createFilter (parts, val) {
+function createNestedFilter (parts, val) {
     if (parts.length === 1) {
         return {[parts[0]]: val}
     } else {
-        return {[parts.shift()]: createFilter(parts,val)}
+        return {[parts.shift()]: createNestedFilter(parts,val)}
     }
 }
 
 const createReadObject = (collection, locale, fields, filter, translatedFields) => {
-    const readItem = {fields: []};
+    const readItem = {fields: [], filter: {}};
 
     //settings dependend on super
-    if (collection.super_field) { //set filter depending on super
+    if (collection.super) { //set filter depending on super
         if (filter) {
-            const filterParts = collection.super_field.split('.');
-            console.log('these are the parts:')
-            console.log(filterParts)
-            readItem.filter = createFilter(filterParts, filter);
+            let tempFilter = [];
+            for (let col of collection.super) {
+                let filterParts = col.split('.');
+                tempFilter.push(createNestedFilter(filterParts, filter));
+            }
+            readItem.filter = {["_or"]: tempFilter};
         }
+
         /*for (let [key, value] of Object.entries(filter)) {
             readItem[`deep[${collection.super_field}][_filter][${key}][${Object.keys(value)[0]}]`] = Object.values(value)[0]
         }*/
-        readItem.fields = fields.map(f => `${collection.super_field}.${f}`)
+        for (let field of fields) {
+            for (let col of collection.super) {
+                readItem.fields.push(`${col}.${field}`);
+            }
+        }
     } else {
         if (filter) {
             readItem.filter = filter;
