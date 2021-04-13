@@ -6,7 +6,7 @@
 
 	let pages = [
 		{name: "home", slug: ""},
-		{name: 'directory', slug: 'directory', subPages: [
+		{name: 'directories', slug: 'directories', subPages: [
 				{name: 'Call for Papers', slug: 'call-for-papers'}
 		]},
 		{name: "imprint", slug:"imprint"},
