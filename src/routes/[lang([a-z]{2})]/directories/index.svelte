@@ -1,16 +1,19 @@
 <script>
     import { getItems, setBg, getBg, directus } from '../../../functions';
+    import { directories as directoryPromise } from '../../../constants';
     import { locale, _, date } from 'svelte-i18n';
 
     let directories = [];
     let directoryObjects;
     let table = [];
+    let sortParam = "title";
     let columns = [];
-    directus.items('directories').readMany().then(i => {
-        directoryObjects = i.data;
-        directories = i.data.map(d => d.directory);
+    directoryPromise.then(i => {
+        //TODO: do not fetch directories with super! :-)
+        directoryObjects = i;
+        directories = i.map(d => d.directory);
         selectors.categories = directories;
-    });
+    })
     const selectors = {
         categories: [],
         onlySglg: false,
@@ -22,11 +25,11 @@
     let results;
 
     let getResults = async ({ categories = [], onlySglg = false, dateFrom = "", dateTo = "", query = ""  }) => {
-        table = await getItems({
+        let table = await getItems({
+            //fields: TODO: only call values which are in the directory...
             locale: $locale,
             filter: onlySglg ? {internal: {_eq: true}}: null,
             collections: categories.map(d => directoryObjects.find(o => o.directory === d)),
-            //fields: ["translations"]
         });
 
         //create columns
@@ -68,7 +71,7 @@
                     <th>{col}</th>
                 {/each}
             </tr>
-            {#each table as row}
+            {#each table as row (`${row.collection}.${row.id}`)}
                 <tr>
                     {#each columns as col}
                         <td>{row[col]}</td>

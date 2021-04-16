@@ -2,29 +2,78 @@ import { Directus } from '@directus/sdk';
 import { locales } from 'svelte-i18n';
 import { get } from 'svelte/store';
 export const directus = new Directus('https://backend.ruralhistory.ch');
+let sortParam = "title";
+
+
+const mergeSorted = (a, b) => {
+    console.log(`mergesort beeing called with a:${a} and b: ${b}`)
+    console.log(a)
+    console.log(b)
+    const answer = new Array(a.length + b.length)
+    let i = 0, j = 0, k = 0;
+    while (i < a.length && j < b.length) {
+        if (a[i][sortParam] < b[j][sortParam]) {
+            answer[k] = a[i];
+            i++;
+        }else {
+            answer[k] = b[j];
+            j++;
+        }
+        k++;
+    }
+    while (i < a.length) {
+        answer[k] = a[i];
+        i++;
+        k++;
+    }
+    while (j < b.length) {
+        answer[k] = b[j];
+        j++;
+        k++;
+    }
+    return answer;
+}
 
 export async function getItems ({
                        locale = 'de',
-                       fields= ['*'],
+                       fields= [],
                        filter = null,
                        translatedFields = [],
-                       collections
+                       collections,
+                       sortP = "title"
     }) {
 
     let returnItems = [];
+    sortParam = sortP;
 
     for (const directory of collections) {
-        let responseItem = await directus.items(directory.directory).readMany(createReadObject(directory, locale, fields, filter, translatedFields)); //get each item in every relevant collection
+        let sortField = "";
+        if (directory.frontend_fields.includes(sortP)) {
+            sortField = sortP;
+        } else {
+            // We cannot sort of nested columns...
+            /*for (let superD of directory.super) {
+                if (directory.frontend_fields.includes(`${superD}.${sortP}`)) {
+                    sortField = `${superD}.${sortP}`;
+                }
+            }*/
+        }
+        let responseItem = await directus.items(directory.directory).readMany(
+            createReadObject(directory, locale, fields.length ? fields : directory.frontend_fields, filter, translatedFields, sortField)
+        ); //get each item in every relevant collection
         responseItem = responseItem.data;
         if (Array.isArray(responseItem)) {
             responseItem = responseItem.map(i => replaceTranslatedFields(i, directory.directory))
-            returnItems = [...returnItems, ...responseItem];
+            returnItems = [...returnItems, responseItem];
         } else {
             responseItem = replaceTranslatedFields(responseItem, directory.directory);
-            returnItems = [...returnItems, responseItem];
+            returnItems = [...returnItems, [responseItem]];
         }
     }
-    return returnItems
+    console.log("array of sorted arrays:")
+    console.log(returnItems)
+
+    return returnItems;
 }
 function createNestedFilter (parts, val) {
     if (parts.length === 1) {
@@ -34,8 +83,11 @@ function createNestedFilter (parts, val) {
     }
 }
 
-const createReadObject = (collection, locale, fields, filter, translatedFields) => {
-    const readItem = {fields: [], filter: {}};
+const createReadObject = (collection, locale, fields, filter, translatedFields, sortP) => {
+    const readItem = {fields: [], filter: {}, sort: sortP};
+
+    console.log("fields is:")
+    console.log(fields)
 
     //settings dependend on super
     if (collection.super) { //set filter depending on super
@@ -51,11 +103,7 @@ const createReadObject = (collection, locale, fields, filter, translatedFields) 
         /*for (let [key, value] of Object.entries(filter)) {
             readItem[`deep[${collection.super_field}][_filter][${key}][${Object.keys(value)[0]}]`] = Object.values(value)[0]
         }*/
-        for (let field of fields) {
-            for (let col of collection.super) {
-                readItem.fields.push(`${col}.${field}`);
-            }
-        }
+        //readItem.sort = collection.super.map(s => `${s}.${sortP}`)
     } else {
         if (filter) {
             readItem.filter = filter;

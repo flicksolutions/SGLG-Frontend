@@ -8,7 +8,6 @@ export const SVGS = {
 }
 
 async function createDirectory() {
-    console.log("createDirectory called")
     return (await directus.items('directories').readMany()).data;
 }
 
