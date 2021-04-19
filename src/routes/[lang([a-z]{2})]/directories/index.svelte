@@ -1,5 +1,11 @@
+<script context="module">
+    /*import { directories } from '../../../constants';
+    export async function preload() {
+        return { directories };
+    }*/
+</script>
 <script>
-    import { getItems, setBg, getBg, directus } from '../../../functions';
+    import { setBg, getBg, directus } from '../../../functions';
     import { directories as directoryPromise } from '../../../constants';
     import { locale, _, date } from 'svelte-i18n';
 
@@ -24,13 +30,50 @@
 
     let results;
 
-    let getResults = async ({ categories = [], onlySglg = false, dateFrom = "", dateTo = "", query = ""  }) => {
-        let table = await getItems({
-            //fields: TODO: only call values which are in the directory...
-            locale: $locale,
-            filter: onlySglg ? {internal: {_eq: true}}: null,
-            collections: categories.map(d => directoryObjects.find(o => o.directory === d)),
-        });
+    let getResults = async ({ categories = [], onlySglg = false, dateFrom = "", dateTo = "", query = "" }) => {
+        /*let fields = ['id', 'itemtype', 'internal', 'title', 'date', 'event_type', 'event_hosted_by', 'event_end_date',
+            'event_place', 'publications_publisher', 'publications_series', 'link', 'files',
+            'publications_associated_instititutions', 'publications_person', 'content', 'publications_released_in',
+            'publications_type', 'references', 'referenced_by'];*/
+        let fields = [...new Set(categories.flatMap(c => directoryObjects.find(o => o.directory === c).frontend_fields)), 'itemtype.directory', 'id'];
+        let deep = {};
+
+        let filter = {
+            'itemtype': {
+                'directory': {
+                    '_in': categories
+                }
+            }
+        };
+        if (onlySglg) {
+            filter.internal = {
+                '_eq': true
+            }
+        }
+        if (dateFrom && dateTo) {
+            filter.date = { '_between': [dateFrom, dateTo] }
+        } else if (dateFrom) {
+            filter.date = { '_gte': dateFrom }
+        } else if (dateTo) {
+            filter.date = { '_lte': dateTo }
+        }
+
+        if ($locale !== 'de') {
+            //fields.push('translations.title', 'translations.event_hosted_by', 'translations.link', 'translations.content');
+            fields.push('translations.*');
+            deep.translations = {"_filter": {
+                    'languages_code': {
+                        "_eq": $locale
+                    }
+                }
+            };
+        }
+        table = (await directus.items('entities').readMany({
+            fields: fields,
+            filter,
+            deep,
+            search: query
+        })).data;
 
         //create columns
         const tempColumns = new Set();
@@ -40,8 +83,6 @@
             }
         })
         columns = [...tempColumns];
-        console.log(table)
-        console.log(columns)
     }
 
 </script>
@@ -71,7 +112,7 @@
                     <th>{col}</th>
                 {/each}
             </tr>
-            {#each table as row (`${row.collection}.${row.id}`)}
+            {#each table as row (`${row.itemtype.directory}.${row.id}`)}
                 <tr>
                     {#each columns as col}
                         <td>{row[col]}</td>

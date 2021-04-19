@@ -14,16 +14,8 @@
     let featuredImg;
 
     //get the content
-    let fields = ['content', 'items.references.entities_related_id.title', 'items.references.entities_related_id.internal', 'items.itemtype.directory', 'items.content', 'items.title', 'items.date', 'items.event_type', 'items.publication_type'];
-    let deep = {
-        "items": {
-            "_filter": {
-                "status": {
-                    "_eq": "published"
-                }
-            }
-        }
-    };
+    let fields = ['content', 'items.id', 'items.references.entities_related_id.title', 'items.references.entities_related_id.internal', 'items.itemtype.directory', 'items.content', 'items.title', 'items.date', 'items.event_type', 'items.publication_type'];
+    let deep = {};
     if ($locale !== 'de') { // if we are not in default locale, we need to get the translations of the items
         fields.push('translations.content', 'items.translations.title', 'items.translations.content');
         const trans = {"_filter": {
@@ -40,7 +32,6 @@
             let cleanItem = {                  //it may look funny to fiddle around with the items. but the reason is translation. I do this here because I want my html nice and understandable.
                 ...i,
                 ...i.translations?.[0],  //but also replace any translatable fields with the translated ones.
-                id: i.id                 //exept for the id
             };
             if (i.references[0]?.entities_related_id?.title) {
                 cleanItem.title = $_(`${i.itemtype.directory}_title`, {values: {title: i.references[0].entities_related_id.title}});
@@ -78,7 +69,7 @@
     <ol>
         {#each items as item}
             <li class:internal={item.internal}>
-                <a href="{`${$locale}/directories/detail//${item.id}`}" class="{item.collection}">
+                <a href="{`${$locale}/directories/detail/${item.id}`}" class="{item.collection}">
                     {#if SVGS[item.collection]}<InlineSVG src={SVGS[item.collection]} class="svg"/>{/if}
                     <h2>{item.title}</h2>
                 </a>
