@@ -75,14 +75,14 @@
             search: query
         })).data;
 
-        //create columns
-        const tempColumns = new Set();
         table.forEach(row => {
-            for (let col in row) {
-                tempColumns.add(col);
+            if (row.publications_person){
+                row.publications_person = row.publications_person.map(person => `${person.name} (${person.role})`).join(', ')
             }
-        })
-        columns = [...tempColumns];
+        });
+
+        //create columns
+        columns = Object.keys(table[0]).filter(r => r !== 'link');
     }
 
 </script>
@@ -114,8 +114,8 @@
             </tr>
             {#each table as row (`${row.itemtype.directory}.${row.id}`)}
                 <tr>
-                    {#each columns as col}
-                        <td>{row[col]}</td>
+                    {#each columns as col}<!-- TODO: Link the title! -->
+                        <td>{typeof row[col] !== "string" ? JSON.stringify(row[col]) : row[col]}</td>
                     {/each}
                 </tr>
             {/each}
