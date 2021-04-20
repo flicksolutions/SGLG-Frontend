@@ -35,7 +35,7 @@
             'event_place', 'publications_publisher', 'publications_series', 'link', 'files',
             'publications_associated_instititutions', 'publications_person', 'content', 'publications_released_in',
             'publications_type', 'references', 'referenced_by'];*/
-        let fields = [...new Set(categories.flatMap(c => directoryObjects.find(o => o.directory === c).frontend_fields)), 'itemtype.directory', 'id'];
+        let fields = [...new Set(categories.flatMap(c => directoryObjects.find(o => o.directory === c).frontend_fields)), 'itemtype.directory', 'id', 'references.entities_related_id.title'];
         let deep = {};
 
         let filter = {
@@ -75,14 +75,32 @@
             search: query
         })).data;
 
+        //create columns
+        columns = Object.keys(table[0]);
+        let emptyCols = {};
         table.forEach(row => {
             if (row.publications_person){
                 row.publications_person = row.publications_person.map(person => `${person.name} (${person.role})`).join(', ')
             }
+            row.itemtype = row.itemtype.directory;
+            for (let col in row) {
+                //if ((typeof row[col] === 'string' && !row[col]) || (Array.isArray(row[col]) && !row[col].length)) {
+                if (!row[col]) {
+                    console.log(`no value in ${col}`)
+                    if (!emptyCols[col]) {
+                        emptyCols[col] = 1;
+                    } else {
+                        emptyCols[col] += 1;
+                    }
+                }
+            }
         });
-
-        //create columns
-        columns = Object.keys(table[0]).filter(r => r !== 'link');
+        //remove empty cols from the array (and link since we don't want to show that)
+        for (const [key, value] of Object.entries(emptyCols)) {
+            if (value >= table.length) {
+                columns = columns.filter(r => r !== key && r !== 'link');
+            }
+        }
     }
 
 </script>
@@ -112,10 +130,18 @@
                     <th>{col}</th>
                 {/each}
             </tr>
-            {#each table as row (`${row.itemtype.directory}.${row.id}`)}
+            {#each table as row (row.id)}
                 <tr>
-                    {#each columns as col}<!-- TODO: Link the title! -->
-                        <td>{typeof row[col] !== "string" ? JSON.stringify(row[col]) : row[col]}</td>
+                    {#each columns as col}
+                        <td>{#if col === 'title'}
+                            <a href={`${$locale}/directories/detail/${row.id}`}>{row[col] ?? $_(`${row.itemtype}_title`, {values: {title: row.references[0].entities_related_id.title}})}</a>
+                            {:else if (typeof row[col] === 'string' && row[col]) || (Array.isArray(row[col]) && row[col].length) }
+                                {#if typeof row[col] !== "string"}
+                                    {row[col].length}
+                                {:else}
+                                    {@html row[col]}
+                                {/if}
+                        {/if}</td>
                     {/each}
                 </tr>
             {/each}
