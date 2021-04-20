@@ -1,26 +1,27 @@
 <script context="module">
-    /*import { directories } from '../../../constants';
+    import {directus} from "../../../functions";
     export async function preload() {
-        return { directories };
-    }*/
+        const directoryObjects = (await directus.items('directories').readMany()).data;
+        return { directoryObjects };
+    }
 </script>
 <script>
-    import { setBg, getBg, directus } from '../../../functions';
-    import { directories as directoryPromise } from '../../../constants';
+    import { setBg, getBg } from '../../../functions';
     import { locale, _, date } from 'svelte-i18n';
+    import {onMount} from "svelte";
 
-    let directories = [];
-    let directoryObjects;
+    //let directories = [];
+    export let directoryObjects;
+    let directories = directoryObjects.map(d => d.directory)
     let table = [];
     let columns = [];
-    directoryPromise.then(i => {
-        //TODO: do not fetch directories with super! :-)
+    /*directoryPromise.then(i => {
         directoryObjects = i;
         directories = i.map(d => d.directory);
         selectors.categories = directories;
-    })
+    })*/
     const selectors = {
-        categories: [],
+        categories: directories,
         onlySglg: false,
         dateFrom: "",
         dateTo: "",
@@ -125,6 +126,8 @@
         }
         setResults();
     }
+
+    onMount(() => setResults());
 </script>
 <h1>Verzeichnisse</h1>
 <div class="directory-nav">
