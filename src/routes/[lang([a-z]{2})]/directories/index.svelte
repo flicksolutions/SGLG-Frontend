@@ -12,9 +12,7 @@
     let directories = [];
     let directoryObjects;
     let table = [];
-    let sortParam = "title";
     let columns = [];
-    let page = 1;
     directoryPromise.then(i => {
         //TODO: do not fetch directories with super! :-)
         directoryObjects = i;
@@ -27,11 +25,13 @@
         dateFrom: "",
         dateTo: "",
         query: "",
+        sort: '',
+        page: 1
     };
 
     let results;
 
-    let getResults = async ({ categories = [], onlySglg = false, dateFrom = "", dateTo = "", query = "" }) => {
+    let getResults = async ({ categories = [], onlySglg = false, dateFrom = "", dateTo = "", query = "", page = 1, sort = "" }) => {
         /*let fields = ['id', 'itemtype', 'internal', 'title', 'date', 'event_type', 'event_hosted_by', 'event_end_date',
             'event_place', 'publications_publisher', 'publications_series', 'link', 'files',
             'publications_associated_instititutions', 'publications_person', 'content', 'publications_released_in',
@@ -76,6 +76,7 @@
             deep,
             search: query,
             page,
+            sort,
             //limit: 2
         })).data;
 
@@ -107,14 +108,22 @@
         return { returnColumns , returnTable }
     }
 
-    let loadMore = async () => {
-        page += 1;
+    const loadMore = async () => {
+        selectors.page += 1;
         table = [...table, ...(await getResults(selectors)).returnTable];
     }
     const setResults = async () => {
        const { returnTable, returnColumns } = await getResults(selectors);
        table = returnTable;
        columns = returnColumns;
+    }
+    const sortResults = (val) => {
+        if (selectors.sort === val) {
+            selectors.sort = `-${val}`;
+        } else {
+            selectors.sort = val;
+        }
+        setResults();
     }
 </script>
 <h1>Verzeichnisse</h1>
@@ -140,7 +149,7 @@
         <table>
             <tr>
                 {#each columns as col}
-                    <th>{col}</th>
+                    <th on:click={() => sortResults(col)}>{col}</th>
                 {/each}
             </tr>
             {#each table as row (row.id)}
