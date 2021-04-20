@@ -14,6 +14,7 @@
     let table = [];
     let sortParam = "title";
     let columns = [];
+    let page = 1;
     directoryPromise.then(i => {
         //TODO: do not fetch directories with super! :-)
         directoryObjects = i;
@@ -35,6 +36,7 @@
             'event_place', 'publications_publisher', 'publications_series', 'link', 'files',
             'publications_associated_instititutions', 'publications_person', 'content', 'publications_released_in',
             'publications_type', 'references', 'referenced_by'];*/
+        let returnColumns, returnTable;
         let fields = [...new Set(categories.flatMap(c => directoryObjects.find(o => o.directory === c).frontend_fields)), 'itemtype.directory', 'id', 'references.entities_related_id.title'];
         let deep = {};
 
@@ -68,17 +70,19 @@
                 }
             };
         }
-        table = (await directus.items('entities').readMany({
+        returnTable = (await directus.items('entities').readMany({
             fields: fields,
             filter,
             deep,
-            search: query
+            search: query,
+            page,
+            //limit: 2
         })).data;
 
         //create columns
-        columns = Object.keys(table[0]);
+        returnColumns = Object.keys(returnTable[0]);
         let emptyCols = {};
-        table.forEach(row => {
+        returnTable.forEach(row => {
             if (row.publications_person){
                 row.publications_person = row.publications_person.map(person => `${person.name} (${person.role})`).join(', ')
             }
@@ -86,7 +90,6 @@
             for (let col in row) {
                 //if ((typeof row[col] === 'string' && !row[col]) || (Array.isArray(row[col]) && !row[col].length)) {
                 if (!row[col]) {
-                    console.log(`no value in ${col}`)
                     if (!emptyCols[col]) {
                         emptyCols[col] = 1;
                     } else {
@@ -97,12 +100,22 @@
         });
         //remove empty cols from the array (and link since we don't want to show that)
         for (const [key, value] of Object.entries(emptyCols)) {
-            if (value >= table.length) {
-                columns = columns.filter(r => r !== key && r !== 'link');
+            if (value >= returnTable.length) {
+                returnColumns = returnColumns.filter(r => r !== key && r !== 'link');
             }
         }
+        return { returnColumns , returnTable }
     }
 
+    let loadMore = async () => {
+        page += 1;
+        table = [...table, ...(await getResults(selectors)).returnTable];
+    }
+    const setResults = async () => {
+       const { returnTable, returnColumns } = await getResults(selectors);
+       table = returnTable;
+       columns = returnColumns;
+    }
 </script>
 <h1>Verzeichnisse</h1>
 <div class="directory-nav">
@@ -121,7 +134,7 @@
         <label><input type="date" bind:value={selectors.dateFrom}>{$_('from')}</label>
         <label><input type="date" bind:value={selectors.dateTo}>{$_('to')}</label>
         <label><input type="search" bind:value={selectors.query}>{$_('query')}</label>
-        <button on:click={() => getResults(selectors)}>{$_('search')}</button>
+        <button on:click={setResults}>{$_('search')}</button>
     </section>
     <section class="table">
         <table>
@@ -134,7 +147,7 @@
                 <tr>
                     {#each columns as col}
                         <td>{#if col === 'title'}
-                            <a href={`${$locale}/directories/detail/${row.id}`}>{row[col] ?? $_(`${row.itemtype}_title`, {values: {title: row.references[0].entities_related_id.title}})}</a>
+                            <a href={`${$locale}/directories/detail/${row.id}`}>{row[col] ?? $_(`${row.itemtype}_title`, {values: {title: row.references?.[0].entities_related_id.title}})}</a>
                             {:else if (typeof row[col] === 'string' && row[col]) || (Array.isArray(row[col]) && row[col].length) }
                                 {#if typeof row[col] !== "string"}
                                     {row[col].length}
@@ -147,5 +160,8 @@
             {/each}
             <tr></tr>
         </table>
+        {#if table.length}
+            <button on:click={loadMore}>{$_('load more...')}</button>
+        {/if}
     </section>
 </div>
