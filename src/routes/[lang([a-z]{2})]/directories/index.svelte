@@ -164,6 +164,13 @@
         <input type="submit" value={$_('search')} class="button" style="margin: 0" />
     </form>
 </section>
+<table>
+    <tr>
+        <td style="width: 400px"></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
 <section class="table">
     {#if columns.length}
         <div id="upper-scroll" bind:this={upperScroll} on:scroll={() => lowerScroll.scrollLeft = upperScroll.scrollLeft}>
@@ -181,7 +188,7 @@
                     <tr>
                         {#each columns as col}
                             <td>{#if col === 'title'}
-                                <a href={`${$locale}/directories/detail/${row.id}`}>{row[col] ?? $_(`${row.itemtype}_title`, {values: {title: row.references?.[0].entities_related_id.title}})}</a>
+                                <a href={`${$locale}/directories/detail/${row.id}`} class:internal={row.internal}>{row[col] ?? $_(`${row.itemtype}_title`, {values: {title: row.references?.[0].entities_related_id.title}})}</a>
                                 {:else if (typeof row[col] === 'string' && row[col]) || (Array.isArray(row[col]) && row[col].length) }
                                     {#if typeof row[col] !== "string"}
                                         {row[col].length}
@@ -259,7 +266,9 @@
   }
 
   table {
-    font-family: $title-font;
+    width: max-content;
+    border-spacing: 1em;
+    margin-left: -1em;
     th {
       color: $line-grey;
       text-align: left;
@@ -268,10 +277,21 @@
         }
       &:hover {
         cursor: pointer;
+        color: $dark-green;
       }
       :global(svg) {
         max-height: 20px;
         max-width: 20px;
+      }
+    }
+    td {
+      max-width: 250px;
+      a {
+        text-decoration: none;
+        font-family: $title-font;
+        &:not(.internal) {
+          color: $dark-green;
+        }
       }
     }
   }

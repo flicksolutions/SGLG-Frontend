@@ -2,7 +2,6 @@
     import InlineSVG from 'svelte-inline-svg';
     import { SVGS } from '../constants';
 
-    export let checked = false
     export let checkboxes = []
     export let group = []
 
