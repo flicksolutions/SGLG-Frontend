@@ -121,7 +121,7 @@
 
     const dateLabels = [];
 
-    $:checkboxes = directories.map(d => {return {value: d, label: d}});
+    $:checkboxes = directories.map(d => {return {value: d, label: d}}); //TODO: translated labels?
 
     onMount(() => setResults());
 </script>
@@ -130,22 +130,12 @@
     <h1>Verzeichnisse</h1>
     <form class="filters" on:submit|preventDefault={setResults}>
         <div class="category-selectors">
-            <!--<input type="checkbox" id="all"
-                       checked={selectors.categories.length === directories.length}
-                       on:click={() =>
-                       {selectors.categories.length === directories.length ? selectors.categories = [] : selectors.categories = directories}}>
-            <label for="all"><InlineSVG src={'/svg/x.svg'} class="svg"/>{$_('all')}</label>-->
             <Checkbox checked={selectors.categories.length === directories.length} customEvent={true}
                       on:click={() =>
                        {selectors.categories.length === directories.length ? selectors.categories = [] : selectors.categories = directories}}>{$_('all')}</Checkbox>
             <CheckboxGroup { checkboxes } bind:group={selectors.categories} />
-            <!--{#each directories as category}
-                <input type="checkbox" id={`chk-${category}`} bind:group={selectors.categories} value={category}>
-                <label for={`chk-${category}`}><InlineSVG src={'/svg/x.svg'} class="svg"/>{category}</label>
-            {/each}-->
         </div>
         <Checkbox bind:checked={selectors.onlySglg}>{$_('onlySglg')}</Checkbox>
-        <!--<input type="checkbox" bind:checked={selectors.onlySglg} id="{`chk-${$_('onlySglg')}`}"><label for="{`chk-${$_('onlySglg')}`}"><InlineSVG src={'/svg/x.svg'} class="svg"/>{$_('onlySglg')}</label>-->
         <fieldset class="date-selectors">
             <legend>{$_('Dates')}</legend>
             <label for="date" on:click={hideElement} bind:this={dateLabels[0]}>{$_('from')}</label>
