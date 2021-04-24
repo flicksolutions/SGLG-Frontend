@@ -1,5 +1,6 @@
 <script>
     import InlineSVG from 'svelte-inline-svg';
+    import { SVGS } from '../constants';
 
     export let checked = false
     export let checkboxes = []
@@ -9,16 +10,25 @@
 </script>
 { #each checkboxes as checkbox }
     <input type="checkbox" id={`chk-${checkbox.label}-${rnd}`} bind:group value={checkbox.value}>
-    <label for={`chk-${checkbox.label}-${rnd}`}><InlineSVG src={'/svg/x.svg'} class="svg"/>{checkbox.label}</label>
+    <label for={`chk-${checkbox.label}-${rnd}`}>
+        <InlineSVG src={'/svg/x.svg'} class="chk-icon"/>
+        <InlineSVG src={SVGS[checkbox.value]} class="svg"/>{checkbox.label}</label>
 {/each}
 
 <style lang="scss">
   @import "../style/theme.scss";
   input[type=checkbox] {
-    visibility: hidden;
+    display: none;
     & + label {
-      :global(.svg) {
+      :global(.chk-icon) {
         display: none;
+      }
+      :global(.svg) {
+        margin: 0 0.6em;
+        width: 22px;
+        display: block;
+        float: left;
+        fill: $dark-green;
       }
       &:before {
         content: "";
@@ -27,13 +37,14 @@
         height: 14px;
         display: block;
         float: left;
-        margin-right: 5px;
+        margin: 4px 0 0 0;
+        //margin-right: 5px;
       }
     }
-    &:checked + label :global(.svg) {
+    &:checked + label :global(.chk-icon) {
       display: block;
       position: absolute;
-      margin: 3.2px 0 0 1.5px;
+      margin: 7px 0 0 1.5px;
       stroke-width: 3;
       width: 13px;
     }

@@ -99,20 +99,6 @@
 
 <style lang="scss">
     @import "../../style/theme.scss";
-    :global(.button) { //global selector is used to style the content of the homepage
-      background-color: $dark-green;
-      color: white;
-      text-decoration: none;
-      padding: 0.6em;
-      margin: 0 auto;
-      display: block;
-      width: max-content;
-      @media (min-width: $medium) {
-        margin-left: 0;
-      }
-    }
-
-
     .featured {
     max-width: 100%;
     }

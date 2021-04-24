@@ -132,10 +132,10 @@
         <div class="category-selectors">
             <Checkbox checked={selectors.categories.length === directories.length} customEvent={true}
                       on:click={() =>
-                       {selectors.categories.length === directories.length ? selectors.categories = [] : selectors.categories = directories}}>{$_('all')}</Checkbox>
+                       {selectors.categories.length === directories.length ? selectors.categories = [] : selectors.categories = directories}}><span class="icon-placeholder"></span>{$_('all')}</Checkbox>
             <CheckboxGroup { checkboxes } bind:group={selectors.categories} />
         </div>
-        <Checkbox bind:checked={selectors.onlySglg}>{$_('onlySglg')}</Checkbox>
+        <Checkbox bind:checked={selectors.onlySglg} cssClass="internal">{$_('onlySglg')}</Checkbox>
         <fieldset class="date-selectors">
             <legend>{$_('Dates')}</legend>
             <label for="date" on:click={hideElement} bind:this={dateLabels[0]}>{$_('from')}</label>
@@ -144,7 +144,7 @@
             <input id="end-date" type="date" bind:value={selectors.dateTo} on:focus={() => dateLabels[1].style.display = "none"}>
         </fieldset>
         <label class="search">{$_('query')}<input type="search" bind:value={selectors.query}></label>
-        <input type="submit" value={$_('search')} class="button" />
+        <input type="submit" value={$_('search')} class="button" style="margin: 0" />
     </form>
 </section>
 <section class="table">
@@ -186,6 +186,9 @@
     display: grid;
     grid-template-columns: 1fr;
   }
+  input[type=date] {
+    font-family: $title-font;
+  }
   .date-selectors {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -218,8 +221,15 @@
     grid-template-columns: 1fr;
     grid-gap: 2em;
     font-family: $title-font;
+    color: $dark-green;
   }
-
+  .icon-placeholder {
+    margin: 0 calc(0.6em - 5px) 0 0.6em;
+    width: 22px;
+    height: 1rem;
+    display: block;
+    float: left;
+  }
 
 
 </style>

@@ -80,3 +80,23 @@ section {
     }
   }
 }
+
+.internal {
+  color: $sglg-orange;
+}
+
+[type=submit].button{
+  border: none;
+}
+.button {
+  background-color: $dark-green;
+  color: white;
+  text-decoration: none;
+  padding: 0.6em;
+  margin: 0 auto;
+  display: block;
+  width: max-content;
+  @media (min-width: $medium) {
+    margin-left: 0;
+  }
+}
