@@ -2,7 +2,6 @@
     import InlineSVG from 'svelte-inline-svg';
 
     export let value;
-    export let label = "label";
     export let checked = false;
     export let customEvent = false;
     export let cssClass;

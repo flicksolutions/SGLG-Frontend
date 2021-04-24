@@ -16,6 +16,7 @@
     let directories = directoryObjects.map(d => d.directory)
     let table = [];
     let columns = [];
+    let scrollW, lowerScroll, upperScroll;
     const selectors = {
         categories: directories,
         onlySglg: false,
@@ -149,29 +150,33 @@
 </section>
 <section class="table">
     {#if columns.length}
-        <table>
-            <tr>
-                {#each columns as col}
-                    <th on:click={() => sortResults(col)}>{col}</th>
-                {/each}
-            </tr>
-            {#each table as row (row.id)}
+        <div id="upper-scroll" bind:this={upperScroll} on:scroll={() => lowerScroll.scrollLeft = upperScroll.scrollLeft}>
+            <div style="height: 10px; width: {scrollW}px;"></div></div>
+        <div class="overflow-container" bind:this={lowerScroll} on:scroll={() => upperScroll.scrollLeft = lowerScroll.scrollLeft}>
+            <table bind:clientWidth={scrollW}>
                 <tr>
                     {#each columns as col}
-                        <td>{#if col === 'title'}
-                            <a href={`${$locale}/directories/detail/${row.id}`}>{row[col] ?? $_(`${row.itemtype}_title`, {values: {title: row.references?.[0].entities_related_id.title}})}</a>
-                            {:else if (typeof row[col] === 'string' && row[col]) || (Array.isArray(row[col]) && row[col].length) }
-                                {#if typeof row[col] !== "string"}
-                                    {row[col].length}
-                                {:else}
-                                    {@html row[col]}
-                                {/if}
-                        {/if}</td>
+                        <th on:click={() => sortResults(col)}>{col}</th>
                     {/each}
                 </tr>
-            {/each}
-            <tr></tr>
-        </table>
+                {#each table as row (row.id)}
+                    <tr>
+                        {#each columns as col}
+                            <td>{#if col === 'title'}
+                                <a href={`${$locale}/directories/detail/${row.id}`}>{row[col] ?? $_(`${row.itemtype}_title`, {values: {title: row.references?.[0].entities_related_id.title}})}</a>
+                                {:else if (typeof row[col] === 'string' && row[col]) || (Array.isArray(row[col]) && row[col].length) }
+                                    {#if typeof row[col] !== "string"}
+                                        {row[col].length}
+                                    {:else}
+                                        {@html row[col]}
+                                    {/if}
+                            {/if}</td>
+                        {/each}
+                    </tr>
+                {/each}
+                <tr></tr>
+            </table>
+        </div>
         {#if table.length} <!-- TODO: find metadata if there are more items to show -->
             <button on:click={loadMore} class="button">{$_('load more...')}</button>
         {/if}
@@ -182,6 +187,10 @@
 
 <style lang="scss">
   @import "../../../style/theme.scss";
+  .overflow-container, #upper-scroll {
+    overflow-x: scroll;
+  }
+
   .category-selectors {
     display: grid;
     grid-template-columns: 1fr;
