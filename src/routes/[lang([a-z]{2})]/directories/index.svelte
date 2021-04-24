@@ -125,6 +125,22 @@
     $:checkboxes = directories.map(d => {return {value: d, label: d}}); //TODO: translated labels?
 
     onMount(() => setResults());
+
+    const arrow = value => {
+        let filter;
+        let style = "";
+        if (selectors.sort[0] === "-") {
+            filter = selectors.sort.substring(1);
+            style = "style='transform: rotate(180deg)'";
+        } else {
+            filter = selectors.sort;
+        }
+        if (value === filter) {
+            //return `<img src="/svg/arrow-down.svg" ${style}/>`
+            return `<svg ${style} xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" ><line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"></line><polyline points=\"19 12 12 19 5 12\"></polyline></svg>`;
+        }
+        return ""
+    }
 </script>
 
 <section>
@@ -156,7 +172,9 @@
             <table bind:clientWidth={scrollW}>
                 <tr>
                     {#each columns as col}
-                        <th on:click={() => sortResults(col)}>{col}</th>
+                        <th on:click={() => sortResults(col)}
+                            class:selected={col === selectors.sort.substring(selectors.sort.indexOf('-')+1)}>
+                            {col} {@html arrow(col)}</th>
                     {/each}
                 </tr>
                 {#each table as row (row.id)}
@@ -240,5 +258,22 @@
     float: left;
   }
 
+  table {
+    font-family: $title-font;
+    th {
+      color: $line-grey;
+      text-align: left;
+        &.selected{
+          color: $dark-green;
+        }
+      &:hover {
+        cursor: pointer;
+      }
+      :global(svg) {
+        max-height: 20px;
+        max-width: 20px;
+      }
+    }
+  }
 
 </style>
