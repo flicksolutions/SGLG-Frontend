@@ -13,6 +13,7 @@
     import CheckboxGroup from "../../../components/CheckboxGroup.svelte"
 
     export let directoryObjects;
+    console.log(directoryObjects)
     let directories = directoryObjects.map(d => d.directory)
     let table = [];
     let columns = [];
@@ -31,7 +32,8 @@
 
     let getResults = async ({ categories = [], onlySglg = false, dateFrom = "", dateTo = "", query = "", page = 1, sort = "" }) => {
         let returnColumns, returnTable;
-        let fields = [...new Set(categories.flatMap(c => directoryObjects.find(o => o.directory === c).frontend_fields)), 'itemtype.directory', 'id', 'references.entities_related_id.title'];
+        let fields = [...new Set(categories.flatMap(c => directoryObjects.find(o => o.directory === c).frontend_fields)), 'id', 'references.entities_related_id.title'];
+        fields.splice(1, 0, 'itemtype.directory');
         let deep = {};
 
         let filter = {
@@ -94,7 +96,8 @@
         //remove empty cols from the array (and link since we don't want to show that)
         for (const [key, value] of Object.entries(emptyCols)) {
             if (value >= returnTable.length) {
-                returnColumns = returnColumns.filter(r => r !== key && r !== 'link');
+                const filterKeys = ['link', 'id', 'internal']
+                returnColumns = returnColumns.filter(r => r !== key && !filterKeys.includes(r));
             }
         }
         return { returnColumns , returnTable }
@@ -136,10 +139,24 @@
             filter = selectors.sort;
         }
         if (value === filter) {
-            //return `<img src="/svg/arrow-down.svg" ${style}/>`
             return `<svg ${style} xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" ><line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"></line><polyline points=\"19 12 12 19 5 12\"></polyline></svg>`;
         }
         return ""
+    }
+    const sortable = col => {
+        console.log("enter sortable")
+        //console.log(col)
+        //console.log(table)
+        for (const row of table) {
+            //console.log(row)
+            //console.log(row[col])
+            if (row[col] == null || col === 'publications_person') {
+                //console.log('value is null')
+            } else {
+                return typeof row[col] === "string"
+            }
+        }
+        return false
     }
 </script>
 
@@ -164,13 +181,6 @@
         <input type="submit" value={$_('search')} class="button" style="margin: 0" />
     </form>
 </section>
-<table>
-    <tr>
-        <td style="width: 400px"></td>
-        <td></td>
-        <td></td>
-    </tr>
-</table>
 <section class="table">
     {#if columns.length}
         <div id="upper-scroll" bind:this={upperScroll} on:scroll={() => lowerScroll.scrollLeft = upperScroll.scrollLeft}>
@@ -179,9 +189,15 @@
             <table bind:clientWidth={scrollW}>
                 <tr>
                     {#each columns as col}
-                        <th on:click={() => sortResults(col)}
-                            class:selected={col === selectors.sort.substring(selectors.sort.indexOf('-')+1)}>
-                            {col} {@html arrow(col)}</th>
+                        {#if (sortable(col))}
+                            <th on:click={() => sortResults(col)}
+                                class:selected={col === selectors.sort.substring(selectors.sort.indexOf('-')+1)}
+                                class="sortable"
+                            >
+                                {col} {@html arrow(col)}</th>
+                        {:else}
+                            <th>{col}</th>
+                        {/if}
                     {/each}
                 </tr>
                 {#each table as row (row.id)}
@@ -189,8 +205,10 @@
                         {#each columns as col}
                             <td>{#if col === 'title'}
                                 <a href={`${$locale}/directories/detail/${row.id}`} class:internal={row.internal}>{row[col] ?? $_(`${row.itemtype}_title`, {values: {title: row.references?.[0].entities_related_id.title}})}</a>
-                                {:else if (typeof row[col] === 'string' && row[col]) || (Array.isArray(row[col]) && row[col].length) }
-                                    {#if typeof row[col] !== "string"}
+                                {:else if col === 'date'}
+                                {$date(new Date(row[col]), row.itemtype === 'publications' ? {year: 'numeric'} : { month: 'numeric', day: 'numeric', year: 'numeric' })}
+                                {:else if (!Array.isArray(row[col]) && row[col]) || (Array.isArray(row[col]) && row[col].length) }
+                                    {#if Array.isArray(row[col])}
                                         {row[col].length}
                                     {:else}
                                         {@html row[col]}
@@ -275,7 +293,7 @@
         &.selected{
           color: $dark-green;
         }
-      &:hover {
+      &.sortable:hover {
         cursor: pointer;
         color: $dark-green;
       }
