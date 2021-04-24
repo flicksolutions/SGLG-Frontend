@@ -9,6 +9,8 @@
     import { setBg, getBg } from '../../../functions';
     import { locale, _, date } from 'svelte-i18n';
     import {onMount} from "svelte";
+    import Checkbox from "../../../components/Checkbox.svelte"
+    import CheckboxGroup from "../../../components/CheckboxGroup.svelte"
 
     export let directoryObjects;
     let directories = directoryObjects.map(d => d.directory)
@@ -71,7 +73,7 @@
         })).data;
 
         //create columns
-        returnColumns = Object.keys(returnTable[0]);
+        returnColumns = returnTable[0] ? Object.keys(returnTable[0]) : [];
         let emptyCols = {};
         returnTable.forEach(row => {
             if (row.publications_person){
@@ -119,57 +121,72 @@
 
     const dateLabels = [];
 
+    $:checkboxes = directories.map(d => {return {value: d, label: d}});
+
     onMount(() => setResults());
 </script>
 
-<section class="filters">
+<section>
     <h1>Verzeichnisse</h1>
-    <div class="category-selectors">
-        <label><input type="checkbox" id="all"
-                   checked={selectors.categories.length === directories.length}
-                   on:click={() => {selectors.categories.length === directories.length ? selectors.categories = [] : selectors.categories = directories}}>
-            {$_('all')}</label>
-        {#each directories as category}
-            <label><input type="checkbox" bind:group={selectors.categories} value={category}>{category}</label>
-        {/each}
-
-    </div>
-    <label><input type="checkbox" bind:checked={selectors.onlySglg}>{$_('onlySglg')}</label>
-    <div class="date-selectors">
-        <label for="date" on:click={hideElement} bind:this={dateLabels[0]}>{$_('from')}</label>
-        <input id="date" type="date" bind:value={selectors.dateFrom} on:focus={() => dateLabels[0].style.display = "none"}>
-        <label for="end-date" on:click={hideElement} bind:this={dateLabels[1]}>{$_('to')}</label>
-        <input id="end-date" type="date" bind:value={selectors.dateTo} on:focus={() => dateLabels[1].style.display = "none"}>
-    </div>
-    <label class="search">{$_('query')}<input type="search" bind:value={selectors.query}></label>
-    <button on:click={setResults}>{$_('search')}</button>
+    <form class="filters" on:submit|preventDefault={setResults}>
+        <div class="category-selectors">
+            <!--<input type="checkbox" id="all"
+                       checked={selectors.categories.length === directories.length}
+                       on:click={() =>
+                       {selectors.categories.length === directories.length ? selectors.categories = [] : selectors.categories = directories}}>
+            <label for="all"><InlineSVG src={'/svg/x.svg'} class="svg"/>{$_('all')}</label>-->
+            <Checkbox checked={selectors.categories.length === directories.length} customEvent={true}
+                      on:click={() =>
+                       {selectors.categories.length === directories.length ? selectors.categories = [] : selectors.categories = directories}}>{$_('all')}</Checkbox>
+            <CheckboxGroup { checkboxes } bind:group={selectors.categories} />
+            <!--{#each directories as category}
+                <input type="checkbox" id={`chk-${category}`} bind:group={selectors.categories} value={category}>
+                <label for={`chk-${category}`}><InlineSVG src={'/svg/x.svg'} class="svg"/>{category}</label>
+            {/each}-->
+        </div>
+        <Checkbox bind:checked={selectors.onlySglg}>{$_('onlySglg')}</Checkbox>
+        <!--<input type="checkbox" bind:checked={selectors.onlySglg} id="{`chk-${$_('onlySglg')}`}"><label for="{`chk-${$_('onlySglg')}`}"><InlineSVG src={'/svg/x.svg'} class="svg"/>{$_('onlySglg')}</label>-->
+        <fieldset class="date-selectors">
+            <legend>{$_('Dates')}</legend>
+            <label for="date" on:click={hideElement} bind:this={dateLabels[0]}>{$_('from')}</label>
+            <input id="date" type="date" bind:value={selectors.dateFrom} on:focus={() => dateLabels[0].style.display = "none"}>
+            <label for="end-date" on:click={hideElement} bind:this={dateLabels[1]}>{$_('to')}</label>
+            <input id="end-date" type="date" bind:value={selectors.dateTo} on:focus={() => dateLabels[1].style.display = "none"}>
+        </fieldset>
+        <label class="search">{$_('query')}<input type="search" bind:value={selectors.query}></label>
+        <input type="submit" value={$_('search')} class="button" />
+    </form>
 </section>
 <section class="table">
-    <table>
-        <tr>
-            {#each columns as col}
-                <th on:click={() => sortResults(col)}>{col}</th>
-            {/each}
-        </tr>
-        {#each table as row (row.id)}
+    {#if columns.length}
+        <table>
             <tr>
                 {#each columns as col}
-                    <td>{#if col === 'title'}
-                        <a href={`${$locale}/directories/detail/${row.id}`}>{row[col] ?? $_(`${row.itemtype}_title`, {values: {title: row.references?.[0].entities_related_id.title}})}</a>
-                        {:else if (typeof row[col] === 'string' && row[col]) || (Array.isArray(row[col]) && row[col].length) }
-                            {#if typeof row[col] !== "string"}
-                                {row[col].length}
-                            {:else}
-                                {@html row[col]}
-                            {/if}
-                    {/if}</td>
+                    <th on:click={() => sortResults(col)}>{col}</th>
                 {/each}
             </tr>
-        {/each}
-        <tr></tr>
-    </table>
-    {#if table.length}
-        <button on:click={loadMore}>{$_('load more...')}</button>
+            {#each table as row (row.id)}
+                <tr>
+                    {#each columns as col}
+                        <td>{#if col === 'title'}
+                            <a href={`${$locale}/directories/detail/${row.id}`}>{row[col] ?? $_(`${row.itemtype}_title`, {values: {title: row.references?.[0].entities_related_id.title}})}</a>
+                            {:else if (typeof row[col] === 'string' && row[col]) || (Array.isArray(row[col]) && row[col].length) }
+                                {#if typeof row[col] !== "string"}
+                                    {row[col].length}
+                                {:else}
+                                    {@html row[col]}
+                                {/if}
+                        {/if}</td>
+                    {/each}
+                </tr>
+            {/each}
+            <tr></tr>
+        </table>
+        {#if table.length} <!-- TODO: find metadata if there are more items to show -->
+            <button on:click={loadMore} class="button">{$_('load more...')}</button>
+        {/if}
+    {:else}
+        <p>{$_('no entries')}</p>
     {/if}
 </section>
 
@@ -182,10 +199,14 @@
   .date-selectors {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    border: 0;
+    padding: 0;
     label {
       background-color: white;
       grid-row: 1;
       z-index: 2;
+      border: 1px solid $line-grey;
+      padding-left: 0.6em;
     }
     input {
       grid-row: 1;
@@ -206,5 +227,9 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-gap: 2em;
+    font-family: $title-font;
   }
+
+
+
 </style>

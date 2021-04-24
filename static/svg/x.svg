@@ -1,61 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 25.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 36 26.2" style="enable-background:new 0 0 36 26.2;" xml:space="preserve">
 <style type="text/css">
-	.st0{display:none;}
-	.st1{display:inline;fill:#B9B9B7;}
-	.st2{fill:#FFFFFF;}
-	.st3{fill:#44FFA2;}
-	.st4{fill:#F0F4F4;}
-	.st5{clip-path:url(#SVGID_2_);}
-	.st6{clip-path:url(#SVGID_4_);}
-	.st7{fill:#44FFA6;}
-	.st8{clip-path:url(#SVGID_6_);}
-	.st9{opacity:0.25;fill:none;stroke:#004444;stroke-miterlimit:10;}
-	.st10{clip-path:url(#SVGID_8_);}
-	.st11{fill:#E59202;}
-	.st12{clip-path:url(#SVGID_10_);}
-	.st13{clip-path:url(#SVGID_12_);}
-	.st14{clip-path:url(#SVGID_14_);}
-	.st15{clip-path:url(#SVGID_16_);}
-	.st16{opacity:0.2;fill:none;stroke:#004444;stroke-miterlimit:10;}
-	.st17{fill:none;stroke:#004444;stroke-miterlimit:10;}
-	.st18{opacity:0.25;fill:none;stroke:#004444;stroke-width:1.0258;stroke-miterlimit:10;}
-	.st19{clip-path:url(#SVGID_18_);}
-	.st20{clip-path:url(#SVGID_20_);}
-	.st21{fill:#004444;}
-	.st22{fill:#EC9902;}
-	.st23{fill:url(#SVGID_23_);}
-	.st24{fill:none;stroke:#FFFFFF;stroke-miterlimit:10;}
-	.st25{opacity:0.15;}
-	.st26{opacity:6.000000e-02;fill:none;stroke:#004444;stroke-width:15;stroke-miterlimit:10;}
-	.st27{opacity:0.85;fill:#004444;}
-	.st28{opacity:0.2;fill:none;stroke:#004444;stroke-width:8;stroke-linecap:round;stroke-miterlimit:10;}
-	.st29{fill:#2F2912;}
-	.st30{opacity:0.8;fill:#004444;}
-	.st31{fill:#80807A;}
-	.st32{fill:#1D1D1B;}
-	.st33{fill:#002594;}
-	.st34{fill:none;}
-	.st35{fill:none;stroke:#004444;stroke-width:1.5;stroke-miterlimit:10;}
-	.st36{clip-path:url(#SVGID_33_);}
-	.st37{fill:none;stroke:#C62E7F;stroke-width:0.75;stroke-miterlimit:10;}
-	.st38{fill:none;stroke:#C62E7F;stroke-width:0.75;stroke-miterlimit:10;stroke-dasharray:5.018,5.018;}
-	.st39{clip-path:url(#SVGID_35_);}
-	.st40{clip-path:url(#SVGID_37_);}
-	.st41{fill:none;stroke:#C62E7F;stroke-miterlimit:10;}
-	.st42{fill:none;stroke:#C62E7F;stroke-width:0.1;stroke-miterlimit:10;}
+	.st17{stroke:#004444;}
 </style>
-<g id="Ebene_2" class="st0">
-	<rect x="-3946.6" y="-7741.4" class="st1" width="16487.4" height="16487.4"/>
-</g>
 <g id="Ebene_1">
-	<g>
-		<line class="st17" x1="30.7" y1="0.4" x2="5.3" y2="25.8"/>
-		<line class="st17" x1="30.7" y1="25.8" x2="5.3" y2="0.4"/>
-	</g>
-</g>
-<g id="Grid">
+	<line class="st17" x1="30.7" y1="0.4" x2="5.3" y2="25.8"/>
+	<line class="st17" x1="30.7" y1="25.8" x2="5.3" y2="0.4"/>
 </g>
 </svg>
