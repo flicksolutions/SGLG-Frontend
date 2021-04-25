@@ -194,7 +194,7 @@
             <input id="end-date" type="date" bind:value={selectors.dateTo} on:focus={() => dateLabels[1].style.display = "none"}>
         </fieldset>
         <label class="search">{$_('query')}<input type="search" bind:value={selectors.query}></label>
-        <input type="submit" value={$_('search')} class="button" style="margin: 0" />
+        <input type="submit" value={$_('search')} class="button" style="margin: 0;" />
     </form>
 </section>
 <section class="table">
@@ -276,11 +276,23 @@
   .category-selectors {
     display: grid;
     grid-template-columns: 1fr;
+    @media (min-width: $medium) {
+      grid-row: 1/3;
+    }
+  }
+  input[type=submit]{
+    @media (min-width: 1000px) {
+      grid-column-end: -1;
+      grid-row: 3;
+    }
   }
   input[type=date] {
     font-family: $title-font;
   }
   .date-selectors {
+    @media (min-width: 1000px) {
+      grid-row: 2;
+    }
     display: grid;
     grid-template-columns: 1fr 1fr;
     border: 0;
@@ -309,10 +321,21 @@
   }
   .filters {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+    grid-auto-flow: row dense;
     grid-gap: 2em;
     font-family: $title-font;
     color: $dark-green;
+    @media (min-width: $medium) {
+      :global(.internal) {
+        grid-column: 1;
+      }
+    }
+    @media (min-width: 1000px) {
+      :global(.internal) {
+        grid-column: initial;
+      }
+    }
   }
   .icon-placeholder {
     margin: 0 calc(0.6em - 5px) 0 0.6em;
