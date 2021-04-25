@@ -1,15 +1,14 @@
 <script>
     import InlineSVG from 'svelte-inline-svg';
 
-    export let value;
     export let checked = false;
     export let customEvent = false;
-    export let cssClass;
+    export let cssClass = "";
 
     const rnd = Math.floor(Math.random() * 1000);
 </script>
 
-<input type="checkbox" id={`chk-${rnd}`} value={value} checked={checked}>
+<input type="checkbox" id={`chk-${rnd}`} checked={checked}>
 {#if customEvent}
 <label for={`chk-${rnd}`} on:click|preventDefault class={cssClass}>
     <InlineSVG src={'/svg/x.svg'} class="chk-icon"/><slot></slot></label>

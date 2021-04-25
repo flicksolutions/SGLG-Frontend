@@ -9,8 +9,10 @@
     import { setBg, getBg } from '../../../functions';
     import { locale, _, date } from 'svelte-i18n';
     import {onMount} from "svelte";
-    import Checkbox from "../../../components/Checkbox.svelte"
-    import CheckboxGroup from "../../../components/CheckboxGroup.svelte"
+    import Checkbox from "../../../components/Checkbox.svelte";
+    import CheckboxGroup from "../../../components/CheckboxGroup.svelte";
+    import { SVGS } from '../../../constants';
+    import InlineSVG from 'svelte-inline-svg';
 
     export let directoryObjects;
     let directories = directoryObjects.map(d => d.directory)
@@ -33,8 +35,7 @@
 
     let getResults = async ({ categories = [], onlySglg = false, dateFrom = "", dateTo = "", query = "", page = 1, sort = "", limit }) => {
         let returnColumns, returnTable;
-        let fields = [...new Set(categories.flatMap(c => directoryObjects.find(o => o.directory === c).frontend_fields)), 'id', 'references.entities_related_id.title'];
-        fields.splice(1, 0, 'itemtype.directory');
+        let fields = ['id', 'itemtype.directory', ...new Set(categories.flatMap(c => directoryObjects.find(o => o.directory === c).frontend_fields)), 'references.entities_related_id.title'];
         let deep = {};
 
         let filter = {
@@ -104,6 +105,9 @@
                 returnColumns = returnColumns.filter(r => r !== key && !filterKeys.includes(r));
             }
         }
+        //sort returnColumns
+        const optimal = ['date', 'itemtype', 'title', 'publications_person', 'event_place']
+        returnColumns = [...optimal.filter(v => returnColumns.includes(v)), ...returnColumns.filter(v => !optimal.includes(v))];
         return { returnColumns , returnTable }
     }
 
@@ -134,7 +138,7 @@
 
     const dateLabels = [];
 
-    $:checkboxes = directories.map(d => {return {value: d, label: d}}); //TODO: translated labels?
+    $:checkboxes = directories.map(d => {return {value: d, label: d}});
 
     onMount(() => setResults());
 
@@ -177,7 +181,8 @@
         <div class="category-selectors">
             <Checkbox checked={selectors.categories.length === directories.length} customEvent={true}
                       on:click={() =>
-                       {selectors.categories.length === directories.length ? selectors.categories = [] : selectors.categories = directories}}><span class="icon-placeholder"></span>{$_('all')}</Checkbox>
+                       {selectors.categories.length === directories.length ? selectors.categories = [] : selectors.categories = directories}}>
+                <span class="icon-placeholder"></span>{$_('all')}</Checkbox>
             <CheckboxGroup { checkboxes } bind:group={selectors.categories} />
         </div>
         <Checkbox bind:checked={selectors.onlySglg} cssClass="internal">{$_('onlySglg')}</Checkbox>
@@ -205,17 +210,23 @@
                                 class:selected={col === selectors.sort.substring(selectors.sort.indexOf('-')+1)}
                                 class="sortable"
                             >
-                                {col} {@html arrow(col)}</th>
+                                {col !== 'itemtype' ? $_(col):""} {@html arrow(col)}</th>
                         {:else}
-                            <th>{col}</th>
+                            <th>{$_(col)}</th>
                         {/if}
                     {/each}
                 </tr>
                 {#each table as row (row.id)}
                     <tr>
                         {#each columns as col}
-                            <td>{#if col === 'title'}
-                                <a href={`${$locale}/directories/detail/${row.id}`} class:internal={row.internal}>{row[col] ?? $_(`${row.itemtype}_title`, {values: {title: row.references?.[0].entities_related_id.title}})}</a>
+                            <td>{#if col === 'title' || SVGS[row[col]]}
+                                <a href={`${$locale}/directories/detail/${row.id}`} class:internal={row.internal}>
+                                    {#if col !== 'title'}
+                                        <InlineSVG src={SVGS[row[col]]} class="svg"/>
+                                    {:else}
+                                        {row[col] ?? $_(`${row.itemtype}_title`, {values: {title: row.references?.[0].entities_related_id.title}})}
+                                    {/if}
+                                </a>
                                 {:else if col.includes('date')}
                                 {$date(new Date(row[col]), row.itemtype === 'publications' ? {year: 'numeric'} : { month: 'numeric', day: 'numeric', year: 'numeric' })}
                                 {:else if (!Array.isArray(row[col]) && row[col]) || (Array.isArray(row[col]) && row[col].length) }
@@ -337,6 +348,10 @@
         font-family: $title-font;
         &:not(.internal) {
           color: $dark-green;
+          fill: $dark-green;
+        }
+        :global(svg){
+          width: 22px;
         }
       }
     }
