@@ -161,6 +161,14 @@
         }
         return false
     }
+
+    const changePage = (mod) => {
+        if (changeable(mod)) {
+            selectors.page += mod;
+            setResults();
+        }
+    }
+    const changeable = (mod) => selectors.page + mod > 0 && selectors.limit + (selectors.page + mod) < meta.total_count;
 </script>
 
 <section>
@@ -224,15 +232,15 @@
             </table>
         </div>
         <!-- TODO: Deactivate if conditions don't meet -->
-        <button class="button" on:click={() => {selectors.page--; setResults();}}>{@html '<'}</button>
-        {selectors.limit * (selectors.page - 1) + 1} - {(selectors.limit * (selectors.page - 1)  + selectors.limit) < meta.total_count ? (selectors.limit * (selectors.page - 1)  + selectors.limit) : meta.total_count } {$_('of')} {meta.total_count}
-        <button class="button" on:click={() => {selectors.page++; setResults();}}>{@html '>'}</button>
-        {$_('per_page')}: <select name="limit" bind:value={selectors.limit} on:change={setResults} >
+        <p><button class="button arrow" class:inactive={!changeable(-1)} on:click={() => changePage(-1)}>{@html '<'}</button>
+            <span style="margin: 0 1em">{selectors.limit * (selectors.page - 1) + 1} - {(selectors.limit * (selectors.page - 1)  + selectors.limit) < meta.total_count ? (selectors.limit * (selectors.page - 1)  + selectors.limit) : meta.total_count } {$_('of')} {meta.total_count}</span>
+        <button class="button arrow" class:inactive={!changeable(-1)} on:click={() => {changePage(1)}}>{@html '>'}</button></p>
+        <p>{$_('per_page')}: <select name="limit" bind:value={selectors.limit} on:blur={setResults} >
                                 <option value="20">20</option>
                                 <option value="50">50</option>
                                 <option value="100">100</option>
                                 <option value="1000">1000</option>
-                            </select>
+        </select></p>
     {:else}
         <p>{$_('no entries')}</p>
     {/if}
@@ -240,6 +248,16 @@
 
 <style lang="scss">
   @import "../../../style/theme.scss";
+
+  .button.arrow {
+    margin: 0;
+    display: inline;
+  }
+
+  select {
+    background-color: white;
+    border: 1px solid $line-grey;
+  }
   .overflow-container, #upper-scroll {
     overflow-x: scroll;
   }

@@ -85,7 +85,7 @@ section {
   color: $sglg-orange;
 }
 
-[type=submit].button{
+[type=submit].button, button.button{
   border: none;
 }
 .button {
@@ -98,5 +98,8 @@ section {
   width: max-content;
   @media (min-width: $medium) {
     margin-left: 0;
+  }
+  &.inactive {
+    background-color: $bg-grey;
   }
 }
