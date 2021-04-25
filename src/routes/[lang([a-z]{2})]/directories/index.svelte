@@ -13,11 +13,11 @@
     import CheckboxGroup from "../../../components/CheckboxGroup.svelte"
 
     export let directoryObjects;
-    console.log(directoryObjects)
     let directories = directoryObjects.map(d => d.directory)
     let table = [];
     let columns = [];
     let scrollW, lowerScroll, upperScroll;
+    let meta = {};
     const selectors = {
         categories: directories,
         onlySglg: false,
@@ -25,12 +25,13 @@
         dateTo: "",
         query: "",
         sort: '',
-        page: 1
+        page: 1,
+        limit: 20
     };
 
     let results;
 
-    let getResults = async ({ categories = [], onlySglg = false, dateFrom = "", dateTo = "", query = "", page = 1, sort = "" }) => {
+    let getResults = async ({ categories = [], onlySglg = false, dateFrom = "", dateTo = "", query = "", page = 1, sort = "", limit }) => {
         let returnColumns, returnTable;
         let fields = [...new Set(categories.flatMap(c => directoryObjects.find(o => o.directory === c).frontend_fields)), 'id', 'references.entities_related_id.title'];
         fields.splice(1, 0, 'itemtype.directory');
@@ -65,15 +66,18 @@
                 }
             };
         }
-        returnTable = (await directus.items('entities').readMany({
+        const answer = await directus.items('entities').readMany({
             fields: fields,
             filter,
             deep,
             search: query,
             page,
             sort,
-            //limit: 2
-        })).data;
+            meta: "*",
+            limit
+        })
+        returnTable = answer.data;
+        meta = answer.meta;
 
         //create columns
         returnColumns = returnTable[0] ? Object.keys(returnTable[0]) : [];
@@ -103,8 +107,8 @@
         return { returnColumns , returnTable }
     }
 
-    const loadMore = async () => {
-        selectors.page += 1;
+    const loadMore = async (val) => {
+        selectors.page += val;
         table = [...table, ...(await getResults(selectors)).returnTable];
     }
     const setResults = async () => {
@@ -112,6 +116,11 @@
        table = returnTable;
        columns = returnColumns;
     }
+    /*$: { we could load everytime the selectors change... but we don't want that apparently
+        if (selectors) {
+            setResults()
+        }
+    }*/
     const sortResults = (val) => {
         if (selectors.sort === val) {
             selectors.sort = `-${val}`;
@@ -144,14 +153,8 @@
         return ""
     }
     const sortable = col => {
-        console.log("enter sortable")
-        //console.log(col)
-        //console.log(table)
         for (const row of table) {
-            //console.log(row)
-            //console.log(row[col])
             if (row[col] == null || col === 'publications_person') {
-                //console.log('value is null')
             } else {
                 return typeof row[col] === "string"
             }
@@ -205,7 +208,7 @@
                         {#each columns as col}
                             <td>{#if col === 'title'}
                                 <a href={`${$locale}/directories/detail/${row.id}`} class:internal={row.internal}>{row[col] ?? $_(`${row.itemtype}_title`, {values: {title: row.references?.[0].entities_related_id.title}})}</a>
-                                {:else if col === 'date'}
+                                {:else if col.includes('date')}
                                 {$date(new Date(row[col]), row.itemtype === 'publications' ? {year: 'numeric'} : { month: 'numeric', day: 'numeric', year: 'numeric' })}
                                 {:else if (!Array.isArray(row[col]) && row[col]) || (Array.isArray(row[col]) && row[col].length) }
                                     {#if Array.isArray(row[col])}
@@ -220,9 +223,16 @@
                 <tr></tr>
             </table>
         </div>
-        {#if table.length} <!-- TODO: find metadata if there are more items to show -->
-            <button on:click={loadMore} class="button">{$_('load more...')}</button>
-        {/if}
+        <!-- TODO: Deactivate if conditions don't meet -->
+        <button class="button" on:click={() => {selectors.page--; setResults();}}>{@html '<'}</button>
+        {selectors.limit * (selectors.page - 1) + 1} - {(selectors.limit * (selectors.page - 1)  + selectors.limit) < meta.total_count ? (selectors.limit * (selectors.page - 1)  + selectors.limit) : meta.total_count } {$_('of')} {meta.total_count}
+        <button class="button" on:click={() => {selectors.page++; setResults();}}>{@html '>'}</button>
+        {$_('per_page')}: <select name="limit" bind:value={selectors.limit} on:change={setResults} >
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="1000">1000</option>
+                            </select>
     {:else}
         <p>{$_('no entries')}</p>
     {/if}
