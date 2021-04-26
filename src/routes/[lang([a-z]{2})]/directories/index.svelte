@@ -20,6 +20,7 @@
     let columns = [];
     let scrollW, lowerScroll, upperScroll;
     let meta = {};
+    let windowWidth, featuredImg;
     const selectors = {
         categories: directories,
         onlySglg: false,
@@ -140,7 +141,14 @@
 
     $:checkboxes = directories.map(d => {return {value: d, label: d}});
 
-    onMount(() => setResults());
+    onMount(async () => {
+        if (windowWidth > 800) {
+            setBg(document.querySelector('body')); // set a new background image for the body
+        } else {
+            featuredImg = await getBg();
+        }
+        await setResults();
+    });
 
     const arrow = value => {
         let filter;
@@ -175,7 +183,11 @@
     const changeable = (mod) => selectors.page + mod > 0 && selectors.limit + (selectors.page + mod) < meta.total_count;
 </script>
 
-<section>
+<svelte:window bind:innerWidth={windowWidth} />
+{#if windowWidth > 800}
+    <div class="spacer" style="height: 10vw;"></div>
+{/if}
+<section class="filter-section">
     <h1>Verzeichnisse</h1>
     <form class="filters" on:submit|preventDefault={setResults}>
         <div class="category-selectors">
@@ -242,11 +254,10 @@
                 <tr></tr>
             </table>
         </div>
-        <!-- TODO: Deactivate if conditions don't meet -->
-        <p><button class="button arrow" class:inactive={!changeable(-1)} on:click={() => changePage(-1)}>{@html '<'}</button>
+        <p style="float: left;margin-right: 1em;"><button class="button arrow" class:inactive={!changeable(-1)} on:click={() => changePage(-1)}>{@html '<'}</button>
             <span style="margin: 0 1em">{selectors.limit * (selectors.page - 1) + 1} - {(selectors.limit * (selectors.page - 1)  + selectors.limit) < meta.total_count ? (selectors.limit * (selectors.page - 1)  + selectors.limit) : meta.total_count } {$_('of')} {meta.total_count}</span>
         <button class="button arrow" class:inactive={!changeable(-1)} on:click={() => {changePage(1)}}>{@html '>'}</button></p>
-        <p>{$_('per_page')}: <select name="limit" bind:value={selectors.limit} on:blur={setResults} >
+        <p style="line-height: 32px;">{$_('per_page')}: <select name="limit" bind:value={selectors.limit} on:blur={setResults} >
                                 <option value="20">20</option>
                                 <option value="50">50</option>
                                 <option value="100">100</option>
@@ -259,7 +270,9 @@
 
 <style lang="scss">
   @import "../../../style/theme.scss";
-
+    .filter-section{
+      background-color: $bg-grey;
+    }
   .button.arrow {
     margin: 0;
     display: inline;
@@ -270,7 +283,7 @@
     border: 1px solid $line-grey;
   }
   .overflow-container, #upper-scroll {
-    overflow-x: scroll;
+    overflow-x: auto;
   }
 
   .category-selectors {
@@ -284,6 +297,7 @@
     @media (min-width: 1000px) {
       grid-column-end: -1;
       grid-row: 3;
+      justify-self: end;
     }
   }
   input[type=date] {
@@ -318,6 +332,9 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr;
+    @media (min-width: 1000px) {
+      grid-row: 2;
+    }
   }
   .filters {
     display: grid;

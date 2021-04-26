@@ -2,7 +2,7 @@
     import { locale, _, date } from 'svelte-i18n';
     import { onMount } from 'svelte';
     import Sticker from '../../components/Sticker.svelte';
-    import { getItems, setBg, getBg, directus } from '../../functions';
+    import { setBg, getBg, directus } from '../../functions';
     import { SVGS } from '../../constants';
     import InlineSVG from 'svelte-inline-svg';
     import { truncate } from 'htmlsave';
