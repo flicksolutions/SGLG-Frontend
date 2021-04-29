@@ -3,7 +3,7 @@
     import {directus} from "../../functions";
 
     export async function preload({ params }) {
-        const fields = ['title', 'content.title'];
+        const fields = ['title', 'content.page_content_id.title', 'content.page_content_id.slug', 'slug'];
         const deep = {};
         const hydrateTranslations = (fields, deep, lang) => {
             if (lang !== 'de') { // if we are not in default locale, we need to get the translations of the items
@@ -16,14 +16,17 @@
                 }
                 deep.translations = trans;
             }
+            console.log({ fields, deep })
             return { fields, deep }
         };
         try {
             const pages = (await directus.items('pages').readMany(hydrateTranslations(fields,deep,params.lang))).data.map(p => {
                 if (p.translations?.length){
-                    return p.translations[0].title;
+                    p.translations[0].subPages = p.translations[0].content.map(c => c.page_content_id)
+                    return p.translations[0];
                 } else {
-                    return p.title;
+                    p.subPages = p.content.map(c => c.page_content_id)
+                    return p;
                 }
             });
             // awaits for the loading of the default dictionaries

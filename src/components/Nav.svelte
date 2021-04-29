@@ -8,25 +8,25 @@
 	const slugify = s => s.toLowerCase().replace(' ','-');
 
 	let menu = [
-		{name: $_('home'), slug: ""},
-		{name: 'directories', slug: 'directories', subPages: [
-				{name: $_('call for papers'), slug: 'directories?cat[]=call_for_paper'},
-				{name: $_('publications'), slug: 'directories?cat[]=publications'},
-				{name: $_('review'), slug: 'directories?cat[]=review'},
-				{name: $_('event'), slug: 'directories?cat[]=event'},
+		{title: $_('home'), slug: ""},
+		{title: 'directories', slug: 'directories', subPages: [
+				{title: $_('call for papers'), slug: 'directories?cat[]=call_for_paper'},
+				{title: $_('publications'), slug: 'directories?cat[]=publications'},
+				{title: $_('review'), slug: 'directories?cat[]=review'},
+				{title: $_('event'), slug: 'directories?cat[]=event'},
 		]},
-			...pages.map(t => ({name: t, slug: slugify(t)})),
-		]
+			...pages,
+		];
 </script>
 <nav class={location}>
 	<ul class="pages">
 	{#each menu as page}
 		<li class="page">
-			<a aria-current="{segment === page.slug ? 'page' : undefined}" href="{$locale}/{page.slug}">{page.name}</a>
+			<a aria-current="{segment === page.slug ? 'page' : undefined}" href="{$locale}/{page.slug}">{page.title}</a>
 			{#if page.subPages}
 			<ul>
 				{#each page.subPages as subpage}
-					<li><a aria-current="{segment === subpage.slug ? 'page' : undefined}" href="{$locale}/{subpage.slug}">{subpage.name}</a></li>
+					<li><a aria-current="{segment === subpage.slug ? 'page' : undefined}" href="{$locale}/{subpage.slug}">{subpage.title}</a></li>
 				{/each}
 			</ul>
 			{/if}
