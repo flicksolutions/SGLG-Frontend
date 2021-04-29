@@ -1,6 +1,6 @@
 <script context="module">
     import {directus} from "../../../functions";
-    export async function preload() {
+    export async function preload(page) {
         const directoryObjects = (await directus.items('directories').readMany()).data;
         return { directoryObjects };
     }
@@ -13,8 +13,11 @@
     import CheckboxGroup from "../../../components/CheckboxGroup.svelte";
     import { SVGS } from '../../../constants';
     import InlineSVG from 'svelte-inline-svg';
+    import { stores } from "@sapper/app";
 
     export let directoryObjects;
+    const { page:pageStore } = stores();
+
     let directories = directoryObjects.map(d => d.directory)
     let table = [];
     let columns = [];
@@ -22,7 +25,7 @@
     let meta = {};
     let windowWidth, featuredImg;
     const selectors = {
-        categories: directories,
+        categories: [],
         onlySglg: false,
         dateFrom: "",
         dateTo: "",
@@ -31,18 +34,27 @@
         page: 1,
         limit: 20
     };
+    const setCats = queryparams => {
+        selectors.categories = Array.isArray(queryparams) ? queryparams : typeof queryparams === 'string' ? [queryparams] : directoryObjects.map(d => d.directory);
+    }
+    $:{
+        setCats($pageStore.query['cat[]'])
+    }
 
     let results;
-
-    let getResults = async ({ categories = [], onlySglg = false, dateFrom = "", dateTo = "", query = "", page = 1, sort = "", limit }) => {
+    async function getResults ({ categories: cats = [], onlySglg = false, dateFrom = "", dateTo = "", query = "", page = 1, sort = "", limit }) {
         let returnColumns, returnTable;
-        let fields = ['id', 'itemtype.directory', ...new Set(categories.flatMap(c => directoryObjects.find(o => o.directory === c).frontend_fields)), 'references.entities_related_id.title'];
+        let categoryFields = cats.flatMap(c => directoryObjects.find(o => o.directory === c)?.frontend_fields);
+        let fields = ['id', 'itemtype.directory', 'references.entities_related_id.title'];
+        if (categoryFields[0]) {
+            fields = [...fields, ...new Set(categoryFields)]
+        }
         let deep = {};
 
         let filter = {
             'itemtype': {
                 'directory': {
-                    '_in': categories
+                    '_in': cats
                 }
             }
         };
@@ -147,7 +159,7 @@
         } else {
             featuredImg = await getBg();
         }
-        await setResults();
+        //await setResults();
     });
 
     const arrow = value => {

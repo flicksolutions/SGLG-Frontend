@@ -1,22 +1,26 @@
 <script>
-	import {locale } from 'svelte-i18n';
+	import {locale, _ } from 'svelte-i18n';
 
 	export let segment;
 	export let location = 'header';
+	export let pages = [];
 
-	let pages = [
-		{name: "home", slug: ""},
+	const slugify = s => s.toLowerCase().replace(' ','-');
+
+	let menu = [
+		{name: $_('home'), slug: ""},
 		{name: 'directories', slug: 'directories', subPages: [
-				{name: 'Call for Papers', slug: 'call-for-papers'}
+				{name: $_('call for papers'), slug: 'directories?cat[]=call_for_paper'},
+				{name: $_('publications'), slug: 'directories?cat[]=publications'},
+				{name: $_('review'), slug: 'directories?cat[]=review'},
+				{name: $_('event'), slug: 'directories?cat[]=event'},
 		]},
-		{name: "imprint", slug:"imprint"},
-		{name: "about", slug:"about"},
+			...pages.map(t => ({name: t, slug: slugify(t)})),
 		]
 </script>
-
 <nav class={location}>
 	<ul class="pages">
-	{#each pages as page}
+	{#each menu as page}
 		<li class="page">
 			<a aria-current="{segment === page.slug ? 'page' : undefined}" href="{$locale}/{page.slug}">{page.name}</a>
 			{#if page.subPages}
@@ -79,8 +83,11 @@
 				grid-auto-flow: column;
 			}
 			ul {
-				margin-top: 1em;
+				padding-top: 1em;
 				list-style-type: disc;
+				a {
+					padding: 0;
+				}
 			}
 		}
 	}

@@ -13,6 +13,7 @@
 	let lastKnownScrollPosition = 0;
 
 	export let segment;
+	export let pages;
 </script>
 
 <svelte:window bind:scrollY={y}/>
@@ -36,7 +37,7 @@
 		<button class="noButtonStyles" class:close={showMobileMenu} on:click={() => showMobileMenu = !showMobileMenu}>
 			<Icon icon={showMobileMenu ? faTimes : faBars}></Icon>
 		</button>
-		<div class="nav"><Nav {segment} location="header"/></div>
+		<div class="nav"><Nav {pages} {segment} location="header"/></div>
 	</div>
 </header>
 

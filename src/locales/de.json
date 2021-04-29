@@ -11,7 +11,7 @@
   "event_place": "Ort",
   "event_type": "Veranstaltungsart",
   "event_end_date": "End-Datum",
-  "event_hosted_by": "Veranstalter",
+  "hosted_by": "Veranstalter",
   "content": "Inhalt",
   "publication_type": "Publikationsart",
   "itemtype": "Verzeichnis",
@@ -27,5 +27,10 @@
   "search": "Auswahl anwenden",
   "no entries": "Keine Einträge.",
   "of": "von",
-  "per_page": "Einträge pro Seite"
+  "per_page": "Einträge pro Seite",
+  "call for papers": "Call for papers",
+  "publications": "Publikationen",
+  "review": "Rezensionen / Berichte",
+  "event": "Veranstaltungen",
+  "home": "Startseite"
 }

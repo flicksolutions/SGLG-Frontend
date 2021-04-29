@@ -24,7 +24,7 @@
                 }
             }
         }
-        deep.items.translations = trans;
+        deep.items = {translations: trans};
         deep.translations = trans;
     }
     directus.singleton('homepage').read({ fields, deep }).then(json => {
