@@ -26,7 +26,7 @@
 			{#if page.subPages}
 			<ul>
 				{#each page.subPages as subpage}
-					<li><a aria-current="{segment === subpage.slug ? 'page' : undefined}" href="{$locale}/{subpage.slug}">{subpage.title}</a></li>
+					<li><a aria-current="{segment === subpage.slug ? 'page' : undefined}" href="{$locale}/{page.slug}#{subpage.slug}">{subpage.title}</a></li>
 				{/each}
 			</ul>
 			{/if}
