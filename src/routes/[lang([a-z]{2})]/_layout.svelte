@@ -16,7 +16,6 @@
                 }
                 deep.translations = trans;
             }
-            console.log({ fields, deep })
             return { fields, deep }
         };
         try {
@@ -26,6 +25,7 @@
                     return p.translations[0];
                 } else {
                     p.subPages = p.content.map(c => c.page_content_id)
+                    delete p.content;
                     return p;
                 }
             });

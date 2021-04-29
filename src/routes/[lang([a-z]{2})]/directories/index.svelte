@@ -97,9 +97,9 @@
         returnColumns = returnTable[0] ? Object.keys(returnTable[0]) : [];
         let emptyCols = {};
         returnTable.forEach(row => {
-            if (row.publications_person){
-                row.publications_person = row.publications_person.map(person => `${person.name} (${person.role})`).join(', ')
-            }
+            /*if (row.person){ //person is now just a string
+                row.person = row.person.map(person => `${person.name} (${person.role})`).join(', ')
+            }*/
             row.itemtype = row.itemtype.directory;
             for (let col in row) {
                 if (!row[col]) {
@@ -119,7 +119,7 @@
             }
         }
         //sort returnColumns
-        const optimal = ['date', 'itemtype', 'title', 'publications_person', 'event_place']
+        const optimal = ['date', 'itemtype', 'title', 'person', 'event_place']
         returnColumns = [...optimal.filter(v => returnColumns.includes(v)), ...returnColumns.filter(v => !optimal.includes(v))];
         return { returnColumns , returnTable }
     }
@@ -159,7 +159,7 @@
         } else {
             featuredImg = await getBg();
         }
-        //await setResults();
+        await setResults();
     });
 
     const arrow = value => {
@@ -178,7 +178,7 @@
     }
     const sortable = col => {
         for (const row of table) {
-            if (row[col] == null || col === 'publications_person') {
+            if (row[col] == null) {
             } else {
                 return typeof row[col] === "string"
             }
