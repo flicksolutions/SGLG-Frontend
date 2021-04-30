@@ -45,7 +45,7 @@
     async function getResults ({ categories: cats = [], onlySglg = false, dateFrom = "", dateTo = "", query = "", page = 1, sort = "", limit }) {
         let returnColumns, returnTable;
         let categoryFields = cats.flatMap(c => directoryObjects.find(o => o.directory === c)?.frontend_fields);
-        let fields = ['id', 'itemtype.directory', 'references.entities_related_id.title'];
+        let fields = ['id', 'itemtype.directory', 'references.entities_related_id.title', 'references.entities_related_id.id'];
         if (categoryFields[0]) {
             fields = [...fields, ...new Set(categoryFields)]
         }
@@ -244,11 +244,11 @@
                     <tr>
                         {#each columns as col}
                             <td>{#if col === 'title' || SVGS[row[col]]}
-                                <a href={`${$locale}/directories/detail/${row.id}`} class:internal={row.internal}>
+                                <a href={`${$locale}/directories/detail/${row?.references?.[0]?.entities_related_id?.id ?? row.id}`} class:internal={row.internal}>
                                     {#if col !== 'title'}
                                         <InlineSVG src={SVGS[row[col]]} class="svg"/>
                                     {:else}
-                                        {row[col] ?? $_(`${row.itemtype}_title`, {values: {title: row.references?.[0].entities_related_id.title}})}
+                                        {row[col] ?? $_(`${row.itemtype}_title`, {values: {title: row?.references?.[0].entities_related_id.title}})}
                                     {/if}
                                 </a>
                                 {:else if col.includes('date')}
