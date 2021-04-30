@@ -10,10 +10,10 @@
 	let menu = [
 		{title: $_('home'), slug: ""},
 		{title: 'directories', slug: 'directories', subPages: [
-				{title: $_('call for papers'), slug: 'directories?cat[]=call_for_paper'},
-				{title: $_('publications'), slug: 'directories?cat[]=publications'},
-				{title: $_('review'), slug: 'directories?cat[]=review'},
-				{title: $_('event'), slug: 'directories?cat[]=event'},
+				{title: $_('call for papers'), slug: '?cat[]=call_for_paper'},
+				{title: $_('publications'), slug: '?cat[]=publications'},
+				{title: $_('review'), slug: '?cat[]=review'},
+				{title: $_('event'), slug: '?cat[]=event'},
 		]},
 			...pages,
 		];
@@ -26,7 +26,7 @@
 			{#if page.subPages}
 			<ul>
 				{#each page.subPages as subpage}
-					<li><a aria-current="{segment === subpage.slug ? 'page' : undefined}" href="{$locale}/{page.slug}#{subpage.slug}">{subpage.title}</a></li>
+					<li><a aria-current="{segment === subpage.slug ? 'page' : undefined}" href="{$locale}/{page.slug}{subpage.slug[0] === '?' ? '' : '#'}{subpage.slug}">{subpage.title}</a></li>
 				{/each}
 			</ul>
 			{/if}
