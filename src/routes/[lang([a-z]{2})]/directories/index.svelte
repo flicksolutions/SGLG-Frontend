@@ -118,6 +118,7 @@
                 returnColumns = returnColumns.filter(r => r !== key && !filterKeys.includes(r));
             }
         }
+        if (!returnColumns?.title) returnColumns.splice(2, 0, 'title');
         //sort returnColumns
         const optimal = ['date', 'itemtype', 'title', 'person', 'event_place']
         returnColumns = [...optimal.filter(v => returnColumns.includes(v)), ...returnColumns.filter(v => !optimal.includes(v))];
