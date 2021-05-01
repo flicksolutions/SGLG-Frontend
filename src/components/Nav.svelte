@@ -1,6 +1,7 @@
 <script>
 	import {locale, _ } from 'svelte-i18n';
 
+
 	export let segment;
 	export let location = 'header';
 	export let pages = [];
@@ -22,11 +23,11 @@
 	<ul class="pages">
 	{#each menu as page}
 		<li class="page">
-			<a aria-current="{segment === page.slug ? 'page' : undefined}" href="{$locale}/{page.slug}">{page.title}</a>
+			<a aria-current="{segment === page.slug ? 'page' : undefined}" href="{$locale}/{page.slug}" on:click>{page.title}</a>
 			{#if page.subPages}
 			<ul>
 				{#each page.subPages as subpage}
-					<li><a aria-current="{segment === subpage.slug ? 'page' : undefined}" href="{$locale}/{page.slug}{subpage.slug[0] === '?' ? '' : '#'}{subpage.slug}">{subpage.title}</a></li>
+					<li><a aria-current="{segment === subpage.slug ? 'page' : undefined}" href="{$locale}/{page.slug}{subpage.slug[0] === '?' ? '' : '#'}{subpage.slug}" on:click>{subpage.title}</a></li>
 				{/each}
 			</ul>
 			{/if}
