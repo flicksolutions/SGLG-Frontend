@@ -50,7 +50,9 @@
 				}
 				.page:hover ul {
 					display: block;
-					position: absolute;
+					@media (min-width: $medium) {
+						position: absolute;
+					}
 				}
 			}
 		}
