@@ -3,7 +3,9 @@
     export async function preload({ params }) {
         try {
             let item = await directus.items('entities').readOne(params.id,
-                {fields: ['*', 'itemtype.*', 'references.entities_related_id', 'referenced_by.entities_id.*', 'referenced_by.entities_id.itemtype.*']}
+                {fields: ['*', 'itemtype.*', 'references.entities_related_id',
+                        'referenced_by.entities_id.*', 'referenced_by.entities_id.itemtype.*',
+                    'files.directus_files_id']}
             );
             if (!item.title) {
                 console.log('theres no title! returning the referenced object instead.')
@@ -25,6 +27,8 @@
     import InlineSVG from 'svelte-inline-svg';
     import ContentBoxes from '../../../../components/ContentBoxes.svelte';
     import { _, date } from 'svelte-i18n';
+    import {onMount} from "svelte";
+    import {getBg, setBg} from "../../../../functions";
 
     export let item;
 
@@ -51,8 +55,23 @@
     const frontEndProps = cleanProps(item);
     const references = item?.referenced_by.map(ref => cleanProps(ref.entities_id));
     let windowWidth;
+    let Lightbox;
+
+    onMount(async () => {
+        /*if (windowWidth > 800) {
+            setBg(document.querySelector('body')); // set a new background image for the body
+        } else {
+            featuredImg = await getBg();
+        }*/
+        /*console.log(await directus.files.readOne('cf35ce8a-663e-4c98-8c89-b8771d15e8ee'))
+        console.log(await fetch('https://backend.ruralhistory.ch/assets/cf35ce8a-663e-4c98-8c89-b8771d15e8ee'))*/
+
+    });
 </script>
 <svelte:window bind:innerWidth={windowWidth} />
+<svelte:head>
+
+</svelte:head>
 {#if windowWidth > 800}
     <div class="spacer" style="height: 10vw;"></div>
 {/if}
@@ -64,7 +83,12 @@
         <h3>{$_(ref.entities_id.itemtype.directory)}:</h3>
         <ContentBoxes content={references[i]}/>
     {/each}
-    <button class="button" on:click={() => window.history.back()}>back</button>
+    <div class="img-grid">
+        {#each item.files as img}
+            <a href={`https://backend.ruralhistory.ch/assets/${img.directus_files_id}`} target="_blank"><img src={`https://backend.ruralhistory.ch/assets/${img.directus_files_id}?key=detail`} alt={$_('Detailimage')}></a>
+        {/each}
+    </div>
+    <button class="button" on:click={() => window.history.back()} style="margin: 2em 0 0 0">{$_('back')}</button>
 </section>
 
 
@@ -73,5 +97,11 @@
       :global(svg){
         max-width: 1em;
       }
+    }
+    .img-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, 200px);
+      grid-gap: 1em;
+      justify-content: space-between;
     }
 </style>

@@ -103,4 +103,7 @@ section {
   &.inactive {
     background-color: $bg-grey;
   }
+  &:hover {
+    cursor: pointer;
+  }
 }
