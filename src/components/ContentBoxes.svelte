@@ -5,8 +5,8 @@
 </script>
 
 {#each Object.entries(content) as [title, val]}
-    <div class="top-line">
     {#if !Array.isArray(val) && val}
+    <div class="bottom-line">
         <h3>{$_(title)}</h3>
         {#if title.includes('date')}
             <p>&#8594; {val}</p>
@@ -17,7 +17,9 @@
         {:else}
             <p>{JSON.stringify(val)}</p>
         {/if}
+    </div>
     {:else if Array.isArray(val) && val[0]}
+    <div class="bottom-line">
         <h3>{$_(title)}</h3>
         {#if title.includes('link')}
             {#each val as arVal}
@@ -28,17 +30,25 @@
                 <p>{arVal}</p>
             {/each}
         {/if}
-    {/if}
     </div>
+    {/if}
+
 {/each}
 
 
 <style lang="scss">
   @import "../../../style/theme.scss";
-    * {
+    *, :global(a) {
       color: $dark-green;
     }
-  .top-line {
-    border-top: solid 1px $line-grey;
+  .bottom-line {
+    border-bottom: solid 1px $line-grey;
+    &:first-of-type {
+      border-top: solid 1px $line-grey;
+    }
+  }
+  :global(a) {
+    display: block;
+    margin-bottom: 14px;
   }
 </style>

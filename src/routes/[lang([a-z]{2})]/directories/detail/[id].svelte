@@ -83,11 +83,13 @@
         <h3>{$_(ref.entities_id.itemtype.directory)}:</h3>
         <ContentBoxes content={references[i]}/>
     {/each}
-    <div class="img-grid">
-        {#each item.files as img}
-            <a href={`https://backend.ruralhistory.ch/assets/${img.directus_files_id}`} target="_blank"><img src={`https://backend.ruralhistory.ch/assets/${img.directus_files_id}?key=detail`} alt={$_('Detailimage')}></a>
-        {/each}
-    </div>
+    {#if item.files}
+        <div class="img-grid">
+            {#each item.files as img}
+                <a href={`https://backend.ruralhistory.ch/assets/${img.directus_files_id}`} target="_blank"><img src={`https://backend.ruralhistory.ch/assets/${img.directus_files_id}?key=detail`} alt={$_('Detailimage')}></a>
+            {/each}
+        </div>
+    {/if}
     <button class="button" on:click={() => window.history.back()} style="margin: 2em 0 0 0">{$_('back')}</button>
 </section>
 
@@ -103,5 +105,6 @@
       grid-template-columns: repeat(auto-fit, 200px);
       grid-gap: 1em;
       justify-content: space-between;
+      margin-top: 3em;
     }
 </style>
