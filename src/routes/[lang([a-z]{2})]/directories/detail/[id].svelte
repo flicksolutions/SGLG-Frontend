@@ -54,35 +54,33 @@
 
     const frontEndProps = cleanProps(item);
     const references = item?.referenced_by.map(ref => cleanProps(ref.entities_id));
-    let windowWidth;
-    let Lightbox;
+    let windowWidth,featuredImg;
 
     onMount(async () => {
-        /*if (windowWidth > 800) {
+        if (windowWidth > 800) {
             setBg(document.querySelector('body')); // set a new background image for the body
         } else {
             featuredImg = await getBg();
-        }*/
-        /*console.log(await directus.files.readOne('cf35ce8a-663e-4c98-8c89-b8771d15e8ee'))
-        console.log(await fetch('https://backend.ruralhistory.ch/assets/cf35ce8a-663e-4c98-8c89-b8771d15e8ee'))*/
+        }
+
 
     });
 </script>
 <svelte:window bind:innerWidth={windowWidth} />
-<svelte:head>
 
-</svelte:head>
 {#if windowWidth > 800}
     <div class="spacer" style="height: 10vw;"></div>
 {/if}
 
 <section>
-<h1 class:internal={item.internal}><InlineSVG src={SVGS[item.itemtype.directory]} class="svg"/> {item.title}</h1>
-    <ContentBoxes content={frontEndProps}/>
-    {#each item?.referenced_by as ref,i}
-        <h3>{$_(ref.entities_id.itemtype.directory)}:</h3>
-        <ContentBoxes content={references[i]}/>
-    {/each}
+<h1 class:internal={item.internal}><InlineSVG src={SVGS[item.itemtype.directory]} class="svg"/>{item.title}</h1>
+    <div class="props">
+        <ContentBoxes content={frontEndProps}/>
+        {#each item?.referenced_by as ref,i}
+            <h3>{$_(ref.entities_id.itemtype.directory)}:</h3>
+            <ContentBoxes content={references[i]}/>
+        {/each}
+    </div>
     {#if item.files}
         <div class="img-grid">
             {#each item.files as img}
@@ -90,14 +88,19 @@
             {/each}
         </div>
     {/if}
-    <button class="button" on:click={() => window.history.back()} style="margin: 2em 0 0 0">{$_('back')}</button>
+    <button class="button" on:click={() => window.history.back()}>{$_('back')}</button>
 </section>
 
 
 <style lang="scss">
+  @import "../../../../style/theme.scss";
     h1 {
       :global(svg){
         max-width: 1em;
+        margin-right: 0.2em;
+      }
+      @media (min-width: $medium) {
+        margin-left: calc(-1 * calc(1em + 0.2em));
       }
     }
     .img-grid {
@@ -106,5 +109,28 @@
       grid-gap: 1em;
       justify-content: space-between;
       margin-top: 3em;
+      @media (min-width: $medium) {
+        grid-column: 2;
+      }
+    }
+    .props {
+      @media (min-width: $medium) {
+        grid-column: 1/-1;
+      }
+    }
+    section {
+      .button {
+        margin: 2em 0 0 0;
+        @media (min-width: $medium) {
+          grid-column: 1;
+          grid-row: 1;
+          margin: 0;
+          align-self: center;
+        }
+      }
+      @media (min-width: $medium) {
+        display: grid;
+        grid-template-columns: 3fr 9fr;
+      }
     }
 </style>
