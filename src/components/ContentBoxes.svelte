@@ -52,9 +52,9 @@
       display: grid;
       grid-template-columns: 3fr 9fr;
     }
-  }
-  :global(a) {
-    display: block;
-    margin-bottom: 14px;
+    :global(a) {
+      display: block;
+      margin-bottom: 14px;
+    }
   }
 </style>
