@@ -11,12 +11,13 @@
 	let y = 0;
 	let ticking = false;
 	let lastKnownScrollPosition = 0;
+	let windowWidth;
 
 	export let segment;
 	export let pages;
 </script>
 
-<svelte:window bind:scrollY={y}/>
+<svelte:window bind:scrollY={y} bind:innerWidth={windowWidth} />
 
 <header class:showMobileMenu class:scrolled={y > 300}>
 	<div class="inner">
@@ -37,7 +38,7 @@
 		<button class="noButtonStyles" class:close={showMobileMenu} on:click={() => showMobileMenu = !showMobileMenu}>
 			<Icon icon={showMobileMenu ? faTimes : faBars}></Icon>
 		</button>
-		<div class="nav"><Nav {pages} {segment} location="header" on:click={() => showMobileMenu = !showMobileMenu} /></div>
+		<div class="nav"><Nav {pages} {segment} location="header" on:click={() => {if (windowWidth < 600) showMobileMenu = !showMobileMenu}} /></div>
 	</div>
 </header>
 

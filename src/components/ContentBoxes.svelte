@@ -8,17 +8,15 @@
     {#if !Array.isArray(val) && val}
     <div class="bottom-line">
         <h3>{$_(title)}</h3>
-        <div>
             {#if title.includes('date')}
                 <p>&#8594; {val}</p>
             {:else if title.includes('content')}
-                {@html val}
+                <div>{@html val}</div>
             {:else if typeof val === 'string'}
                 <p>{val}</p>
             {:else}
                 <p>{JSON.stringify(val)}</p>
             {/if}
-        </div>
     </div>
     {:else if Array.isArray(val) && val[0]}
     <div class="bottom-line">
