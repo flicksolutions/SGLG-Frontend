@@ -23,12 +23,13 @@
     }
 </script>
 <script>
-    import { SVGS } from '../../../../constants';
+    import {SVGS} from '../../../../constants';
     import InlineSVG from 'svelte-inline-svg';
     import ContentBoxes from '../../../../components/ContentBoxes.svelte';
-    import { _, date } from 'svelte-i18n';
+    import {_, date} from 'svelte-i18n';
     import {onMount} from "svelte";
     import {getBg, setBg} from "../../../../functions";
+    import ImageGrid from "../../../../components/ImageGrid.svelte";
 
     export let item;
 
@@ -38,23 +39,23 @@
             .filter(key => dirtyItem.itemtype.frontend_fields.includes(key) && !filterKeys.includes(key))
             .reduce((obj, key) => {
                 //convert val to date
-                if (key.includes('date')){
+                if (key.includes('date')) {
                     obj[key] = $date(new Date(dirtyItem[key]),
                         dirtyItem.itemtype.directory === 'publications' ?
                             {year: 'numeric'} :
-                            { month: 'numeric', day: 'numeric', year: 'numeric' }
+                            {month: 'numeric', day: 'numeric', year: 'numeric'}
                     );
                 } else {
                     obj[key] = dirtyItem[key];
                 }
 
                 return obj;
-            },{})
+            }, {})
     }
 
     const frontEndProps = cleanProps(item);
     const references = item?.referenced_by.map(ref => cleanProps(ref.entities_id));
-    let windowWidth,featuredImg;
+    let windowWidth, featuredImg;
 
     onMount(async () => {
         if (windowWidth > 800) {
@@ -82,11 +83,7 @@
         {/each}
     </div>
     {#if item.files}
-        <div class="img-grid">
-            {#each item.files as img}
-                <a href={`https://backend.ruralhistory.ch/assets/${img.directus_files_id}`} target="_blank"><img src={`https://backend.ruralhistory.ch/assets/${img.directus_files_id}?key=detail`} alt={$_('Detailimage')}></a>
-            {/each}
-        </div>
+        <ImageGrid images={item.files} />
     {/if}
     <button class="button" on:click={() => window.history.back()}>{$_('back')}</button>
 </section>
@@ -103,16 +100,7 @@
         margin-left: calc(-1 * calc(1em + 0.2em));
       }
     }
-    .img-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, 200px);
-      grid-gap: 1em;
-      justify-content: space-between;
-      margin-top: 3em;
-      @media (min-width: $medium) {
-        grid-column: 2;
-      }
-    }
+
     .props {
       @media (min-width: $medium) {
         grid-column: 1/-1;
