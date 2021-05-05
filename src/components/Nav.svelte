@@ -1,5 +1,6 @@
 <script>
 	import {locale, _ } from 'svelte-i18n';
+	import { prefetch } from '@sapper/app';
 
 
 	export let segment;
@@ -23,11 +24,11 @@
 	<ul class="pages">
 	{#each menu as page}
 		<li class="page">
-			<a rel="prefetch" aria-current="{segment === page.slug ? 'page' : undefined}" href="{$locale}/{page.slug}" on:click>{page.title}</a>
+			<a rel=prefetch aria-current="{segment === page.slug ? 'page' : undefined}" href="{$locale}/{page.slug}" on:click on:mouseenter={() => {prefetch(`${$locale}/${page.slug}`)}}>{page.title}</a>
 			{#if page.subPages}
 			<ul>
 				{#each page.subPages as subpage}
-					<li><a rel="prefetch" aria-current="{segment === subpage.slug ? 'page' : undefined}" href="{$locale}/{page.slug}{subpage.slug[0] === '?' ? '' : '#'}{subpage.slug}" on:click>{subpage.title}</a></li>
+					<li><a rel=prefetch aria-current="{segment === subpage.slug ? 'page' : undefined}" href="{$locale}/{page.slug}{subpage.slug[0] === '?' ? '' : '#'}{subpage.slug}" on:click on:mouseenter={() => {prefetch(`${$locale}/${page.slug}`)}}>{subpage.title}</a></li>
 				{/each}
 			</ul>
 			{/if}
