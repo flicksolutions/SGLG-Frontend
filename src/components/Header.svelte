@@ -1,11 +1,10 @@
 <script>
 	import Langswitch from './Langswitch.svelte';
 	import Nav from './Nav.svelte';
-	import { _ } from 'svelte-i18n';
+	import { locale, _ } from 'svelte-i18n';
 	import Icon from 'fa-svelte';
 	import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes'
 	import { faBars } from '@fortawesome/free-solid-svg-icons/faBars'
-	import { onMount } from 'svelte';
 
 	let showMobileMenu = false;
 	let y = 0;
@@ -21,7 +20,7 @@
 
 <header class:showMobileMenu class:scrolled={y > 300}>
 	<div class="inner">
-		<img class:invisible={showMobileMenu} src="svg/SGLG-Logo.svg" alt="Logo" />
+		<a href="{$locale}/"><img class:invisible={showMobileMenu} src="svg/SGLG-Logo.svg" alt="Logo" /></a>
 		<div class="titleLangContainer">
 			{#if !showMobileMenu}
 				<p>{$_('SGLG')}</p>
@@ -71,7 +70,7 @@
 			grid-template-columns: 1fr 4fr min-content;
 			color: $dark-green;
 			@media (min-width: $medium) {
-				grid-template-columns: 3fr 4fr 5fr;
+				grid-template-columns: 3fr 3fr 6fr;
 				grid-gap: 1em;
 			}
 		}
