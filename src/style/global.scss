@@ -116,8 +116,6 @@ section {
   .button {
     margin: 2em 0 0 0;
     @media (min-width: $medium) {
-      /*grid-column: 1;
-      grid-row: 1;*/
       margin: 0;
       align-self: center;
     }
@@ -126,6 +124,7 @@ section {
     svg{
       max-width: 1em;
       margin-right: 0.2em;
+      fill: $dark-green;
     }
   }
   .props {

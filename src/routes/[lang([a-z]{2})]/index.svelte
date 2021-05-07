@@ -63,29 +63,40 @@
     <div class="spacer"><Sticker /></div>
 {/if}
 
-<section>
-    <h2>Aktuell</h2>
-
-    <ol>
+<section class="content-layout">
+    <h2>
+        {$_('news')}
+        {#if windowWidth > 600}
+            <br/><span class="internal">SGLG</span>
+        {/if}
+    </h2>
+    <div class="list">
+        <ol>
         {#each items as item}
             <li class:internal={item.internal}>
-                <a href="{`${$locale}/directories/detail/${item.id}`}" class="{item.collection}">
-                    {#if SVGS[item.collection]}<InlineSVG src={SVGS[item.collection]} class="svg"/>{/if}
+                <a href="{`${$locale}/directories/detail/${item.id}`}" class="{item.itemtype.directory}">
+                    {#if SVGS[item.itemtype.directory]}<InlineSVG src={SVGS[item.itemtype.directory]} class="svg"/>{/if}
                     <h2>{item.title}</h2>
                 </a>
                 <div class="meta">
                     {#if item.date}
-                    <p>{$date(new Date(item.date), { month: 'numeric', day: 'numeric', year: 'numeric' })}</p>
+                    <p>{$date(new Date(item.date),
+                        item.itemtype.directory === 'publications' ? { year: 'numeric' } :
+                            { month: 'numeric', day: 'numeric', year: 'numeric' })
+                    }</p>
                     {/if}
-                    <p>{item.itemtype.directory.replaceAll('_', ' ')}</p>
+                    <p>{$_(item.itemtype.directory)}</p>
                 </div>
-                <div class="content">
-                {#if item.content}{@html truncate(item.content, 250)}{/if}
-                </div>
+                {#if item.content}
+                    <div class="content">
+                    {@html truncate(item.content, 250)}
+                    </div>
+                {/if}
             </li>
         {/each}
-    </ol>
-    <a class="button" href={`${$locale}/directories`} >Alle Einträge</a>
+        </ol>
+        <a class="button" href={`${$locale}/directories`} >Alle Einträge</a>
+    </div>
 </section>
 {#each content as block}
 <section class:colorful={block.style} class="content-block">
