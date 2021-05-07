@@ -45,15 +45,21 @@
 <section class="content-layout">
     <h1>{meta.title}</h1>
     <p class="description"><strong>{meta.description}</strong></p>
-    {#each content as element}
-        <h2 id="{element.slug}">{element.title}</h2>
-        {#if element.imagegrid_img.length}
-            <ImageGrid images={element.imagegrid_img} captions={element?.imagegrid_texts.map(t => t.caption)} overlay={element?.imagegrid_texts.map(t => t.overlay)} />
-        {/if}
-        {#if element.text}
-            <div>{@html element.text}</div>
-        {/if}
-    {/each}
+    <div class="content-inner">
+        {#each content as element}
+            <div class="bottom-line">
+                <h2 id="{element.slug}">{element.title}</h2>
+                <div>
+                {#if element.imagegrid_img.length}
+                    <ImageGrid images={element.imagegrid_img} captions={element?.imagegrid_texts.map(t => t.caption)} overlay={element?.imagegrid_texts.map(t => t.overlay)} />
+                {/if}
+                {#if element.text}
+                    <div>{@html element.text}</div>
+                {/if}
+                </div>
+            </div>
+        {/each}
+    </div>
 </section>
 
 <style lang="scss">
@@ -66,5 +72,25 @@
     }
     .description {
       font-family: $title-font;
+    }
+
+    .content-inner {
+      grid-column: 1/-1;
+    }
+
+    .bottom-line {
+      border-bottom: solid 1px $line-grey;
+      padding-bottom: 2em;
+      &:first-of-type {
+        border-top: solid 1px $line-grey;
+      }
+      @media (min-width: $medium) {
+        display: grid;
+        grid-template-columns: 3fr 9fr;
+      }
+      :global(a) {
+        display: block;
+        margin-bottom: 14px;
+      }
     }
 </style>
