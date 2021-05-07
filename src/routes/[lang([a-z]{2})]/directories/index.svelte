@@ -243,7 +243,7 @@
                 </tr>
                 {#each table as row (row.id)}
                     <tr>
-                        {#each columns as col}
+                        {#each columns as col (col)}
                             <td>{#if col === 'title' || SVGS[row[col]]}
                                 <a href={`${$locale}/directories/detail/${row?.references?.[0]?.entities_related_id?.id ?? row.id}`} class:internal={row.internal}>
                                     {#if col !== 'title'}
