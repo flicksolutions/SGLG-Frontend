@@ -13,11 +13,9 @@
                     {fields: ['*', 'itemtype.*']}
                 );
             }
-            if (item.link[0]) {
-                item.link = item.link.map(object => `<a href="${object.url}">${object.url}</a>`)
-            }
             return { item };
         } catch (err) {
+            console.log(err)
             this.error(403, 'No Permission');
         }
     }
@@ -33,6 +31,12 @@
 
     export let item;
 
+    const setLinks = (arr) => {
+        if (Array.isArray(arr)) {
+            return arr.map(object => `<a href="${object.url}" target="_blank">${object.url}</a>`)
+        }
+    };
+
     const cleanProps = dirtyItem => {
         const filterKeys = ['internal', 'referenced_by', 'references']
         return Object.keys(dirtyItem)
@@ -45,6 +49,8 @@
                             {year: 'numeric'} :
                             {month: 'numeric', day: 'numeric', year: 'numeric'}
                     );
+                } else if (key.includes('link')) {
+                    obj[key] = setLinks(dirtyItem[key]);
                 } else {
                     obj[key] = dirtyItem[key];
                 }
@@ -66,7 +72,7 @@
             return cleanProps(ref.entities_id)
         }
     });*/
-    console.log(references)
+    //console.log(references)
     let windowWidth, featuredImg;
 
     onMount(async () => {
@@ -89,13 +95,14 @@
     <div class="props">
         <ContentBoxes content={frontEndProps}/>
         {#each references as ref}
-            <h3>{$_(ref.directory)}:</h3>
+            <h3>{$_(ref.title)}:</h3>
             <ContentBoxes content={ref.content}/>
         {/each}
         <!--{#each item?.referenced_by as ref,i}
             <h3>{$_(ref.entities_id.itemtype.directory)}:</h3>
             <ContentBoxes content={references[i]}/>
         {/each}-->
+
     </div>
     {#if item.files}
         <ImageGrid images={item.files} />
@@ -108,7 +115,13 @@
   @import "../../../../style/theme.scss";
   h1 {
     @media (min-width: $medium) {
-      margin-left: calc(-1 * calc(1em + 0.2em));
+      //margin-left: calc(-1 * calc(1em + 0.2em));
+    }
+  }
+  .button {
+    @media (min-width: $medium) {
+      grid-column: 1;
+      grid-row: 1;
     }
   }
   /*@import "../../../../style/theme.scss";
