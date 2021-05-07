@@ -107,3 +107,63 @@ section {
     cursor: pointer;
   }
 }
+.content-layout {
+  color: $dark-green;
+  @media (min-width: $medium) {
+    display: grid;
+    grid-template-columns: 3fr 9fr;
+  }
+  .button {
+    margin: 2em 0 0 0;
+    @media (min-width: $medium) {
+      grid-column: 1;
+      grid-row: 1;
+      margin: 0;
+      align-self: center;
+    }
+  }
+  h1 {
+    svg{
+      max-width: 1em;
+      margin-right: 0.2em;
+    }
+  }
+  .props {
+    @media (min-width: $medium) {
+      grid-column: 1/-1;
+    }
+  }
+}
+
+.accordion-item {
+  border-top: 1px solid $bg-grey;
+  border-bottom: 1px solid $bg-grey;
+  &>*:first-child {
+    font-family: $title-font;
+    margin: 0.1em 0;
+    &:before {
+      content: '';
+      display: inline-block;
+      float: right;
+      width: 20px;
+      height: 20px;
+      mask: url("/svg/arrowhead.svg") no-repeat 50% 50%;
+      mask-size: cover;
+      background-color: $dark-green;
+      transition: transform 200ms;
+    }
+  }
+  .accordion-content{
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 200ms ease-in-out;
+  }
+  &.active {
+    &>*:first-child:before{
+      transform: rotate(180deg);
+    }
+    .accordion-content{
+      max-height: 900px;
+    }
+  }
+}

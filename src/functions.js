@@ -164,3 +164,7 @@ export function checkLocale (lang) {
         return { lang: 'de' }
     }
 }
+
+export function addAccordionListener(node) {
+    node.forEach(e => e.addEventListener('click', () => e.classList.toggle("active")))
+}

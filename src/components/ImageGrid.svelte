@@ -41,6 +41,7 @@
         grid-template-rows: 1fr;
         width: 200px;
         height: 200px;
+        text-decoration: none;
         &>* {
           grid-column: 1;
           grid-row: 1;
@@ -52,7 +53,6 @@
           transition-timing-function: ease-in-out;
         }
         .overlay{
-          //visibility: hidden;
           opacity: 0;
           transition-property: opacity;
           transition-duration: 200ms;
@@ -66,7 +66,6 @@
             opacity: 0.4;
           }
           .overlay{
-            //visibility: visible;
             opacity: 1;
             z-index: 9;
           }
