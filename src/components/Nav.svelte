@@ -11,7 +11,7 @@
 
 	let menu = [
 		{title: $_('home'), slug: ""},
-		{title: 'directories', slug: 'directories', subPages: [
+		{title: $_('directories'), slug: 'directories', subPages: [
 				{title: $_('call for papers'), slug: '?cat[]=call_for_paper'},
 				{title: $_('publications'), slug: '?cat[]=publications'},
 				{title: $_('review'), slug: '?cat[]=review'},
