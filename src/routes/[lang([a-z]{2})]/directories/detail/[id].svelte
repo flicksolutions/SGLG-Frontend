@@ -28,7 +28,7 @@
     import ContentBoxes from '../../../../components/ContentBoxes.svelte';
     import {_, date} from 'svelte-i18n';
     import {onMount} from "svelte";
-    import {getBg, setBg} from "../../../../functions";
+    import {addAccordionListener, getBg, setBg} from "../../../../functions";
     import ImageGrid from "../../../../components/ImageGrid.svelte";
 
     export let item;
@@ -54,7 +54,19 @@
     }
 
     const frontEndProps = cleanProps(item);
-    const references = item?.referenced_by.map(ref => cleanProps(ref.entities_id));
+    //console.log(item?.referenced_by)
+    const references = item?.referenced_by.filter(ref => ref.entities_id).map(ref => {
+        return {
+            title: ref.entities_id.itemtype.directory,
+            content: cleanProps(ref.entities_id)
+        }
+    });
+    /*const references = item?.referenced_by.map(ref => {
+        if (ref.entities_id) {
+            return cleanProps(ref.entities_id)
+        }
+    });*/
+    console.log(references)
     let windowWidth, featuredImg;
 
     onMount(async () => {
@@ -63,8 +75,7 @@
         } else {
             featuredImg = await getBg();
         }
-
-
+        addAccordionListener(document.querySelectorAll('.accordion-item'));
     });
 </script>
 <svelte:window bind:innerWidth={windowWidth} />
@@ -73,14 +84,18 @@
     <div class="spacer" style="height: 10vw;"></div>
 {/if}
 
-<section>
-<h1 class:internal={item.internal}><InlineSVG src={SVGS[item.itemtype.directory]} class="svg"/>{item.title}</h1>
+<section class="content-layout">
+<h1 class:internal={item.internal} ><InlineSVG src={SVGS[item.itemtype.directory]} class="svg"/>{item.title}</h1>
     <div class="props">
         <ContentBoxes content={frontEndProps}/>
-        {#each item?.referenced_by as ref,i}
+        {#each references as ref}
+            <h3>{$_(ref.directory)}:</h3>
+            <ContentBoxes content={ref.content}/>
+        {/each}
+        <!--{#each item?.referenced_by as ref,i}
             <h3>{$_(ref.entities_id.itemtype.directory)}:</h3>
             <ContentBoxes content={references[i]}/>
-        {/each}
+        {/each}-->
     </div>
     {#if item.files}
         <ImageGrid images={item.files} />
@@ -91,6 +106,12 @@
 
 <style lang="scss">
   @import "../../../../style/theme.scss";
+  h1 {
+    @media (min-width: $medium) {
+      margin-left: calc(-1 * calc(1em + 0.2em));
+    }
+  }
+  /*@import "../../../../style/theme.scss";
     h1 {
       :global(svg){
         max-width: 1em;
@@ -120,5 +141,5 @@
         display: grid;
         grid-template-columns: 3fr 9fr;
       }
-    }
+    }*/
 </style>

@@ -16,7 +16,7 @@
     import ContentBoxes from '../../components/ContentBoxes.svelte';
     import ImageGrid from "../../components/ImageGrid.svelte";
     import {onMount} from "svelte";
-    import {getBg, setBg} from "../../functions";
+    import {getBg, setBg, addAccordionListener} from "../../functions";
 
     export let meta;
     export let content
@@ -30,20 +30,21 @@
         } else {
             featuredImg = await getBg();
         }
+        addAccordionListener(document.querySelectorAll('.accordion-item'));
     });
 </script>
 
 <svelte:window bind:innerWidth={windowWidth} />
 
 {#if featuredImg}
-    <div style="position: relative"><img src="{featuredImg}" alt="featured" class="featured"></div>
-{:else }
+    <div style="position: relative"><img src="{featuredImg}?width={windowWidth}" alt="featured" class="featured"></div>
+{:else}
     <div class="spacer"></div>
 {/if}
 
-<section>
+<section class="content-layout">
     <h1>{meta.title}</h1>
-    <p>{meta.description}</p>
+    <p class="description"><strong>{meta.description}</strong></p>
     {#each content as element}
         <h2 id="{element.slug}">{element.title}</h2>
         {#if element.imagegrid_img.length}
@@ -54,3 +55,16 @@
         {/if}
     {/each}
 </section>
+
+<style lang="scss">
+    @import "../../style/theme.scss";
+    .featured {
+    max-width: 100%;
+    }
+    h1, h2 {
+      color: $sglg-orange;
+    }
+    .description {
+      font-family: $title-font;
+    }
+</style>
