@@ -1,6 +1,7 @@
 <script>
     import InlineSVG from 'svelte-inline-svg';
     import { SVGS } from '../constants';
+    import { _ } from 'svelte-i18n';
 
     export let checkboxes = []
     export let group = []
@@ -11,5 +12,5 @@
     <input type="checkbox" id={`chk-${checkbox.label}-${rnd}`} bind:group value={checkbox.value}>
     <label for={`chk-${checkbox.label}-${rnd}`}>
         <InlineSVG src={'/svg/x.svg'} class="chk-icon"/>
-        <InlineSVG src={SVGS[checkbox.value]} class="svg"/>{checkbox.label}</label>
+        <InlineSVG src={SVGS[checkbox.value]} class="svg"/>{$_(checkbox.label)}</label>
 {/each}

@@ -187,13 +187,15 @@
         return false
     }
 
-    const changePage = (mod) => {
-        if (changeable(mod)) {
-            selectors.page += mod;
+    const changePage = (targetPage) => {
+        if (targetPage <= maxPage && targetPage >= 1) {
+            selectors.page = targetPage;
             setResults();
+        } else {
+            console.log("cannot change page!")
         }
     }
-    const changeable = (mod) => selectors.page + mod > 0 && selectors.limit + (selectors.page + mod) < meta.total_count;
+    $:maxPage = Math.ceil(meta.filter_count / selectors.limit);
 </script>
 
 <svelte:window bind:innerWidth={windowWidth} />
@@ -267,10 +269,10 @@
                 <tr></tr>
             </table>
         </div>
-        <p style="float: left;margin-right: 1em;"><button class="button arrow" class:inactive={!changeable(-1)} on:click={() => changePage(-1)}>{@html '<'}</button>
-            <span style="margin: 0 1em">{selectors.limit * (selectors.page - 1) + 1} - {(selectors.limit * (selectors.page - 1)  + selectors.limit) < meta.total_count ? (selectors.limit * (selectors.page - 1)  + selectors.limit) : meta.total_count } {$_('of')} {meta.total_count}</span>
-        <button class="button arrow" class:inactive={!changeable(-1)} on:click={() => {changePage(1)}}>{@html '>'}</button></p>
-        <p style="line-height: 32px;">{$_('per_page')}: <select name="limit" bind:value={selectors.limit} on:blur={setResults} >
+        <p style="float: left;margin-right: 1em;"><button class="button arrow" class:inactive={!(selectors.page > 1)} on:click={() => changePage(selectors.page-1)}>{@html '<'}</button>
+            <span style="margin: 0 1em">{selectors.limit * (selectors.page - 1) + 1} - {(selectors.limit * (selectors.page - 1)  + selectors.limit) < meta.filter_count ? (selectors.limit * (selectors.page - 1)  + selectors.limit) : meta.filter_count } {$_('of')} {meta.filter_count}</span>
+        <button class="button arrow" class:inactive={!(selectors.page < maxPage)} on:click={() => {changePage(selectors.page+1)}}>{@html '>'}</button></p>
+        <p style="line-height: 32px;">{$_('per_page')}: <select name="limit" bind:value={selectors.limit} on:change={setResults}>
                                 <option value="20">20</option>
                                 <option value="50">50</option>
                                 <option value="100">100</option>
