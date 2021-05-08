@@ -20,7 +20,7 @@
 
 <header class:showMobileMenu class:scrolled={y > 300}>
 	<div class="inner">
-		<a href="{$locale}/"><img class:invisible={showMobileMenu} src="svg/SGLG-Logo.svg" alt="Logo" /></a>
+		<a href="{$locale}/" class:invisible={showMobileMenu}><img class:invisible={showMobileMenu} src="svg/SGLG-Logo.svg" alt="Logo" /></a>
 		<div class="titleLangContainer">
 			{#if !showMobileMenu}
 				<p>{$_('SGLG')}</p>
