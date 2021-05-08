@@ -34,6 +34,10 @@
     });
 </script>
 
+<svelte:head>
+    <title>{meta.title}</title>
+</svelte:head>
+
 <svelte:window bind:innerWidth={windowWidth} />
 
 {#if featuredImg}

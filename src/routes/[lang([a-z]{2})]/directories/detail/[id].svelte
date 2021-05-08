@@ -86,6 +86,10 @@
 </script>
 <svelte:window bind:innerWidth={windowWidth} />
 
+<svelte:head>
+    <title>{item.title}</title>
+</svelte:head>
+
 {#if windowWidth > 800}
     <div class="spacer" style="height: 10vw;"></div>
 {/if}

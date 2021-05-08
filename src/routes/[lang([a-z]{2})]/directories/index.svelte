@@ -199,11 +199,16 @@
 </script>
 
 <svelte:window bind:innerWidth={windowWidth} />
+
+<svelte:head>
+    <title>{$_('Verzeichnisse')}</title>
+</svelte:head>
+
 {#if windowWidth > 800}
     <div class="spacer" style="height: 10vw;"></div>
 {/if}
 <section class="filter-section">
-    <h1>Verzeichnisse</h1>
+    <h1>{$_('Verzeichnisse')}</h1>
     <form class="filters" on:submit|preventDefault={setResults}>
         <div class="category-selectors">
             <Checkbox checked={selectors.categories.length === directories.length} customEvent={true}
@@ -247,7 +252,7 @@
                     <tr>
                         {#each columns as col (col)}
                             <td>{#if col === 'title' || SVGS[row[col]]}
-                                <a href={`${$locale}/directories/detail/${row?.references?.[0]?.entities_related_id?.id ?? row.id}`} class:internal={row.internal}>
+                                <a href={`${$locale}/directories/detail/${row?.references?.[0]?.entities_related_id?.id ?? row.id}`} class:internal={row.internal} title="{$_(row[col])}" aria-label="{$_(row[col])}">
                                     {#if col !== 'title'}
                                         <InlineSVG src={SVGS[row[col]]} class="svg"/>
                                     {:else}

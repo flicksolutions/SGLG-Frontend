@@ -34,10 +34,10 @@
 			{/if}
 			<div class="langswitch"><Langswitch {segment} /></div>
 		</div>
-		<button class="noButtonStyles" class:close={showMobileMenu} on:click={() => showMobileMenu = !showMobileMenu}>
-			<Icon icon={showMobileMenu ? faTimes : faBars}></Icon>
+		<button class="noButtonStyles" class:close={showMobileMenu} on:click={() => showMobileMenu = !showMobileMenu} aria-controls="menu" aria-label="{$_('control menu')}">
+			<Icon icon={showMobileMenu ? faTimes : faBars}/>
 		</button>
-		<div class="nav"><Nav {pages} {segment} location="header" on:click={() => {if (windowWidth < 600) showMobileMenu = !showMobileMenu}} /></div>
+		<div class="nav" id="menu"><Nav {pages} {segment} location="header" on:click={() => {if (windowWidth < 600) showMobileMenu = !showMobileMenu}} /></div>
 	</div>
 </header>
 
