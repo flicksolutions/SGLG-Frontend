@@ -252,7 +252,7 @@
                     <tr>
                         {#each columns as col (col)}
                             <td>{#if col === 'title' || SVGS[row[col]]}
-                                <a href={`${$locale}/directories/detail/${row?.references?.[0]?.entities_related_id?.id ?? row.id}`} class:internal={row.internal} title="{$_(row[col])}" aria-label="{$_(row[col])}">
+                                <a href={`${$locale}/directories/detail/${row?.references?.[0]?.entities_related_id?.id ?? row.id}`} class:internal={row.internal} title="{$_(`${row[col]}`)}" aria-label="{$_(`${row[col]}`)}">
                                     {#if col !== 'title'}
                                         <InlineSVG src={SVGS[row[col]]} class="svg"/>
                                     {:else}
