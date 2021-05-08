@@ -254,7 +254,7 @@
                                         {row[col] ?? $_(`${row.itemtype}_title`, {values: {title: row?.references?.[0].entities_related_id.title}})}
                                     {/if}
                                 </a>
-                                {:else if col.includes('date')}
+                                {:else if col.includes('date') && row[col]}
                                 {$date(new Date(row[col]), row.itemtype === 'publications' ? {year: 'numeric'} : { month: 'numeric', day: 'numeric', year: 'numeric' })}
                                 {:else if (!Array.isArray(row[col]) && row[col]) || (Array.isArray(row[col]) && row[col].length) }
                                     {#if Array.isArray(row[col])}
