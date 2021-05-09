@@ -1,6 +1,3 @@
-<script context="module">
-
-</script>
 <script>
     export const segment = "";
 </script>
