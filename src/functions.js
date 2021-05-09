@@ -168,3 +168,40 @@ export function checkLocale (lang) {
 export function addAccordionListener(node) {
     node.forEach(e => e.addEventListener('click', () => e.classList.toggle("active")))
 }
+
+export const hydrateTranslations = (fields, deep, lang) => {
+    if (lang !== 'de') { // if we are not in default locale, we need to get the translations of the items
+        fields.push(...fields.map(f => `translations.${f}`));
+        const trans = {"_filter": {
+                'languages_code': {
+                    "_eq": lang
+                }
+            }
+        }
+        deep.translations = trans;
+    }
+    return { fields, deep }
+};
+
+export function replaceTranslations (res, lang) {
+    let returnObject
+    if (res.data) {
+        returnObject = res.data;
+    } else {
+        returnObject = res;
+    }
+    if (lang !== 'de') {
+        const replace = o => {
+            const ret = {...o, ...o.translations?.[0], id: o.id};
+            delete ret.translations;
+            return ret
+        };
+
+        if (Array.isArray(returnObject)) {
+            returnObject = returnObject.map(replace);
+        } else {
+            returnObject = replace(returnObject);
+        }
+    }
+    return returnObject;
+}

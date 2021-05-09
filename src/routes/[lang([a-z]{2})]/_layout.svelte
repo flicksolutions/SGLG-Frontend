@@ -1,6 +1,6 @@
 <script context="module">
-    import {waitLocale} from 'svelte-i18n'
-    import {directus} from "../../functions";
+    import {waitLocale, locale} from 'svelte-i18n';
+    import {directus, hydrateTranslations} from "../../functions";
 
     export async function preload({ params }) {
         const fields = ['title', 'content.page_content_id.title', 'content.page_content_id.slug', 'content.page_content_id.options', 'slug'];
@@ -15,24 +15,13 @@
                 }
             }
         };
-        const hydrateTranslations = (fields, deep, lang) => {
-            if (lang !== 'de') { // if we are not in default locale, we need to get the translations of the items
-                fields.push(...fields.map(f => `translations.${f}`));
-                const trans = {"_filter": {
-                        'languages_code': {
-                            "_eq": lang
-                        }
-                    }
-                }
-                deep.translations = trans;
-            }
-            return { fields, deep }
-        };
+
         try {
-            const pages = (await directus.items('pages').readMany(hydrateTranslations(fields,deep,params.lang))).data.map(p => {
+            const res = (await directus.items('pages').readMany(hydrateTranslations(fields,deep,params.lang))).data;
+            const pages = res.map(p => {
                 if (p.translations?.length){
-                    p.translations[0].subPages = p.translations[0].content.map(c => c.page_content_id).filter(c => c);
-                    return p.translations[0];
+                    p.translations[0].subPages = p.translations[0]?.content?.map(c => c.page_content_id).filter(c => c);
+                    return { ...p.translations[0], slug: p.slug };
                 } else {
                     p.subPages = p.content.map(c => c.page_content_id).filter(c => c);
                     delete p.content;
@@ -41,6 +30,7 @@
             });
             // awaits for the loading of the default dictionaries
             await waitLocale()
+
             return { pages }
         } catch (err) {
             console.log("err")

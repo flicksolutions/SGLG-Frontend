@@ -1,19 +1,18 @@
 <script context="module">
-    import { directus } from '../../functions';
+    import { directus, hydrateTranslations, replaceTranslations } from '../../functions';
     export async function preload({ params }) {
-        const content = await directus.items('pages').readMany({
+        const content = replaceTranslations(await directus.items('pages').readMany({
             filter: {slug: {"_eq": params.slug}},
-            fields: ["*", "content.page_content_id.*", "content.page_content_id.imagegrid_img.directus_files_id"]
-        });
-        if (content?.data?.[0]) {
-            return { meta: content.data[0], content: content.data[0].content.map(c => c.page_content_id) }
+            ...hydrateTranslations(["*", "content.page_content_id.*", "content.page_content_id.imagegrid_img.directus_files_id"],{},params.lang)
+        }),params.lang);
+        if (content[0]) {
+            return { meta: content[0], content: content[0]?.content.map(c => c.page_content_id) }
         }
         this.error(404, 'Page not found');
     }
 </script>
 
 <script>
-    import ContentBoxes from '../../components/ContentBoxes.svelte';
     import ImageGrid from "../../components/ImageGrid.svelte";
     import {onMount} from "svelte";
     import {getBg, setBg, addAccordionListener} from "../../functions";

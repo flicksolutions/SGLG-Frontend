@@ -39,7 +39,11 @@
             }
             return cleanItem
         });
-        content = json.content;
+        if ($locale !== 'de' && json.translations[0]?.content) {
+            content = json.translations[0].content
+        } else {
+            content = json.content;
+        }
     });
 
     onMount(async () => {

@@ -1,20 +1,24 @@
 <script>
     import { directus } from "../functions";
     import marked from 'marked';
+    import { locale } from 'svelte-i18n';
+    import {hydrateTranslations} from "../functions";
+
     let label = "";
     let link = "";
 
-    directus.items('disturber').readMany({
-        fields: ['label', 'link'],
-        filter: {
-            status: {
-                _eq: 'published',
-            },
-        },
-        limit: 1
-    }).then(i => {
-        label = marked(i.data[0].label);
-        link = i.data[0].link;
+    const fields = ['*'];
+    const deep = {};
+
+    directus.items('disturber').readMany({...hydrateTranslations(fields, deep, $locale), limit: 1}).then(i => {
+        if ($locale !== 'de' && i?.data?.[0]?.translations?.[0]){
+            label = marked(i.data[0].translations[0]?.label);
+            link = i.data[0].translations[0]?.link;
+        } else {
+            label = marked(i.data[0].label);
+            link = i.data[0].link;
+        }
+
     })
 
 </script>

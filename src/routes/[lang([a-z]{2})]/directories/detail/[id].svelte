@@ -1,13 +1,13 @@
 <script context="module">
-    import { directus } from '../../../../functions';
+    import { directus, hydrateTranslations, replaceTranslations } from '../../../../functions';
     export async function preload({ params }) {
         try {
-            let item = await directus.items('entities').readOne(params.id,
-                {fields: ['*', 'itemtype.*', 'references.entities_related_id',
-                        'referenced_by.entities_id.*', 'referenced_by.entities_id.itemtype.*',
-                    'files.directus_files_id']}
-            );
-            if (!item.title) {
+            let fields = ['*', 'itemtype.*', 'references.entities_related_id',
+                'referenced_by.entities_id.*', 'referenced_by.entities_id.itemtype.*',
+                'files.directus_files_id']
+            let item = replaceTranslations(await directus.items('entities').readOne(params.id, hydrateTranslations(fields, {}, params.lang)),params.lang);
+
+            if (item.references?.[0]?.entities_related_id) {
                 console.log('theres no title! returning the referenced object instead.')
                 item = await directus.items('entities').readOne(item.references?.[0].entities_related_id,
                     {fields: ['*', 'itemtype.*']}
