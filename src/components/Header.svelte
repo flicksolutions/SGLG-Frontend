@@ -32,7 +32,7 @@
 					<p>Swiss Rural History Society</p>
 				</div>
 			{/if}
-			<div class="langswitch"><Langswitch {segment} /></div>
+			<div class="langswitch"><Langswitch /></div>
 		</div>
 		<button class="noButtonStyles" class:close={showMobileMenu} on:click={() => showMobileMenu = !showMobileMenu} aria-controls="menu" aria-label="{$_('control menu')}">
 			<Icon icon={showMobileMenu ? faTimes : faBars}/>

@@ -2,10 +2,11 @@
     import { locale, locales } from 'svelte-i18n';
     import { goto } from '@sapper/app';
     import { waitLocale } from 'svelte-i18n'
+    import { stores } from '@sapper/app';
+    const { page } = stores();
 
-    export let segment;
 
-    $: route = segment ? segment : '';
+    $: route = $page.path.substring(4);
 
     const setLocale = (target) => {
         //$locale = target;
