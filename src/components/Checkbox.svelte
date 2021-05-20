@@ -8,7 +8,7 @@
     const rnd = Math.floor(Math.random() * 1000);
 </script>
 
-<input type="checkbox" id={`chk-${rnd}`} checked={checked}>
+<input type="checkbox" id={`chk-${rnd}`} bind:checked={checked}>
 {#if customEvent}
 <label for={`chk-${rnd}`} on:click|preventDefault class={cssClass}>
     <InlineSVG src={'/svg/x.svg'} class="chk-icon"/><slot></slot></label>
