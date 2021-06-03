@@ -207,12 +207,9 @@ export function replaceTranslations (res, lang) {
 }
 
 export function createLabel (item) {
-    console.log(item)
-    /*let review = item.itemtype.directory === "review" ? `${get(_)('recension')} ${get(_)('of')}:`: "";
-    let eventType = item.event_type ? get(_)(item.event_type):"";
-    let person = item.references?.entities_related_id?.person || item.person;
-    console.log(person)
-    let title = item.references?.entities_related_id?.title || item.title;
-
-    return `${review || eventType}${person}:${title}`*/
+    let review = item.itemtype.directory === "review" ? `${get(_)('recension')} ${get(_)('of')}:`: "";
+    let eventType = item.event_type ? `${get(_)(item.event_type)}:`:"";
+    let person = item.references?.[0]?.entities_related_id?.person || item.person ? `${item.references?.[0]?.entities_related_id?.person || item.person}:` : "";
+    let title = item.references?.[0]?.entities_related_id?.title || item.title;
+    return `${review || eventType} ${person} ${title}`
 }
