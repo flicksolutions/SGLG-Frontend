@@ -26,7 +26,7 @@
     import ContentBoxes from '../../../../components/ContentBoxes.svelte';
     import {_, date} from 'svelte-i18n';
     import {onMount} from "svelte";
-    import {addAccordionListener, getBg, setBg} from "../../../../functions";
+    import {addAccordionListener, getBg, setBg, createLabel} from "../../../../functions";
     import ImageGrid from "../../../../components/ImageGrid.svelte";
 
     export let item;
@@ -39,7 +39,7 @@
 
     const cleanProps = dirtyItem => {
         const filterKeys = ['internal', 'referenced_by', 'references']
-        return Object.keys(dirtyItem)
+        let clean = Object.keys(dirtyItem)
             .filter(key => dirtyItem.itemtype.frontend_fields.includes(key) && !filterKeys.includes(key))
             .reduce((obj, key) => {
                 //convert val to date
@@ -56,23 +56,21 @@
                 }
 
                 return obj;
-            }, {})
+            }, {});
+        if (dirtyItem.itemtype.directory === "publications") {
+            clean = {title: clean.title, person: clean.person, ...clean}
+        }
+        return clean
     }
 
     const frontEndProps = cleanProps(item);
-    //console.log(item?.referenced_by)
     const references = item?.referenced_by.filter(ref => ref.entities_id).map(ref => {
         return {
             title: ref.entities_id.itemtype.directory,
             content: cleanProps(ref.entities_id)
         }
     });
-    /*const references = item?.referenced_by.map(ref => {
-        if (ref.entities_id) {
-            return cleanProps(ref.entities_id)
-        }
-    });*/
-    //console.log(references)
+
     let windowWidth, featuredImg;
 
     onMount(async () => {
@@ -95,18 +93,13 @@
 {/if}
 
 <section class="content-layout">
-<h1 class:internal={item.internal} ><InlineSVG src={SVGS[item.itemtype.directory]} class="svg"/>{item.title}</h1>
+<h1 class:internal={item.internal} ><InlineSVG src={SVGS[item.itemtype.directory]} class="svg"/>{createLabel(item)}</h1>
     <div class="props">
         <ContentBoxes content={frontEndProps}/>
         {#each references as ref}
-            <h3>{$_(ref.title)}:</h3>
+            <h3>{$_(ref.title, {values: {n:1}})}:</h3>
             <ContentBoxes content={ref.content}/>
         {/each}
-        <!--{#each item?.referenced_by as ref,i}
-            <h3>{$_(ref.entities_id.itemtype.directory)}:</h3>
-            <ContentBoxes content={references[i]}/>
-        {/each}-->
-
     </div>
     {#if item.files}
         <ImageGrid images={item.files} />

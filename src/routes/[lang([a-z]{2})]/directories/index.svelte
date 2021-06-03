@@ -230,7 +230,7 @@
             <label for="end-date" on:click={hideElement} bind:this={dateLabels[1]}>{$_('to')}</label>
             <input id="end-date" type="date" bind:value={selectors.dateTo} on:focus={() => dateLabels[1].style.display = "none"}>
         </fieldset>
-        <label class="search">{$_('query')}<input type="search" bind:value={selectors.query} style="display: block;">
+        <label class="search">{$_('query')}<input type="search" bind:value={selectors.query} style="display: block; width: 100%">
         </label>
         <input type="submit" value={$_('search')} class="button" style="margin: 0;" />
     </form>
