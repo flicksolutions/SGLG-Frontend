@@ -11,11 +11,11 @@
 
 	let menu = [
 		{title: $_('home'), slug: ""},
-		{title: $_('directories'), slug: 'directories', subPages: [
-				{title: $_('call for papers'), slug: '?cat[]=call_for_paper'},
-				{title: $_('publications'), slug: '?cat[]=publications'},
-				{title: $_('review'), slug: '?cat[]=review'},
-				{title: $_('event'), slug: '?cat[]=event'},
+		{title: $_('directories', {values: {n:4}}), slug: 'directories', subPages: [
+				{title: $_('call for papers', {values: {n:2}}), slug: '?cat[]=call_for_paper'},
+				{title: $_('publications', {values: {n:2}}), slug: '?cat[]=publications'},
+				{title: $_('review', {values: {n:2}}), slug: '?cat[]=review'},
+				{title: $_('event', {values: {n:2}}), slug: '?cat[]=event'},
 		]},
 			...pages,
 		];

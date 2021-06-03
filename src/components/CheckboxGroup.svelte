@@ -12,5 +12,5 @@
     <input type="checkbox" id={`chk-${checkbox.label}-${rnd}`} bind:group value={checkbox.value}>
     <label for={`chk-${checkbox.label}-${rnd}`}>
         <InlineSVG src={'/svg/x.svg'} class="chk-icon"/>
-        <InlineSVG src={SVGS[checkbox.value]} class="svg"/>{$_(checkbox.label)}</label>
+        <InlineSVG src={SVGS[checkbox.value]} class="svg"/>{$_(checkbox.label, {values: {n:2}})}</label>
 {/each}

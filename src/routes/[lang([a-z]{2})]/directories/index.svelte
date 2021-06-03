@@ -225,7 +225,8 @@
             <label for="end-date" on:click={hideElement} bind:this={dateLabels[1]}>{$_('to')}</label>
             <input id="end-date" type="date" bind:value={selectors.dateTo} on:focus={() => dateLabels[1].style.display = "none"}>
         </fieldset>
-        <label class="search">{$_('query')}<input type="search" bind:value={selectors.query}></label>
+        <label class="search">{$_('query')}<input type="search" bind:value={selectors.query} style="display: block;">
+        </label>
         <input type="submit" value={$_('search')} class="button" style="margin: 0;" />
     </form>
 </section>
@@ -331,6 +332,7 @@
     grid-template-columns: 1fr 1fr;
     border: 0;
     padding: 0;
+    align-self: start;
     label {
       background-color: white;
       grid-row: 1;
@@ -349,9 +351,7 @@
     }
   }
   .search {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
+    align-self: start;
     @media (min-width: 1000px) {
       grid-row: 2;
     }

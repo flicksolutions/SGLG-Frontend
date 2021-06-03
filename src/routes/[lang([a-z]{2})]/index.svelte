@@ -89,7 +89,7 @@
                             { month: 'numeric', day: 'numeric', year: 'numeric' })
                     }</p>
                     {/if}
-                    <p>{$_(item.itemtype.directory)}</p>
+                    <p>{$_(item.itemtype.directory, {values: {n:1}})}</p>
                 </div>
                 {#if item.content}
                     <div class="content">
