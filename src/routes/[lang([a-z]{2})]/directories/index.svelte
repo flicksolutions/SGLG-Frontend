@@ -242,10 +242,10 @@
         <div class="overflow-container" bind:this={lowerScroll} on:scroll={() => upperScroll.scrollLeft = lowerScroll.scrollLeft}>
             <table bind:clientWidth={scrollW}>
                 <colgroup>
-                    <col span="1" style="width: 1%;">
+                    <col span="1" style="width: 1%; white-space: nowrap;">
                     <col span="1" style="width: 22px;">
                     <col span="1" style="">
-                    <col span="1" style="width: 1%;">
+                    <col span="1" style="width: 1%; white-space: nowrap;">
                 </colgroup>
                 <tr>
                     {#each columns as col}
@@ -316,6 +316,8 @@
   }
   .overflow-container, #upper-scroll {
     overflow-x: auto;
+    margin-left: -1em;
+    margin-right: -1em;
   }
 
   .category-selectors {
@@ -394,9 +396,9 @@
   }
 
   table {
-    width: max-content;
+    //width: max-content;
     border-spacing: 1em;
-    margin-left: -1em;
+    //margin-left: -1em;
     min-width: 100%;
     th {
       color: $line-grey;
