@@ -2,7 +2,7 @@
     import { locale, _, date } from 'svelte-i18n';
     import { onMount } from 'svelte';
     import Sticker from '../../components/Sticker.svelte';
-    import { setBg, getBg, directus } from '../../functions';
+    import { setBg, getBg, directus, createLabel } from '../../functions';
     import { SVGS } from '../../constants';
     import InlineSVG from 'svelte-inline-svg';
     import { truncate } from 'htmlsave';
@@ -14,7 +14,7 @@
     let featuredImg;
 
     //get the content
-    let fields = ['content', 'items.id', 'items.references.entities_related_id.title', 'items.references.entities_related_id.internal', 'items.itemtype.directory', 'items.content', 'items.title', 'items.date', 'items.event_type', 'items.publication_type'];
+    let fields = ['content', 'items.id', 'items.references.entities_related_id.title', 'items.references.entities_related_id.person', 'items.references.entities_related_id.internal', 'items.itemtype.directory', 'items.content', 'items.title', 'items.date', 'items.event_type', 'items.publication_type'];
     let deep = {};
     if ($locale !== 'de') { // if we are not in default locale, we need to get the translations of the items
         fields.push('translations.content', 'items.translations.title', 'items.translations.content');
@@ -80,7 +80,7 @@
             <li class:internal={item.internal}>
                 <a href="{`${$locale}/directories/detail/${item.id}`}" class="{item.itemtype.directory}">
                     {#if SVGS[item.itemtype.directory]}<InlineSVG src={SVGS[item.itemtype.directory]} class="svg"/>{/if}
-                    <h2>{item.title}</h2>
+                    <h2>{createLabel(item)}</h2>
                 </a>
                 <div class="meta">
                     {#if item.date}

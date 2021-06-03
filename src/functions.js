@@ -1,5 +1,5 @@
 import { Directus } from '@directus/sdk';
-import { locales } from 'svelte-i18n';
+import { locales, _ } from 'svelte-i18n';
 import { get } from 'svelte/store';
 export const directus = new Directus('https://backend.ruralhistory.ch');
 let sortParam = "title";
@@ -204,4 +204,15 @@ export function replaceTranslations (res, lang) {
         }
     }
     return returnObject;
+}
+
+export function createLabel (item) {
+    console.log(item)
+    /*let review = item.itemtype.directory === "review" ? `${get(_)('recension')} ${get(_)('of')}:`: "";
+    let eventType = item.event_type ? get(_)(item.event_type):"";
+    let person = item.references?.entities_related_id?.person || item.person;
+    console.log(person)
+    let title = item.references?.entities_related_id?.title || item.title;
+
+    return `${review || eventType}${person}:${title}`*/
 }
