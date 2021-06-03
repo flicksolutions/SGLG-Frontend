@@ -59,11 +59,14 @@
           transition-timing-function: ease-in-out;
           .inner {
             margin: 5px;
+            :global(p) {
+              font-size: inherit;
+            }
           }
         }
         &:hover {
           img {
-            opacity: 0.4;
+            opacity: 0.1;
           }
           .overlay{
             opacity: 1;
