@@ -6,7 +6,7 @@
     }
 </script>
 <script>
-    import { setBg, getBg } from '../../../functions';
+    import { setBg, getBg, createLabel } from '../../../functions';
     import { locale, _, date } from 'svelte-i18n';
     import {onMount} from "svelte";
     import Checkbox from "../../../components/Checkbox.svelte";
@@ -132,13 +132,8 @@
     const setResults = async () => {
        const { returnTable, returnColumns } = await getResults(selectors);
        table = returnTable;
-       columns = returnColumns;
+       columns = ["date", "itemtype", "title", "event_place"];
     }
-    /*$: { we could load everytime the selectors change... but we don't want that apparently
-        if (selectors) {
-            setResults()
-        }
-    }*/
     const sortResults = (val) => {
         if (selectors.sort === val) {
             selectors.sort = `-${val}`;
@@ -246,6 +241,12 @@
             <div style="height: 10px; width: {scrollW}px;"></div></div>
         <div class="overflow-container" bind:this={lowerScroll} on:scroll={() => upperScroll.scrollLeft = lowerScroll.scrollLeft}>
             <table bind:clientWidth={scrollW}>
+                <colgroup>
+                    <col span="1" style="width: 1%;">
+                    <col span="1" style="width: 22px;">
+                    <col span="1" style="">
+                    <col span="1" style="width: 1%;">
+                </colgroup>
                 <tr>
                     {#each columns as col}
                         {#if (sortable(col))}
@@ -263,11 +264,11 @@
                     <tr>
                         {#each columns as col (col)}
                             <td>{#if col === 'title' || SVGS[row[col]]}
-                                <a href={`${$locale}/directories/detail/${row?.references?.[0]?.entities_related_id?.id ?? row.id}`} class:internal={row.internal} title="{$_(`${row[col]}`)}" aria-label="{$_(`${row[col]}`)}">
+                                <a href={`${$locale}/directories/detail/${row?.references?.[0]?.entities_related_id?.id ?? row.id}`} class:internal={row.internal} title="{$_(`${row[col]}`, {values: {n:1}})}" aria-label="{$_(`${row[col]}`, {values: {n:1}})}">
                                     {#if col !== 'title'}
                                         <InlineSVG src={SVGS[row[col]]} class="svg"/>
                                     {:else}
-                                        {row[col] ?? $_(`${row.itemtype}_title`, {values: {title: row?.references?.[0].entities_related_id.title}})}
+                                        {createLabel(row)}
                                     {/if}
                                 </a>
                                 {:else if col.includes('date') && row[col]}
@@ -396,6 +397,7 @@
     width: max-content;
     border-spacing: 1em;
     margin-left: -1em;
+    min-width: 100%;
     th {
       color: $line-grey;
       text-align: left;
