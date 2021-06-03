@@ -14,7 +14,7 @@
         <div class="img">
             <a href={`https://backend.ruralhistory.ch/assets/${img.directus_files_id}`} target="_blank">
                 <img src={`https://backend.ruralhistory.ch/assets/${img.directus_files_id}?key=detail`} alt={$_('Detailimage')}>
-                {#if overlay[i]}<div class="overlay" bind:this={parent} ><div class="inner" use:textfit={{height: 190}}>{@html overlay[i]}</div></div>{/if}
+                {#if overlay[i]}<div class="overlay" bind:this={parent} ><div class="inner" use:textfit={{height: 200}}>{@html overlay[i]}</div></div>{/if}
             </a>
             {#if captions[i]}
                 <div>{@html captions[i]}</div>
@@ -42,6 +42,7 @@
         width: 200px;
         height: 200px;
         text-decoration: none;
+        color: $dark-green;
         &>* {
           grid-column: 1;
           grid-row: 1;
@@ -60,6 +61,7 @@
           .inner {
             //margin: 5px;
             :global(p) {
+              margin: 0;
               font-size: inherit;
               font-family: $title-font;
             }
