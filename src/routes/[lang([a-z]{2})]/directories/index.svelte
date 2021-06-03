@@ -152,7 +152,17 @@
 
     const dateLabels = [];
 
-    $:checkboxes = directories.map(d => {return {value: d, label: d}});
+    $:checkboxes = directories.map(d => {return {value: d, label: d}}).sort((a,b) => {
+        let labelA = $_(a.label);
+        let labelB = $_(b.label);
+        if (labelA < labelB) {
+            return -1;
+        }
+        if (labelA > labelB) {
+            return 1;
+        }
+        return 0;
+    });
 
     onMount(async () => {
         if (windowWidth > 800) {
@@ -201,14 +211,14 @@
 <svelte:window bind:innerWidth={windowWidth} />
 
 <svelte:head>
-    <title>{$_('Verzeichnisse')}</title>
+    <title>{$_('directories', {values: {n:4}})}</title>
 </svelte:head>
 
 {#if windowWidth > 800}
     <div class="spacer" style="height: 10vw;"></div>
 {/if}
 <section class="filter-section">
-    <h1>{$_('Verzeichnisse')}</h1>
+    <h1>{$_('directories', {values: {n:4}})}</h1>
     <form class="filters" on:submit|preventDefault={setResults}>
         <div class="category-selectors">
             <Checkbox checked={selectors.categories.length === directories.length} customEvent={true}
