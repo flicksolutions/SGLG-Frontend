@@ -2,6 +2,7 @@
 	import Nav from "./Nav.svelte";
 	import Langswitch from "./Langswitch.svelte";
 	export let segment;
+	export let pages;
 </script>
 
 <footer>
@@ -19,7 +20,7 @@
 			<div class="langswitch">
 				<Langswitch />
 			</div>
-			<Nav {segment} location="footer" />
+			<Nav {pages} {segment} location="footer" />
 		</div>
 	</div>
 </footer>
@@ -58,7 +59,8 @@
 		grid-template-rows: 30% min-content auto;
 		height: 100%;
 		@media (min-width: $medium) {
-			grid-template-columns: 3fr 4fr 5fr;
+			grid-template-columns: 2fr 2fr 5fr;
+			//grid-template-columns: 3fr 4fr 5fr;
 			grid-template-rows: initial;
 		}
 	}

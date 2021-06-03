@@ -18,7 +18,7 @@
 
 <svelte:window bind:scrollY={y} bind:innerWidth={windowWidth} />
 
-<header class:showMobileMenu class:scrolled={y > 300}>
+<header class:showMobileMenu class:scrolled={y > 100}>
 	<div class="inner">
 		<a href="{$locale}/" class:invisible={showMobileMenu}><img class:invisible={showMobileMenu} src="svg/SGLG-Logo.svg" alt="Logo" /></a>
 		<div class="titleLangContainer">
@@ -52,6 +52,7 @@
 		z-index: 99;
 		@media (min-width: $medium) {
 			background-color: unset;
+			transition: background .4s ease-in;
 		}
 		&.showMobileMenu {
 			background-color: $bg-grey;
@@ -61,6 +62,7 @@
 			}
 		}
 		&.scrolled {
+
 			background-color: $light-green;
 		}
 		.inner {

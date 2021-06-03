@@ -58,9 +58,10 @@
           transition-duration: 200ms;
           transition-timing-function: ease-in-out;
           .inner {
-            margin: 5px;
+            //margin: 5px;
             :global(p) {
               font-size: inherit;
+              font-family: $title-font;
             }
           }
         }

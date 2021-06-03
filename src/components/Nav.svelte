@@ -42,11 +42,25 @@
 	nav {
 		font-weight: 300;
 		color: $dark-green;
+		li {
+			white-space: nowrap;
+		}
 		&.header {
 			.pages {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
 				ul {
 					@media (min-width: $medium) {
 						display: none;
+					}
+					ul {
+						padding: 1em 0.5em 0.5em 0.5em;
+					}
+				}
+				.page {
+					@media (min-width: $medium) {
+						grid-row: 1;
+						grid-auto-flow: column;
 					}
 				}
 				.page:hover ul {
@@ -57,10 +71,27 @@
 				}
 			}
 		}
+		&.footer {
+			.pages {
+				/*display: flex;
+				flex-wrap: wrap;
+				justify-content: flex-end;*/
+				display: grid;
+				justify-content: end;
+				grid-template-columns: repeat(auto-fit, 200px);
+				ul {
+					padding-left: 0;
+				}
+
+				.page {
+					ul {
+						background: none;
+					}
+				}
+			}
+		}
 	}
 	.pages {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
 		grid-gap: 1em;
 		list-style: none;
 		padding: 0;
@@ -75,6 +106,7 @@
 			text-decoration: none;
 			padding: 1em 0;
 			color: $dark-green;
+			white-space: nowrap;
 			&[aria-current="page"] {
 				text-decoration: underline;
 				text-underline-offset: 6px;
@@ -82,13 +114,12 @@
 		}
 		.page{
 			@media (min-width: $medium) {
-				grid-row: 1;
 				margin: 0 1em;
-				grid-auto-flow: column;
 			}
 			ul {
 				padding-top: 1em;
 				list-style-type: disc;
+				background-color: $light-green;
 				a {
 					padding: 0;
 				}

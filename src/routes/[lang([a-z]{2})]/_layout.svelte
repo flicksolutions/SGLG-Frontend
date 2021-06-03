@@ -66,7 +66,7 @@
     <slot></slot>
 </main>
 
-<Footer {segment}/>
+<Footer {segment} {pages}/>
 
 <style lang="scss" global>
   @import "./style/global.scss";

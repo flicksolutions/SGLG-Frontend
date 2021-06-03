@@ -47,7 +47,7 @@
 
 <section class="content-layout">
     <h1>{meta.title}</h1>
-    <p class="description"><strong>{meta.description}</strong></p>
+    <p class="description">{meta.description}</p>
     <div class="content-inner">
         {#each content as element}
             <div class="bottom-line">
@@ -75,6 +75,10 @@
     }
     .description {
       font-family: $title-font;
+      font-size: 19px;
+      @media screen and (min-width: $medium) {
+        font-size: 26px;
+      }
     }
 
     .content-inner {

@@ -316,8 +316,8 @@
   }
   .overflow-container, #upper-scroll {
     overflow-x: auto;
-    margin-left: -1em;
-    margin-right: -1em;
+    /*margin-left: -1em;
+    margin-right: -1em;*/
   }
 
   .category-selectors {
@@ -397,8 +397,9 @@
 
   table {
     //width: max-content;
-    border-spacing: 1em;
+    //border-spacing: 1em;
     //margin-left: -1em;
+    border-collapse: collapse;
     min-width: 100%;
     th {
       color: $line-grey;
@@ -415,8 +416,18 @@
         max-width: 20px;
       }
     }
+    th,td {
+      padding-top: 0.2em;
+      padding-bottom: 0.2em;
+      border-bottom: solid 1px $line-grey;
+    }
+    th:not(:first-of-type),td:not(:first-of-type) {
+      padding-left: 1em;
+      //padding: 1em 0 0 1em;
+    }
     td {
       max-width: 250px;
+      vertical-align: top;
       a {
         text-decoration: none;
         font-family: $title-font;
