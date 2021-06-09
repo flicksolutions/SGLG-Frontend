@@ -65,6 +65,8 @@
 				}
 				.page:hover ul {
 					display: block;
+					padding-right: 0.5em;
+					padding-left: 0.5em;
 					@media (min-width: $medium) {
 						position: absolute;
 					}
