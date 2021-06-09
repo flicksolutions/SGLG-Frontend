@@ -336,6 +336,10 @@
   }
   input[type=date] {
     font-family: $title-font;
+    font-weight: normal;
+    strong {
+      font-weight: normal;
+    }
   }
   .date-selectors {
     @media (min-width: 1000px) {
@@ -375,6 +379,10 @@
     grid-auto-flow: row dense;
     grid-gap: 2em;
     font-family: $title-font;
+    font-weight: normal;
+    strong {
+      font-weight: normal;
+    }
     color: $dark-green;
     @media (min-width: $medium) {
       :global(.internal) {
@@ -431,6 +439,10 @@
       a {
         text-decoration: none;
         font-family: $title-font;
+        font-weight: normal;
+        strong {
+          font-weight: normal;
+        }
         &:not(.internal) {
           color: $dark-green;
           fill: $dark-green;

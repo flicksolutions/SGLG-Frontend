@@ -75,6 +75,10 @@
     }
     .description {
       font-family: $title-font;
+      font-weight: normal;
+      strong {
+        font-weight: normal;
+      }
       font-size: 19px;
       @media screen and (min-width: $medium) {
         font-size: 26px;

@@ -53,19 +53,23 @@
           transition-duration: 200ms;
           transition-timing-function: ease-in-out;
         }
-        .overlay{
+        .overlay {
           opacity: 0;
           transition-property: opacity;
           transition-duration: 200ms;
           transition-timing-function: ease-in-out;
+
           .inner {
-            //margin: 5px;
-            :global(p) {
-              margin: 0;
-              font-size: inherit;
-              font-family: $title-font;
+              :global(p) {
+                margin: 0;
+                font-size: inherit;
+                font-family: $title-font;
+                font-weight: normal;
+              }
+            strong {
+              font-weight: normal;
             }
-          }
+        }
         }
         &:hover {
           img {
