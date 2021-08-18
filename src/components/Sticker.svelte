@@ -54,7 +54,7 @@
         right: unset;
         left: 25%;
         padding: 20px;
-        :global(h3, p) {
+        :global(h3), :global(p) {
           font-size: 16px;
         }
       }
