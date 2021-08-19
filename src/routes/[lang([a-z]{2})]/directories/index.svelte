@@ -254,7 +254,7 @@
                                 class:selected={col === selectors.sort.substring(selectors.sort.indexOf('-')+1)}
                                 class="sortable"
                             >
-                                {col !== 'itemtype' ? $_(col):""} {@html arrow(col)}</th>
+                                {col !== 'itemtype' ? $_(col):""}&nbsp;{@html arrow(col)}</th>
                         {:else}
                             <th>{$_(col)}</th>
                         {/if}
@@ -414,6 +414,7 @@
       text-align: left;
         &.selected{
           color: $dark-green;
+          white-space: nowrap;
         }
       &.sortable:hover {
         cursor: pointer;
