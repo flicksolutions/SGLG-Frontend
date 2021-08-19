@@ -93,7 +93,7 @@
 {/if}
 
 <section class="content-layout">
-<h1 class:internal={item.internal} ><InlineSVG src={SVGS[item.itemtype.directory]} class="svg"/>{createLabel(item)}</h1>
+<h1 class:internal={item.internal} ><InlineSVG src={SVGS[item.itemtype.directory]} class="svg"/><!--{createLabel(item)}--></h1>
     <div class="props">
         <ContentBoxes content={frontEndProps}/>
         {#each references as ref}
