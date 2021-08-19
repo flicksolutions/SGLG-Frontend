@@ -33,7 +33,10 @@
 
     const setLinks = (arr) => {
         if (Array.isArray(arr)) {
-            return arr.map(object => `<a href="${object.url}" target="_blank">${object.url}</a>`)
+            return arr.map(object => {
+                let url = object.url.includes('http') ? object.url : `http://${object.url}`;
+                return `<a href="${url}" target="_blank">${url}</a>`}
+            )
         }
     };
 
