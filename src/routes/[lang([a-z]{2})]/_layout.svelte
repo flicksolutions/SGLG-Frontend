@@ -30,7 +30,6 @@
             });
             // awaits for the loading of the default dictionaries
             await waitLocale()
-
             return { pages }
         } catch (err) {
             console.log("err")
@@ -60,7 +59,7 @@
 
 </script>
 
-<Header {segment} {pages}/>
+<Header {segment} pages={pages.filter(p => p.slug !== 'impressum')}/> <!-- Filtering out the Impressum for the Header -->
 
 <main>
     <slot></slot>

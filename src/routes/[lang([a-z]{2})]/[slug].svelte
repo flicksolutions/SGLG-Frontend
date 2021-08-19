@@ -16,6 +16,7 @@
     import ImageGrid from "../../components/ImageGrid.svelte";
     import {onMount} from "svelte";
     import {getBg, setBg, addAccordionListener} from "../../functions";
+    import marked from 'marked';
 
     export let meta;
     export let content
@@ -47,7 +48,7 @@
 
 <section class="content-layout">
     <h1>{meta.title}</h1>
-    <p class="description">{meta.description}</p>
+    <p class="description">{@html marked(meta.description)}</p>
     <div class="content-inner">
         {#each content as element}
             <div class="bottom-line">
