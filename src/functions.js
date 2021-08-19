@@ -207,10 +207,26 @@ export function replaceTranslations (res, lang) {
 }
 
 export function createLabel (item) {
-    let review = (item.itemtype === "review" || item.itemtype.directory === "review") ? `${get(_)('recension')} ${get(_)('of')}:`: "";
-    let eventType = item.event_type ? `${get(_)(item.event_type)}:`:"";
-    let person = item.references?.[0]?.entities_related_id?.person || item.person ? `${item.references?.[0]?.entities_related_id?.person || item.person}:` : "";
-    let review_person = (item.itemtype === "review" || item.itemtype.directory === "review") ? ` (${item.person})` : "";
-    let title = item.references?.[0]?.entities_related_id?.title || item.title;
-    return `${review || eventType} ${person} ${title}${review_person}`
+    let itemtype = typeof item.itemtype === "string" ? item.itemtype : item.itemtype.directory;
+    let review,eventType,person,review_person,title = "";
+    switch (itemtype) {
+        case "review":
+            review = `${get(_)('recension')} ${get(_)('of')}:`;
+            title = item.references?.[0]?.entities_related_id?.title || item.title;
+            person = `${item.references?.[0]?.entities_related_id?.person || item.person}:`;
+            review_person = (item.person) ? ` (${item.person})` : "";
+            return `${review} ${person} ${title}${review_person}`;
+        case "event":
+            eventType = item.event_type ? `${get(_)(item.event_type)}:`:"";
+            title = item.title;
+            return `${eventType} ${title}`;
+        case "call_for_paper":
+            title = item.references?.[0]?.entities_related_id?.title || item.title;
+            person = `${item.references?.[0]?.entities_related_id?.person || item.person}:`;
+            return `CFP: ${person} ${title}`;
+        default:
+            person = item.references?.[0]?.entities_related_id?.person || item.person ? `${item.references?.[0]?.entities_related_id?.person || item.person}:` : "";
+            title = item.references?.[0]?.entities_related_id?.title || item.title;
+            return `${person} ${title}`
+    }
 }
