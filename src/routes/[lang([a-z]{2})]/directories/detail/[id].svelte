@@ -43,7 +43,7 @@
             .filter(key => dirtyItem.itemtype.frontend_fields.includes(key) && !filterKeys.includes(key))
             .reduce((obj, key) => {
                 //convert val to date
-                if (key.includes('date')) {
+                if (key.includes('date') && dirtyItem[key]) {
                     obj[key] = $date(new Date(dirtyItem[key]),
                         dirtyItem.itemtype.directory === 'publications' ?
                             {year: 'numeric'} :
