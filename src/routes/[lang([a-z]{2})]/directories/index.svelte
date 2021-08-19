@@ -177,7 +177,7 @@
         } else {
             filter = selectors.sort;
         }
-        if (value === filter) {
+        if (value === filter || (value === 'title' && filter === 'person')) { //the OR-clause is there because when we sort for the title, we actually sort for the Person...
             return `<svg ${style} xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" ><line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"></line><polyline points=\"19 12 12 19 5 12\"></polyline></svg>`;
         }
         return ""
@@ -250,10 +250,10 @@
                 <tr>
                     {#each columns as col}
                         {#if (sortable(col))}
-                            <th on:click={() => sortResults(col)}
+                            <th on:click={() => sortResults(col === 'title' ? 'person' : col)}
                                 class:selected={col === selectors.sort.substring(selectors.sort.indexOf('-')+1)}
                                 class="sortable"
-                            >
+                            ><!-- instead of the title field, we sort for person, specific request...-->
                                 {col !== 'itemtype' ? $_(col):""}&nbsp;{@html arrow(col)}</th>
                         {:else}
                             <th>{$_(col)}</th>

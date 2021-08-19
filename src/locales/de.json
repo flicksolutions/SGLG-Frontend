@@ -6,7 +6,7 @@
   "review_title": "Review von {title}",
   "call_for_paper_title": "Call for Paper für {title}",
   "date": "Datum",
-  "title": "Titel",
+  "title": "Person, Titel",
   "person": "Personen",
   "event_place": "Ort",
   "event_type": "Veranstaltungsart",
