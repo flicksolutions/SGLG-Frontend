@@ -30,7 +30,7 @@
         dateFrom: "",
         dateTo: "",
         query: "",
-        sort: '',
+        sort: '-date',
         page: 1,
         limit: 20
     };
@@ -42,7 +42,7 @@
     }
 
     let results;
-    async function getResults ({ categories: cats = [], onlySglg = false, dateFrom = "", dateTo = "", query = "", page = 1, sort = "", limit }) {
+    async function getResults ({ categories: cats = [], onlySglg = false, dateFrom = "", dateTo = "", query = "", page = 1, sort = "-date", limit }) {
         let returnColumns, returnTable;
         let categoryFields = cats.flatMap(c => directoryObjects.find(o => o.directory === c)?.frontend_fields);
         let fields = ['id', 'itemtype.directory', 'references.entities_related_id.title', 'references.entities_related_id.id'];
