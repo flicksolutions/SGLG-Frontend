@@ -254,7 +254,7 @@
                                 class:selected={col === selectors.sort.substring(selectors.sort.indexOf('-')+1)}
                                 class="sortable"
                             ><!-- instead of the title field, we sort for person, specific request...-->
-                                {col !== 'itemtype' ? $_(col):""}&nbsp;{@html arrow(col)}</th>
+                                {col === 'itemtype' ? "" : col === 'title' ? $_('person, title') : $_(col)}&nbsp;{@html arrow(col)}</th>
                         {:else}
                             <th>{$_(col)}</th>
                         {/if}
