@@ -10,10 +10,10 @@ const INIT_OPTIONS = {
 
 let currentLocale = null;
 
-register('en', () => import('./locales/en.json'));
+//register('en', () => import('./locales/en.json'));
 register('de', () => import('./locales/de.json'));
-register('fr', () => import('./locales/fr.json'));
-register('it', () => import('./locales/it.json'));
+/*register('fr', () => import('./locales/fr.json'));
+register('it', () => import('./locales/it.json'));*/
 
 $locale.subscribe((value) => {
     if (value == null) return;
