@@ -1,6 +1,6 @@
 <script>
     import { directus } from "../functions";
-    import marked from 'marked';
+    import { marked } from 'marked';
     import { locale } from 'svelte-i18n';
     import {hydrateTranslations} from "../functions";
 

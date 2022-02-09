@@ -16,7 +16,7 @@
     import ImageGrid from "../../components/ImageGrid.svelte";
     import {onMount} from "svelte";
     import {getBg, setBg, addAccordionListener} from "../../functions";
-    import marked from 'marked';
+    import { marked } from 'marked';
 
     export let meta;
     export let content

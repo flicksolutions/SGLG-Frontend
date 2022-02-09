@@ -25,9 +25,6 @@ const onwarn = (warning, onwarn) =>
 
 const preprocess = sveltePreprocess({
 	sourceMap: true,
-	defaults: {
-		style: 'scss'
-	},
 	scss: {
 		includePaths: ['src'],
 	},
