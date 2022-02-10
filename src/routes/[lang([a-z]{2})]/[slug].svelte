@@ -48,7 +48,7 @@
 
 <section class="content-layout">
     <h1>{meta.title}</h1>
-    <p class="description">{@html marked(meta.description)}</p>
+    <p class="description">{@html marked(meta.description || "")}</p>
     <div class="content-inner">
         {#each content as element}
             <div class="bottom-line">
