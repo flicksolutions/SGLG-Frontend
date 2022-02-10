@@ -40,7 +40,7 @@
     "rollup-plugin-terser": "^7.0.0",
     "sapper": "^0.29.3",
     "svelte": "^3.46.4",
-    "svelte-inline-svg": "^1.0.8",
+    "svelte-inline-svg": "^1.1.1",
     "svelte-preprocess": "^4.6.9",
     "svelte-textfit": "^1.1.1"
   }
