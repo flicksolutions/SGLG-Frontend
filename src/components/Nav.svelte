@@ -49,6 +49,7 @@
 			.pages {
 				display: grid;
 				grid-template-columns: 1fr 1fr;
+				grid-auto-columns: 1fr;
 				ul {
 					@media (min-width: $medium) {
 						display: none;
