@@ -11,15 +11,15 @@
 
 <div class="img-grid">
     {#each images as img, i}
-        <div class="img">
-            <a href={`https://backend.ruralhistory.ch/assets/${img.directus_files_id}`} target="_blank">
-                <img src={`https://backend.ruralhistory.ch/assets/${img.directus_files_id}?key=detail`} alt={$_('Detailimage')}>
+        <figure class="img">
+            <a href={`https://backend.ruralhistory.ch/assets/${img.directus_files_id.id}`} target="_blank">
+                <img src={`https://backend.ruralhistory.ch/assets/${img.directus_files_id.id}?key=detail`} alt={img.directus_files_id.title}>
                 {#if overlay[i]}<div class="overlay" bind:this={parent} ><div class="inner" use:textfit={{height: 200}}>{@html overlay[i]}</div></div>{/if}
             </a>
             {#if captions[i]}
-                <div>{@html captions[i]}</div>
+                <figcaption>{@html captions[i]}</figcaption>
             {/if}
-        </div>
+        </figure>
     {/each}
 </div>
 
