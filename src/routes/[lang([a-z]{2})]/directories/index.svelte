@@ -2,7 +2,8 @@
     import {directus} from "../../../functions";
     export async function preload(page) {
         const directoryObjects = (await directus.items('directories').readMany()).data;
-        return { directoryObjects };
+        const currentNl = (await directus.items('current_newsletter').readMany()).data.string;
+        return { directoryObjects, currentNl };
     }
 </script>
 <script>
@@ -16,6 +17,7 @@
     import { stores } from "@sapper/app";
 
     export let directoryObjects;
+    export let currentNl;
     const { page:pageStore } = stores();
 
     let directories = directoryObjects.map(d => d.directory)
@@ -27,6 +29,7 @@
     const selectors = {
         categories: [],
         onlySglg: false,
+        news: false,
         dateFrom: "",
         dateTo: "",
         query: "",
@@ -37,12 +40,14 @@
     const setCats = queryparams => {
         selectors.categories = Array.isArray(queryparams) ? queryparams : typeof queryparams === 'string' ? [queryparams] : directoryObjects.map(d => d.directory);
     }
+    const setNews = i => {selectors.news = i}
     $:{
-        setCats($pageStore.query['cat[]'])
+        setCats($pageStore.query['cat[]']);
+        setNews($pageStore.query['news'] === '');
     }
 
     let results;
-    async function getResults ({ categories: cats = [], onlySglg = false, dateFrom = "", dateTo = "", query = "", page = 1, sort = "-date", limit }) {
+    async function getResults ({ categories: cats = [], onlySglg = false, news = false, dateFrom = "", dateTo = "", query = "", page = 1, sort = "-date", limit }) {
         let returnColumns, returnTable;
         let categoryFields = cats.flatMap(c => directoryObjects.find(o => o.directory === c)?.frontend_fields);
         let fields = ['id', 'itemtype.directory', 'references.entities_related_id.title', 'references.entities_related_id.id'];
@@ -61,6 +66,11 @@
         if (onlySglg) {
             filter.internal = {
                 '_eq': true
+            }
+        }
+        if (news) {
+            filter.published_in = {
+                '_eq': currentNl
             }
         }
         if (dateFrom && dateTo) {
@@ -223,6 +233,7 @@
             <CheckboxGroup { checkboxes } bind:group={selectors.categories} />
         </div>
         <Checkbox bind:checked={selectors.onlySglg} cssClass="internal">{$_('onlySglg')}</Checkbox>
+        <Checkbox bind:checked={selectors.news}>{$_('news')}</Checkbox>
         <fieldset class="date-selectors">
             <legend>{$_('Dates')}</legend>
             <label for="date" on:click={hideElement} bind:this={dateLabels[0]}>{$_('from')}</label>
