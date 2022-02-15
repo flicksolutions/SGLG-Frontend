@@ -71,7 +71,7 @@
     <h2>
         {$_('news')}
         {#if windowWidth > 600}
-            <br/><span class="internal">SGLG</span>
+            <br/><span class="internal">{$_('SGLG')}</span>
         {/if}
     </h2>
     <div class="list">
@@ -99,7 +99,7 @@
             </li>
         {/each}
         </ol>
-        <a class="button" href={`${$locale}/directories`} >Alle Einträge</a>
+        <a class="button" href={`${$locale}/directories`} >{$_('all_entries')}</a>
     </div>
 </section>
 {#each content as block}
