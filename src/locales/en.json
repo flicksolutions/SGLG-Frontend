@@ -29,6 +29,7 @@
   "no entries": "No entries found",
   "of": "of",
   "per_page": "Entries per page",
+  "all_entries": "all Entries",
   "call for papers": "{n, plural, one {Call} other {Calls}} for papers",
   "call_for_paper": "{n, plural, one {Call} other {Calls}} for papers",
   "publications": "Publication{n, plural, one {} other {s}}",

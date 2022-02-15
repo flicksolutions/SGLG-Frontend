@@ -29,6 +29,7 @@
   "no entries": "Pas d'entrée",
   "of": "de",
   "per_page": "Entrée par page",
+  "all_entries": "Toutes les entrées",
   "call for papers": "Appel{n, plural, one {} other {s}} à contribution",
   "call_for_paper": "Appel{n, plural, one {} other {s}} à contribution",
   "publications": "Publication{n, plural, one {} other {s}}",

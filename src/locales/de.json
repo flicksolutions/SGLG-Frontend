@@ -30,6 +30,7 @@
   "no entries": "Keine Einträge.",
   "of": "von",
   "per_page": "Einträge pro Seite",
+  "all_entries": "alle Einträge",
   "call for papers": "{n, plural, one {Call} other {Calls}} for papers",
   "call_for_paper": "{n, plural, one {Call} other {Calls}} for papers",
   "publications": "Publikation{n, plural, one {} other {en}}",

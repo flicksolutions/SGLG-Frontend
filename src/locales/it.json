@@ -29,6 +29,7 @@
   "no entries": "Nessuna registrazione",
   "of": "di",
   "per_page": "Registrazioni per pagina",
+  "all_entries": "Tutti le Registrazioni",
   "call for papers": "{n, plural, one {Call} other {Calls}} for papers",
   "call_for_paper": "{n, plural, one {Call} other {Calls}} for papers",
   "publications": "Pubblicazion{n, plural, one {e} other {i}}",
