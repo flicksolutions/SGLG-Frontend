@@ -1,32 +1,30 @@
 <script>
-    import { directus } from "../functions";
+    import { directus, hydrateTranslations } from "../functions";
     import { marked } from 'marked';
     import { locale } from 'svelte-i18n';
-    import {hydrateTranslations} from "../functions";
 
-    let label = "";
+    let label;
     let link = "";
 
     const fields = ['*'];
     const deep = {};
 
     directus.items('disturber').readMany({...hydrateTranslations(fields, deep, $locale), limit: 1}).then(i => {
-        if ($locale !== 'de' && i?.data?.[0]?.translations?.[0]){
-            label = marked(i.data[0].translations[0]?.label);
-            link = i.data[0].translations[0]?.link;
-        } else {
+        if (i.data[0] && $locale === 'de') {
             label = marked(i.data[0].label);
             link = i.data[0].link;
+        } else if (i?.data?.[0]?.translations?.[0]) {
+            label = marked(i.data[0].translations[0]?.label);
+            link = i.data[0].translations[0]?.link
         }
-
     })
 
 </script>
-
-<a href="{link}" class="sticker-wrapper">
-    {@html label}
-</a>
-
+    {#if (label)}
+        <a href="{link||'#'}" class="sticker-wrapper">
+            {@html label}
+        </a>
+    {/if}
 <style lang="scss">
     @import "../style/theme.scss";
     .sticker-wrapper {
