@@ -81,6 +81,9 @@
           }
         }
       }
+      figcaption :global(a){
+        margin-bottom: unset;
+      }
     }
   }
 </style>
