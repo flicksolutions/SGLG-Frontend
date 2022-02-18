@@ -58,7 +58,7 @@ export async function getItems ({
                 }
             }*/
         }
-        let responseItem = await directus.items(directory.directory).readMany(
+        let responseItem = await directus.items(directory.directory).readByQuery(
             createReadObject(directory, locale, fields.length ? fields : directory.frontend_fields, filter, translatedFields, sortField)
         ); //get each item in every relevant collection
         responseItem = responseItem.data;
@@ -136,7 +136,7 @@ const replaceTranslatedFields = (object, collection) => {
 }
 
 export async function getBg () {
-    const { data } = await directus.files.readMany({
+    const { data } = await directus.files.readByQuery({
         fields: ['id'],
         filter: {
             folder: {

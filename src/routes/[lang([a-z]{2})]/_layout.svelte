@@ -17,7 +17,7 @@
         };
 
         try {
-            const res = (await directus.items('pages').readMany(hydrateTranslations(fields,deep,params.lang))).data;
+            const res = (await directus.items('pages').readByQuery(hydrateTranslations(fields,deep,params.lang))).data;
             const pages = res.map(p => {
                 if (p.translations?.length){
                     p.translations[0].subPages = p.translations[0]?.content?.map(c => c.page_content_id).filter(c => c);

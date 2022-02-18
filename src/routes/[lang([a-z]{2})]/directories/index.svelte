@@ -2,7 +2,7 @@
     import {directus, hydrateTranslations, replaceTranslations} from "../../../functions";
 
     export async function preload({ params }) {
-        const directoryObjects = (await directus.items('directories').readMany()).data;
+        const directoryObjects = (await directus.items('directories').readByQuery()).data;
 
         const { string: currentNl, description: nlDescription} = replaceTranslations(await directus.singleton('current_newsletter').read({
             ...hydrateTranslations(["string", "description"],{},params.lang)
@@ -100,7 +100,7 @@
                 }
             };
         }
-        const answer = await directus.items('entities').readMany({
+        const answer = await directus.items('entities').readByQuery({
             fields: fields,
             filter,
             deep,

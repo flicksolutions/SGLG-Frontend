@@ -1,7 +1,7 @@
 <script context="module">
     import { directus, hydrateTranslations, replaceTranslations } from '../../functions';
     export async function preload({ params }) {
-        const content = replaceTranslations(await directus.items('pages').readMany({
+        const content = replaceTranslations(await directus.items('pages').readByQuery({
             filter: {slug: {"_eq": params.slug}},
             ...hydrateTranslations(["*", "content.page_content_id.*", "content.page_content_id.imagegrid_img.directus_files_id.id", "content.page_content_id.imagegrid_img.directus_files_id.title"],{},params.lang)
         }),params.lang);
