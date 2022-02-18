@@ -2,7 +2,7 @@
     import {directus} from "../../../functions";
     export async function preload(page) {
         const directoryObjects = (await directus.items('directories').readMany()).data;
-        const currentNl = (await directus.items('current_newsletter').readMany()).data.string;
+        const currentNl = page.query.news === '' ? (await directus.items('current_newsletter').readMany()).data.string : false;
         return { directoryObjects, currentNl };
     }
 </script>
@@ -27,9 +27,9 @@
     let meta = {};
     let windowWidth, featuredImg;
     const selectors = {
-        categories: [],
+        categories: Array.isArray($pageStore.query['cat[]']) ? $pageStore.query['cat[]'] : typeof $pageStore.query['cat[]'] === 'string' ? [$pageStore.query['cat[]']] : directoryObjects.map(d => d.directory),
         onlySglg: false,
-        news: false,
+        news: $pageStore.query['news'] === '',
         dateFrom: "",
         dateTo: "",
         query: "",
@@ -139,6 +139,7 @@
         selectors.page += val;
         table = [...table, ...(await getResults(selectors)).returnTable];
     }
+
     const setResults = async () => {
        const { returnTable, returnColumns } = await getResults(selectors);
        table = returnTable;
@@ -216,7 +217,7 @@
 <svelte:window bind:innerWidth={windowWidth} />
 
 <svelte:head>
-    <title>{$_('directories', {values: {n:4}})}</title>
+    <title>{$_('directories', {values: {n:directories.length}})}</title>
 </svelte:head>
 
 {#if windowWidth > 800}
@@ -275,7 +276,7 @@
                     <tr>
                         {#each columns as col (col)}
                             <td>{#if col === 'title' || SVGS[row[col]]}
-                                <a href={`${$locale}/directories/detail/${row?.references?.[0]?.entities_related_id?.id ?? row.id}`} class:internal={row.internal} title="{$_(`${row[col]}`, {values: {n:1}})}" aria-label="{$_(`${row[col]}`, {values: {n:1}})}">
+                                <a href={`${$locale}/directories/detail/${row?.references?.[0]?.entities_related_id?.id ?? row.id}`} class:internal={row.internal} title="{row[col]}" aria-label="{row[col]}">
                                     {#if col !== 'title'}
                                         <InlineSVG src={SVGS[row[col]]} class="svg"/>
                                     {:else}
