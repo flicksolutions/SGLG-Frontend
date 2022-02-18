@@ -45,6 +45,7 @@
         setCats($pageStore.query['cat[]']);
         setNews($pageStore.query['news'] === '');
     }
+    $:if (selectors) {setResults()}
 
     let results;
     async function getResults ({ categories: cats = [], onlySglg = false, news = false, dateFrom = "", dateTo = "", query = "", page = 1, sort = "-date", limit }) {
@@ -176,7 +177,7 @@
         } else {
             featuredImg = await getBg();
         }
-        await setResults();
+        //await setResults();
     });
 
     const arrow = value => {
@@ -224,27 +225,34 @@
     <div class="spacer" style="height: 10vw;"></div>
 {/if}
 <section class="filter-section">
-    <h1>{$_('directories', {values: {n:4}})}</h1>
+    {#if (selectors.news)}
+        <h1>{$_('news')}: {$_('newsletter')} {currentNl}</h1>
+    {:else}
+        <h1>{$_('directories', {values: {n:4}})}</h1>
+    {/if}
     <form class="filters" on:submit|preventDefault={setResults}>
-        <div class="category-selectors">
-            <Checkbox checked={selectors.categories.length === directories.length} customEvent={true}
-                      on:click={() =>
-                       {selectors.categories.length === directories.length ? selectors.categories = [] : selectors.categories = directories}}>
-                <span class="icon-placeholder"></span>{$_('all')}</Checkbox>
-            <CheckboxGroup { checkboxes } bind:group={selectors.categories} />
-        </div>
+        {#if (!selectors.news)}
+            <div class="category-selectors">
+                <Checkbox checked={selectors.categories.length === directories.length} customEvent={true}
+                          on:click={() =>
+                           {selectors.categories.length === directories.length ? selectors.categories = [] : selectors.categories = directories}}>
+                    <span class="icon-placeholder"></span>{$_('all')}</Checkbox>
+                <CheckboxGroup { checkboxes } bind:group={selectors.categories} />
+            </div>
+        {/if}
         <Checkbox bind:checked={selectors.onlySglg} cssClass="internal">{$_('onlySglg')}</Checkbox>
-        <Checkbox bind:checked={selectors.news}>{$_('news')}</Checkbox>
-        <fieldset class="date-selectors">
-            <legend>{$_('Dates')}</legend>
-            <label for="date" on:click={hideElement} bind:this={dateLabels[0]}>{$_('from')}</label>
-            <input id="date" type="date" bind:value={selectors.dateFrom} on:focus={() => dateLabels[0].style.display = "none"}>
-            <label for="end-date" on:click={hideElement} bind:this={dateLabels[1]}>{$_('to')}</label>
-            <input id="end-date" type="date" bind:value={selectors.dateTo} on:focus={() => dateLabels[1].style.display = "none"}>
-        </fieldset>
-        <label class="search">{$_('query')}<input type="search" bind:value={selectors.query} style="display: block; width: 100%">
-        </label>
-        <input type="submit" value={$_('search')} class="button" style="margin: 0;" />
+        <!--<Checkbox bind:checked={selectors.news}>{$_('news')}</Checkbox>-->
+        {#if (!selectors.news)}
+            <fieldset class="date-selectors">
+                <legend>{$_('Dates')}</legend>
+                <label for="date" on:click={hideElement} bind:this={dateLabels[0]}>{$_('from')}</label>
+                <input id="date" type="date" bind:value={selectors.dateFrom} on:focus={() => dateLabels[0].style.display = "none"}>
+                <label for="end-date" on:click={hideElement} bind:this={dateLabels[1]}>{$_('to')}</label>
+                <input id="end-date" type="date" bind:value={selectors.dateTo} on:focus={() => dateLabels[1].style.display = "none"}>
+            </fieldset>
+            <label class="search">{$_('query')}<input type="search" bind:value={selectors.query} style="display: block; width: 100%">
+            </label>
+        {/if}
     </form>
 </section>
 <section class="table">
