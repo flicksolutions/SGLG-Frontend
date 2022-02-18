@@ -18,7 +18,7 @@
 				{title: $_('event', {values: {n:2}}), slug: '?cat[]=event'},
 		]},
 		...pages,
-		{title: $_('news'), slug: "directories?news"},
+		{title: $_('newsletter'), slug: "directories?news"},
 		];
 </script>
 <nav class={location}>

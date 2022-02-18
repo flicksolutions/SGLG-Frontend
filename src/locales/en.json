@@ -41,6 +41,7 @@
   "vessel": "Vessel",
   "link": "Link",
   "news": "News",
+  "newsletter": "newsletter",
   "directories": "Director{n, plural, one {y} other {ies}}",
   "control menu": "Open \/ Close (menu)"
 }
