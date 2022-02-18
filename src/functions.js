@@ -192,7 +192,10 @@ export function replaceTranslations (res, lang) {
     }
     if (lang !== 'de') {
         const replace = o => {
-            const ret = {...o, ...o.translations?.[0], id: o.id};
+            const ret = {...o, ...o.translations?.[0]};
+            if (o.id) {
+                ret.id = o.id;
+            }
             delete ret.translations;
             return ret
         };

@@ -1,9 +1,15 @@
 <script context="module">
-    import {directus} from "../../../functions";
-    export async function preload(page) {
+    import {directus, hydrateTranslations, replaceTranslations} from "../../../functions";
+
+    export async function preload({ params }) {
         const directoryObjects = (await directus.items('directories').readMany()).data;
-        const currentNl = page.query.news === '' ? (await directus.items('current_newsletter').readMany()).data.string : false;
-        return { directoryObjects, currentNl };
+
+        const { string: currentNl, description: nlDescription} = replaceTranslations(await directus.singleton('current_newsletter').read({
+            ...hydrateTranslations(["string", "description"],{},params.lang)
+        }),params.lang)
+        //console.log((await directus.singleton('current_newsletter').read({ fields, deep })))
+        //const currentNl = page.query.news === '' ? (await directus.singleton('current_newsletter').read()).data.string : false;
+        return { directoryObjects, currentNl, nlDescription };
     }
 </script>
 <script>
@@ -15,9 +21,12 @@
     import { SVGS } from '../../../constants';
     import InlineSVG from 'svelte-inline-svg';
     import { stores } from "@sapper/app";
+    import { marked } from 'marked';
 
     export let directoryObjects;
     export let currentNl;
+    export let nlDescription = "";
+
     const { page:pageStore } = stores();
 
     let directories = directoryObjects.map(d => d.directory)
@@ -241,6 +250,9 @@
             </div>
         {/if}
         <Checkbox bind:checked={selectors.onlySglg} cssClass="internal">{$_('onlySglg')}</Checkbox>
+        {#if (selectors.news)}
+            {@html marked(nlDescription)}
+        {/if}
         <!--<Checkbox bind:checked={selectors.news}>{$_('news')}</Checkbox>-->
         {#if (!selectors.news)}
             <fieldset class="date-selectors">
