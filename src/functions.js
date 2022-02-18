@@ -225,8 +225,9 @@ export function createLabel (item) {
             return `${eventType} ${title}`;
         case "call_for_paper":
             title = item.references?.[0]?.entities_related_id?.title || item.title;
-            person = `${item.references?.[0]?.entities_related_id?.person || item.person}:`;
-            return `CFP: ${person} ${title}`;
+            let isP = item.references?.[0]?.entities_related_id?.person || item.person;
+            person = isP ? `${isP}:`: "";
+            return `CFP: ${person}${title}`;
         default:
             person = item.references?.[0]?.entities_related_id?.person || item.person ? `${item.references?.[0]?.entities_related_id?.person || item.person}:` : "";
             title = item.references?.[0]?.entities_related_id?.title || item.title;
