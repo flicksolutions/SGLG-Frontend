@@ -5,8 +5,17 @@
     import { stores } from '@sapper/app';
     const { page } = stores();
 
+    function serialize (obj) {
+        var str = [];
+        for (var p in obj) {
+            if (p) {
+                str.push(`${encodeURIComponent(p)}${obj[p] && "=" + encodeURIComponent(obj[p])}`);
+            }
+        }
+        return str.join("&");
+    }
 
-    $: route = $page.path.substring(4);
+    $: route = `${$page.path.substring(4)}?${serialize($page.query)}`;
 
     const setLocale = (target) => {
         //$locale = target;
