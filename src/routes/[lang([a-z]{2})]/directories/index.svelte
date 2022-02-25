@@ -227,7 +227,7 @@
 <svelte:window bind:innerWidth={windowWidth} />
 
 <svelte:head>
-    <title>{$_('directories', {values: {n:directories.length}})}</title>
+    <title>{selectors.news ? $_('newsletter') : $_('directories', {values: {n:directories.length}})}</title>
 </svelte:head>
 
 {#if windowWidth > 800}
@@ -235,7 +235,7 @@
 {/if}
 <section class="filter-section">
     {#if (selectors.news)}
-        <h1>{$_('news')}: {$_('newsletter')} {currentNl}</h1>
+        <h1>{$_('newsletter')} {currentNl}</h1>
     {:else}
         <h1>{$_('directories', {values: {n:4}})}</h1>
     {/if}

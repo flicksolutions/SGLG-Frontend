@@ -9,16 +9,18 @@
 
 	const slugify = s => s.toLowerCase().replace(' ','-');
 
+	const capitalize = (w) => w[0].toUpperCase() + w.substring(1);
+
 	let menu = [
-		{title: $_('home'), slug: ""},
-		{title: $_('directories', {values: {n:4}}), slug: 'directories', subPages: [
-				{title: $_('call for papers', {values: {n:2}}), slug: '?cat[]=call_for_paper'},
-				{title: $_('publications', {values: {n:2}}), slug: '?cat[]=publications'},
-				{title: $_('review', {values: {n:2}}), slug: '?cat[]=review'},
-				{title: $_('event', {values: {n:2}}), slug: '?cat[]=event'},
+		{title: capitalize($_('home')), slug: ""},
+		{title: capitalize($_('directories', {values: {n:4}})), slug: 'directories', subPages: [
+				{title: capitalize($_('call for papers', {values: {n:2}})), slug: '?cat[]=call_for_paper'},
+				{title: capitalize($_('publications', {values: {n:2}})), slug: '?cat[]=publications'},
+				{title: capitalize($_('review', {values: {n:2}})), slug: '?cat[]=review'},
+				{title: capitalize($_('event', {values: {n:2}})), slug: '?cat[]=event'},
 		]},
 		...pages,
-		{title: $_('newsletter'), slug: "directories?news"},
+		{title: capitalize($_('newsletter')), slug: "directories?news"},
 		];
 </script>
 <nav class={location}>
