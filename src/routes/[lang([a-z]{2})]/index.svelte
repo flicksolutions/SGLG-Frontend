@@ -15,7 +15,7 @@
 
     //get the content
     let fields = ['content', 'items.id', 'items.internal', 'items.references.entities_related_id.title','items.references.entities_related_id.id', 'items.references.entities_related_id.person', 'items.references.entities_related_id.internal', 'items.itemtype.directory', 'items.content', 'items.title', 'items.person', 'items.date', 'items.event_type', 'items.publication_type'];
-    let deep = {items: {"_sort": "date"}};
+    let deep = {items: {"_sort": "-date"}};
     if ($locale !== 'de') { // if we are not in default locale, we need to get the translations of the items
         fields.push('translations.content', 'items.translations.title', 'items.translations.content');
         const trans = {"_filter": {
