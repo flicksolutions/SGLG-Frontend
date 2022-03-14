@@ -36,17 +36,6 @@
     let scrollW, lowerScroll, upperScroll;
     let meta = {};
     let windowWidth, featuredImg;
-    /*const selectors = {
-        categories: Array.isArray($pageStore.query['cat[]']) ? $pageStore.query['cat[]'] : typeof $pageStore.query['cat[]'] === 'string' ? [$pageStore.query['cat[]']] : directoryObjects.map(d => d.directory),
-        onlySglg: false,
-        news: $pageStore.query['news'] === '',
-        dateFrom: "",
-        dateTo: "",
-        query: "",
-        sort: '-date',
-        page: 1,
-        limit: 20
-    };*/
     let pageLimit = "20";
     $:$selectors.limit = parseInt(pageLimit);
     const setCats = queryparams => {
@@ -71,7 +60,7 @@
     $:if ($selectors && $selectors.categories.length) {setResults()}
 
     let results;
-    async function getResults ({ categories: cats = [], onlySglg = false, news = false, dateFrom = "", dateTo = "", query = "", page = 1, sort = "-date", limit }) {
+    async function getResults ({ categories: cats = directoryObjects.map(d => d.directory), onlySglg = false, news = false, dateFrom = "", dateTo = "", query = "", page = 1, sort = "-date", limit }) {
         let returnColumns, returnTable;
         let categoryFields = cats.flatMap(c => directoryObjects.find(o => o.directory === c)?.frontend_fields);
         let fields = ['id', 'itemtype.directory', 'references.entities_related_id.title', 'references.entities_related_id.id'];
