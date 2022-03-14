@@ -192,6 +192,13 @@ export function replaceTranslations (res, lang) {
     }
     if (lang !== 'de') {
         const replace = o => {
+            if (typeof o.translations?.[0] === "object") {
+                Object.keys(o.translations?.[0]).forEach(key => {
+                    if (!o.translations?.[0][key]) {
+                        delete o.translations?.[0][key];
+                    }
+                });
+            }
             const ret = {...o, ...o.translations?.[0]};
             if (o.id) {
                 ret.id = o.id;
