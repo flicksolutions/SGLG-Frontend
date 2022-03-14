@@ -22,6 +22,7 @@
     import InlineSVG from 'svelte-inline-svg';
     import { stores } from "@sapper/app";
     import { marked } from 'marked';
+    import { selectors } from "../../../stores.js"
 
     export let directoryObjects;
     export let currentNl;
@@ -35,7 +36,7 @@
     let scrollW, lowerScroll, upperScroll;
     let meta = {};
     let windowWidth, featuredImg;
-    const selectors = {
+    /*const selectors = {
         categories: Array.isArray($pageStore.query['cat[]']) ? $pageStore.query['cat[]'] : typeof $pageStore.query['cat[]'] === 'string' ? [$pageStore.query['cat[]']] : directoryObjects.map(d => d.directory),
         onlySglg: false,
         news: $pageStore.query['news'] === '',
@@ -45,16 +46,29 @@
         sort: '-date',
         page: 1,
         limit: 20
-    };
+    };*/
+    let pageLimit = "20";
+    $:$selectors.limit = parseInt(pageLimit);
     const setCats = queryparams => {
-        selectors.categories = Array.isArray(queryparams) ? queryparams : typeof queryparams === 'string' ? [queryparams] : directoryObjects.map(d => d.directory);
+        if (Array.isArray(queryparams)){
+            $selectors.categories = queryparams
+        } else if (typeof queryparams === 'string' && queryparams) {
+            $selectors.categories = [queryparams]
+        } else if (!$selectors.categories.length) {
+            $selectors.categories = directoryObjects.map(d => d.directory)
+        }
     }
-    const setNews = i => {selectors.news = i}
+    const setNews = i => {
+        $selectors.news = i;
+        if (i) {
+            $selectors.categories = directoryObjects.map(d => d.directory);
+        }
+    }
     $:{
         setCats($pageStore.query['cat[]']);
         setNews($pageStore.query['news'] === '');
     }
-    $:if (selectors) {setResults()}
+    $:if ($selectors && $selectors.categories.length) {setResults()}
 
     let results;
     async function getResults ({ categories: cats = [], onlySglg = false, news = false, dateFrom = "", dateTo = "", query = "", page = 1, sort = "-date", limit }) {
@@ -146,20 +160,20 @@
     }
 
     const loadMore = async (val) => {
-        selectors.page += val;
-        table = [...table, ...(await getResults(selectors)).returnTable];
+        $selectors.page += val;
+        table = [...table, ...(await getResults($selectors)).returnTable];
     }
 
     const setResults = async () => {
-       const { returnTable, returnColumns } = await getResults(selectors);
+       const { returnTable, returnColumns } = await getResults($selectors);
        table = returnTable;
        columns = ["date", "itemtype", "title", "event_place"];
     }
     const sortResults = (val) => {
-        if (selectors.sort === val) {
-            selectors.sort = `-${val}`;
+        if ($selectors.sort === val) {
+            $selectors.sort = `-${val}`;
         } else {
-            selectors.sort = val;
+            $selectors.sort = val;
         }
         setResults();
     }
@@ -192,11 +206,11 @@
     const arrow = value => {
         let filter;
         let style = "";
-        if (selectors.sort[0] === "-") {
-            filter = selectors.sort.substring(1);
+        if ($selectors.sort[0] === "-") {
+            filter = $selectors.sort.substring(1);
             style = "style='transform: rotate(180deg)'";
         } else {
-            filter = selectors.sort;
+            filter = $selectors.sort;
         }
         if (value === filter || (value === 'title' && filter === 'person')) { //the OR-clause is there because when we sort for the title, we actually sort for the Person...
             return `<svg ${style} xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" ><line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"></line><polyline points=\"19 12 12 19 5 12\"></polyline></svg>`;
@@ -215,54 +229,54 @@
 
     const changePage = (targetPage) => {
         if (targetPage <= maxPage && targetPage >= 1) {
-            selectors.page = targetPage;
+            $selectors.page = targetPage;
             setResults();
         } else {
             console.log("cannot change page!")
         }
     }
-    $:maxPage = Math.ceil(meta.filter_count / selectors.limit);
+    $:maxPage = Math.ceil(meta.filter_count / $selectors.limit);
 </script>
 
 <svelte:window bind:innerWidth={windowWidth} />
 
 <svelte:head>
-    <title>{selectors.news ? $_('newsletter') : $_('directories', {values: {n:directories.length}})}</title>
+    <title>{$selectors.news ? $_('newsletter') : $_('directories', {values: {n:directories.length}})}</title>
 </svelte:head>
 
 {#if windowWidth > 800}
     <div class="spacer" style="height: 10vw;"></div>
 {/if}
 <section class="filter-section">
-    {#if (selectors.news)}
+    {#if ($selectors.news)}
         <h1>{$_('newsletter')} {currentNl}</h1>
     {:else}
         <h1>{$_('directories', {values: {n:4}})}</h1>
     {/if}
     <form class="filters" on:submit|preventDefault={setResults}>
-        {#if (!selectors.news)}
+        {#if (!$selectors.news)}
             <div class="category-selectors">
-                <Checkbox checked={selectors.categories.length === directories.length} customEvent={true}
+                <Checkbox checked={$selectors.categories.length === directories.length} customEvent={true}
                           on:click={() =>
-                           {selectors.categories.length === directories.length ? selectors.categories = [] : selectors.categories = directories}}>
+                           {$selectors.categories.length === directories.length ? $selectors.categories = [] : $selectors.categories = directories}}>
                     <span class="icon-placeholder"></span>{$_('all')}</Checkbox>
-                <CheckboxGroup { checkboxes } bind:group={selectors.categories} />
+                <CheckboxGroup { checkboxes } bind:group={$selectors.categories} />
             </div>
         {/if}
-        <Checkbox bind:checked={selectors.onlySglg} cssClass="internal">{$_('onlySglg')}</Checkbox>
-        {#if (selectors.news)}
+        <Checkbox bind:checked={$selectors.onlySglg} cssClass="internal">{$_('onlySglg')}</Checkbox>
+        {#if ($selectors.news)}
             {@html marked(nlDescription)}
         {/if}
         <!--<Checkbox bind:checked={selectors.news}>{$_('news')}</Checkbox>-->
-        {#if (!selectors.news)}
+        {#if (!$selectors.news)}
             <fieldset class="date-selectors">
                 <legend>{$_('Dates')}</legend>
                 <label for="date" on:click={hideElement} bind:this={dateLabels[0]}>{$_('from')}</label>
-                <input id="date" type="date" bind:value={selectors.dateFrom} on:focus={() => dateLabels[0].style.display = "none"}>
+                <input id="date" type="date" bind:value={$selectors.dateFrom} on:focus={() => dateLabels[0].style.display = "none"}>
                 <label for="end-date" on:click={hideElement} bind:this={dateLabels[1]}>{$_('to')}</label>
-                <input id="end-date" type="date" bind:value={selectors.dateTo} on:focus={() => dateLabels[1].style.display = "none"}>
+                <input id="end-date" type="date" bind:value={$selectors.dateTo} on:focus={() => dateLabels[1].style.display = "none"}>
             </fieldset>
-            <label class="search">{$_('query')}<input type="search" bind:value={selectors.query} style="display: block; width: 100%">
+            <label class="search">{$_('query')}<input type="search" bind:value={$selectors.query} style="display: block; width: 100%">
             </label>
         {/if}
     </form>
@@ -283,7 +297,7 @@
                     {#each columns as col}
                         {#if (sortable(col))}
                             <th on:click={() => sortResults(col === 'title' ? 'person' : col)}
-                                class:selected={col === selectors.sort.substring(selectors.sort.indexOf('-')+1)}
+                                class:selected={col === $selectors.sort.substring($selectors.sort.indexOf('-')+1)}
                                 class="sortable"
                             ><!-- instead of the title field, we sort for person, specific request...-->
                                 {col === 'itemtype' ? "" : col === 'title' ? $_('person, title') : $_(col)}&nbsp;{@html arrow(col)}</th>
