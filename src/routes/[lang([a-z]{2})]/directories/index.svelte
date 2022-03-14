@@ -318,14 +318,14 @@
                 <tr></tr>
             </table>
         </div>
-        <p style="float: left;margin-right: 1em;"><button class="button arrow" class:inactive={!(selectors.page > 1)} on:click={() => changePage(selectors.page-1)}>{@html '<'}</button>
-            <span style="margin: 0 1em">{selectors.limit * (selectors.page - 1) + 1} - {(selectors.limit * (selectors.page - 1)  + selectors.limit) < meta.filter_count ? (selectors.limit * (selectors.page - 1)  + selectors.limit) : meta.filter_count } {$_('of')} {meta.filter_count}</span>
-        <button class="button arrow" class:inactive={!(selectors.page < maxPage)} on:click={() => {changePage(selectors.page+1)}}>{@html '>'}</button></p>
-        <p style="line-height: 32px;">{$_('per_page')}: <select name="limit" bind:value={selectors.limit} on:change={setResults}>
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                                <option value="1000">1000</option>
+        <p style="float: left;margin-right: 1em;"><button class="button arrow" disabled="{!($selectors.page > 1)}" on:click={() => changePage($selectors.page-1)}>{@html '<'}</button>
+            <span style="margin: 0 1em">{$selectors.limit * ($selectors.page - 1) + 1} - {($selectors.limit * ($selectors.page - 1)  + $selectors.limit) < meta.filter_count ? (selectors.limit * (selectors.page - 1)  + selectors.limit) : meta.filter_count } {$_('of')} {meta.filter_count}</span>
+        <button class="button arrow" disabled='{!($selectors.page < maxPage)}' on:click={() => {changePage($selectors.page+1)}}>{@html '>'}</button></p>
+        <p style="line-height: 32px;">{$_('per_page')}: <select name="limit" bind:value={pageLimit}>
+                                <option>20</option>
+                                <option>50</option>
+                                <option>100</option>
+                                <option>1000</option>
         </select></p>
     {:else}
         <p>{$_('no entries')}</p>

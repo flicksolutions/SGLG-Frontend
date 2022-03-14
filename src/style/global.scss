@@ -119,10 +119,11 @@ figure{
   @media (min-width: $medium) {
     margin-left: 0;
   }
-  &.inactive {
+  &:disabled,&[disabled] {
     background-color: $bg-grey;
+    cursor: default;
   }
-  &:hover {
+  &:not(:disabled,[disabled]) {
     cursor: pointer;
   }
 }
