@@ -232,7 +232,6 @@
 <svelte:head>
     <title>{$selectors.news ? $_('newsletter') : $_('directories', {values: {n:directories.length}})}</title>
 </svelte:head>
-
 {#if windowWidth > 800}
     <div class="spacer" style="height: 10vw;"></div>
 {/if}
@@ -322,7 +321,7 @@
             </table>
         </div>
         <p style="float: left;margin-right: 1em;"><button class="button arrow" disabled="{!($selectors.page > 1)}" on:click={() => changePage($selectors.page-1)}>{@html '<'}</button>
-            <span style="margin: 0 1em">{$selectors.limit * ($selectors.page - 1) + 1} - {($selectors.limit * ($selectors.page - 1)  + $selectors.limit) < meta.filter_count ? (selectors.limit * (selectors.page - 1)  + selectors.limit) : meta.filter_count } {$_('of')} {meta.filter_count}</span>
+            <span style="margin: 0 1em">{$selectors.limit * ($selectors.page - 1) + 1} - {($selectors.limit * ($selectors.page - 1)  + $selectors.limit) < meta.filter_count ? ($selectors.limit * ($selectors.page - 1)  + $selectors.limit) : meta.filter_count } {$_('of')} {meta.filter_count}</span>
         <button class="button arrow" disabled='{!($selectors.page < maxPage)}' on:click={() => {changePage($selectors.page+1)}}>{@html '>'}</button></p>
         <p style="line-height: 32px;">{$_('per_page')}: <select name="limit" bind:value={pageLimit}>
                                 <option>20</option>
