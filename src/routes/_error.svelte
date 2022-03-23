@@ -1,8 +1,20 @@
 <script>
+	import { goto } from '@sapper/app';
+	import { onMount } from 'svelte';
+	import { stores } from "@sapper/app";
+
 	export let status;
 	export let error;
 
 	const dev = process.env.NODE_ENV === 'development';
+	
+	const { page } = stores();
+	onMount(async () => {
+		if ($page.path[3] !== "/") {
+			console.log("redirecting")
+			goto(`de${$page.path}`)
+		}
+	});
 </script>
 
 <style>
