@@ -1,16 +1,19 @@
 <script>
 	import {locale, _ } from 'svelte-i18n';
-	import { prefetch } from '@sapper/app';
+	import {prefetch, stores} from '@sapper/app';
 
 
-	export let segment;
+	export let segment = "";
 	export let location = 'header';
 	export let pages = [];
+	const { page:pageStore } = stores();
+
+	$:activeNews = $pageStore.query['news'] === '';
 
 	const slugify = s => s.toLowerCase().replace(' ','-');
 
 	const capitalize = (w) => w[0].toUpperCase() + w.substring(1);
-
+	$:if (segment === undefined) segment = "";
 	let menu = [
 		{title: capitalize($_('home')), slug: ""},
 		{title: capitalize($_('directories', {values: {n:4}})), slug: 'directories', subPages: [
@@ -27,7 +30,7 @@
 	<ul class="pages">
 	{#each menu as page}
 		<li class="page">
-			<a rel=prefetch aria-current="{segment === page.slug ? 'page' : undefined}" href="{$locale}/{page.slug}" on:click on:mouseenter={() => {prefetch(`${$locale}/${page.slug}`)}}>{page.title}</a>
+			<a rel=prefetch aria-current="{activeNews ? page.slug === 'directories?news' ? 'page' : undefined : segment === page.slug ? 'page' : undefined}" href="{$locale}/{page.slug}" on:click on:mouseenter={() => {prefetch(`${$locale}/${page.slug}`)}}>{page.title}</a>
 			{#if page.subPages}
 			<ul>
 				{#each page.subPages as subpage}

@@ -7,7 +7,7 @@
 	export let error;
 
 	const dev = process.env.NODE_ENV === 'development';
-	
+
 	const { page } = stores();
 	onMount(async () => {
 		if ($page.path[3] !== "/") {
