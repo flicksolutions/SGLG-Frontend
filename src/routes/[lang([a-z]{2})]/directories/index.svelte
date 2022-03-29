@@ -4,12 +4,12 @@
     export async function preload({ params }) {
         const directoryObjects = (await directus.items('directories').readByQuery()).data;
 
-        const { string: currentNl, description: nlDescription} = replaceTranslations(await directus.singleton('current_newsletter').read({
-            ...hydrateTranslations(["string", "description"],{},params.lang)
+        const { string: currentNl, description: nlDescription, title: nlTitle} = replaceTranslations(await directus.singleton('current_newsletter').read({
+            ...hydrateTranslations(["string", "description", "title"],{},params.lang)
         }),params.lang)
         //console.log((await directus.singleton('current_newsletter').read({ fields, deep })))
         //const currentNl = page.query.news === '' ? (await directus.singleton('current_newsletter').read()).data.string : false;
-        return { directoryObjects, currentNl, nlDescription };
+        return { directoryObjects, currentNl, nlDescription, nlTitle };
     }
 </script>
 <script>
@@ -27,6 +27,7 @@
     export let directoryObjects;
     export let currentNl;
     export let nlDescription = "";
+    export let nlTitle = "";
 
     const { page:pageStore } = stores();
 
@@ -237,7 +238,7 @@
 {/if}
 <section class="filter-section">
     {#if ($selectors.news)}
-        <h1>{$_('newsletter')} {currentNl}</h1>
+        <h1>{nlTitle ? `${nlTitle} `: ''}{$_('newsletter')} {currentNl}</h1>
     {:else}
         <h1>{$_('directories', {values: {n:4}})}</h1>
     {/if}
