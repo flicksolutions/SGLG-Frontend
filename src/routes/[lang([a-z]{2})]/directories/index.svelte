@@ -234,7 +234,7 @@
     <title>{$selectors.news ? $_('newsletter') : $_('directories', {values: {n:directories.length}})}</title>
 </svelte:head>
 {#if windowWidth > 800}
-    <div class="spacer" style="height: 10vw;"></div>
+    <div class="spacer" style="{$selectors.news ? '' : 'height: 10vw'}"></div>
 {/if}
 <section class="filter-section">
     {#if ($selectors.news)}
