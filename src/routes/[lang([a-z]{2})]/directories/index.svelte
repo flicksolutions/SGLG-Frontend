@@ -238,7 +238,7 @@
 {/if}
 <section class="filter-section">
     {#if ($selectors.news)}
-        <h1>{nlTitle ? `${nlTitle} `: ''}{$_('newsletter')} {currentNl}</h1>
+        <h1>{nlTitle}</h1>
     {:else}
         <h1>{$_('directories', {values: {n:4}})}</h1>
     {/if}
