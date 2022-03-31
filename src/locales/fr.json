@@ -54,7 +54,7 @@
   "link": "Lien",
   "news": "Actualités",
   "newsletter": "Lettre d’information",
-  "directories": "Annuaire{n, plural, one {} other {s}}",
+  "directories": "Répertoire{n, plural, one {} other {s}}",
   "control menu": "Menu ouvrir\/fermer",
   "isbn": "ISBN"
 }
