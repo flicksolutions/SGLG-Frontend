@@ -16,7 +16,7 @@
 	$:if (segment === undefined) segment = "";
 	let menu = [
 		{title: capitalize($_('home')), slug: ""},
-		{title: capitalize($_('directories', {values: {n:4}})), slug: 'directories', subPages: [
+		{title: capitalize($_('directories', {values: {n:1}})), slug: 'directories', subPages: [
 				{title: capitalize($_('call for papers', {values: {n:2}})), slug: '?cat[]=call_for_paper'},
 				{title: capitalize($_('publications', {values: {n:2}})), slug: '?cat[]=publications'},
 				{title: capitalize($_('review', {values: {n:2}})), slug: '?cat[]=review'},

@@ -231,7 +231,7 @@
 <svelte:window bind:innerWidth={windowWidth} />
 
 <svelte:head>
-    <title>{$selectors.news ? $_('newsletter') : $_('directories', {values: {n:directories.length}})}</title>
+    <title>{$selectors.news ? $_('newsletter') : $_('directories', {values: {n:1}})}</title>
 </svelte:head>
 {#if windowWidth > 800}
     <div class="spacer" style="{$selectors.news ? '' : 'height: 10vw'}"></div>
@@ -240,7 +240,7 @@
     {#if ($selectors.news)}
         <h1>{nlTitle}</h1>
     {:else}
-        <h1>{$_('directories', {values: {n:4}})}</h1>
+        <h1>{$_('directories', {values: {n:1}})}</h1>
     {/if}
     <form class="filters" on:submit|preventDefault={setResults}>
         {#if (!$selectors.news)}
