@@ -17,7 +17,7 @@
 {/if}
 
 <style lang="scss">
-  @import "../../../style/theme.scss";
+  @import "../style/theme.scss";
   input[type=checkbox] {
     display: none;
     & + label {
