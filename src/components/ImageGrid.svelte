@@ -12,8 +12,8 @@
 <div class="img-grid">
     {#each images as img, i}
         <figure class="img">
-            <a href={`https://backend.ruralhistory.ch/assets/${img.directus_files_id.id}`} on:click|preventDefault={() => showLightbox[i] = !showLightbox[i]} target="_blank">
-                <img src={`https://backend.ruralhistory.ch/assets/${img.directus_files_id.id}?key=detail`} alt={img.directus_files_id.title}>
+            <a href={`https://misty-frank-flicksolutions-b4bb2a19.koyeb.app/assets/${img.directus_files_id.id}`} on:click|preventDefault={() => showLightbox[i] = !showLightbox[i]} target="_blank">
+                <img src={`https://misty-frank-flicksolutions-b4bb2a19.koyeb.app/assets/${img.directus_files_id.id}?key=detail`} alt={img.directus_files_id.title}>
                 {#if overlay[i]}<div class="overlay" bind:this={parent} ><div class="inner" use:textfit={{height: 200}}>{@html overlay[i]}</div></div>{/if}
             </a>
             {#if captions[i]}
@@ -21,7 +21,7 @@
             {/if}
         </figure>
         {#if showLightbox[i]}
-            <Lightbox img={`https://backend.ruralhistory.ch/assets/${img.directus_files_id.id}`} alt={img.directus_files_id.title} on:exitLightbox={() => showLightbox[i] = !showLightbox[i]} />
+            <Lightbox img={`https://misty-frank-flicksolutions-b4bb2a19.koyeb.app/assets/${img.directus_files_id.id}`} alt={img.directus_files_id.title} on:exitLightbox={() => showLightbox[i] = !showLightbox[i]} />
         {/if}
     {/each}
 </div>

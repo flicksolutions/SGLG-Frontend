@@ -9,7 +9,7 @@
     "start": "node __sapper__/build"
   },
   "dependencies": {
-    "@directus/sdk": "^9.5.1",
+    "@directus/sdk": "^19.0.1",
     "@fortawesome/free-solid-svg-icons": "^6.0.0",
     "compression": "^1.7.1",
     "htmlsave": "^3.0.0",

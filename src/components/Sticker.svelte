@@ -8,8 +8,7 @@
 
     const fields = ['*'];
     const deep = {};
-
-    directus.items('disturber').readByQuery({...hydrateTranslations(fields, deep, $locale), limit: 1}).then(i => {
+    directus.request(readItems("disturber", { limit: 1, ...hydrateTranslations(fields, deep, $locale) })).then(i => {
         if (i.data[0] && $locale === 'de') {
             label = marked(i.data[0].label);
             link = i.data[0].link;
@@ -18,6 +17,15 @@
             link = i.data[0].translations[0]?.link
         }
     })
+    // directus.items('disturber').readByQuery({...hydrateTranslations(fields, deep, $locale), limit: 1}).then(i => {
+    //     if (i.data[0] && $locale === 'de') {
+    //         label = marked(i.data[0].label);
+    //         link = i.data[0].link;
+    //     } else if (i?.data?.[0]?.translations?.[0]) {
+    //         label = marked(i.data[0].translations[0]?.label);
+    //         link = i.data[0].translations[0]?.link
+    //     }
+    // })
 
 </script>
     {#if (label)}

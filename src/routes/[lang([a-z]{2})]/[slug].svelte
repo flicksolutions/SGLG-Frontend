@@ -1,15 +1,20 @@
 <script context="module">
-    import { directus, hydrateTranslations, replaceTranslations } from '../../functions';
-    export async function preload({ params }) {
-        const content = replaceTranslations(await directus.items('pages').readByQuery({
-            filter: {slug: {"_eq": params.slug}},
-            ...hydrateTranslations(["*", "content.page_content_id.*", "content.page_content_id.imagegrid_img.directus_files_id.id", "content.page_content_id.imagegrid_img.directus_files_id.title"],{},params.lang)
-        }),params.lang);
-        if (content[0]) {
-            return { meta: content[0], content: content[0]?.content.map(c => c.page_content_id) }
-        }
-        this.error(404, 'Page not found');
-    }
+  import { readItems } from '@directus/sdk';
+  import { directus, hydrateTranslations, replaceTranslations } from '../../functions';
+  export async function preload({ params }) {
+      const content = replaceTranslations(await directus.request(readItems("pages", {
+          filter: { slug: { "_eq": params.slug } },
+          ...hydrateTranslations(["*", "content.page_content_id.*", "content.page_content_id.imagegrid_img.directus_files_id.id", "content.page_content_id.imagegrid_img.directus_files_id.title"], {}, params.lang)
+      })), params.lang)
+      // const content = replaceTranslations(await directus.items('pages').readByQuery({
+      //     filter: {slug: {"_eq": params.slug}},
+      //     ...hydrateTranslations(["*", "content.page_content_id.*", "content.page_content_id.imagegrid_img.directus_files_id.id", "content.page_content_id.imagegrid_img.directus_files_id.title"],{},params.lang)
+      // }),params.lang);
+      if (content[0]) {
+          return { meta: content[0], content: content[0]?.content.map(c => c.page_content_id) }
+      }
+      this.error(404, 'Page not found');
+  }
 </script>
 
 <script>

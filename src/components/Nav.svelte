@@ -20,7 +20,7 @@
 				{title: capitalize($_('call for papers', {values: {n:2}})), slug: '?cat[]=call_for_paper'},
 				{title: capitalize($_('publications', {values: {n:2}})), slug: '?cat[]=publications'},
 				{title: capitalize($_('review', {values: {n:2}})), slug: '?cat[]=review'},
-				{title: capitalize($_('event', {values: {n:2}})), slug: '?cat[]=event'},
+				{title: capitalize($_('event', {n:2})), slug: '?cat[]=event'},
 		]},
 		...pages,
 		{title: capitalize($_('newsletter')), slug: "directories?news"},

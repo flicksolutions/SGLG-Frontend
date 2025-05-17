@@ -1,9 +1,10 @@
 <script context="module">
+    import { readItems } from '@directus/sdk';
     import {waitLocale, locale} from 'svelte-i18n';
     import {directus, hydrateTranslations} from "../../functions";
 
     export async function preload({ params }) {
-        const fields = ['title', 'content.page_content_id.title', 'content.page_content_id.slug', 'content.page_content_id.options', 'slug'];
+        const fields = ['title', 'content.page_content_id.title', 'content.page_content_id.slug', 'slug'];
         const deep = {
             content: {
                 page_content_id: {
@@ -17,7 +18,8 @@
         };
 
         try {
-            const res = (await directus.items('pages').readByQuery(hydrateTranslations(fields,deep,params.lang))).data;
+            const res = (await directus.request(readItems("pages", { ...hydrateTranslations(fields, deep, params.lang) })));
+            // const res = (await directus.items('pages').readByQuery(hydrateTranslations(fields,deep,params.lang))).data;
             const pages = res.map(p => {
                 if (p.translations?.length){
                     p.translations[0].subPages = p.translations[0]?.content?.map(c => c.page_content_id).filter(c => c);
