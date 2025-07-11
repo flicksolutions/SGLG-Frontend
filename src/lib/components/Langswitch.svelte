@@ -18,7 +18,7 @@
 	{#each locales as lang}
 		<li>
 			<a
-				href={localizeHref(page.url.pathname)}
+				href={localizeHref(`/${page.url.pathname}`)}
 				class:selected={lang === getLocale()}
 				on:click|preventDefault={() => setLocale(lang)}>{lang.toUpperCase()}</a
 			>

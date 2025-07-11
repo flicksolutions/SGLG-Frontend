@@ -6,6 +6,7 @@
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 	import { page as pageStore } from '$app/state';
+	import { base } from '$app/paths';
 
 	/**
 	 * @typedef {Object} Props
@@ -60,7 +61,7 @@
 						: segment === page.slug
 							? 'page'
 							: undefined}
-					href={localizeHref(`/${page.slug}`)}
+					href={localizeHref(`${base}/${page.slug}`)}
 					onclick={bubble('click')}
 				>
 					{page.title}
@@ -73,7 +74,7 @@
 									rel="prefetch"
 									aria-current={segment === subpage.slug ? 'page' : undefined}
 									href={localizeHref(
-										`/${page.slug}${subpage.slug[0] === '?' ? '' : '#'}${subpage.slug}`
+										`${base}/${page.slug}${subpage.slug[0] === '?' ? '' : '#'}${subpage.slug}`
 									)}
 									onclick={bubble('click')}>{subpage.title}</a
 								>

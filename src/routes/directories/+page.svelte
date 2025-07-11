@@ -11,6 +11,7 @@
 	import { readItems } from '@directus/sdk';
 	import { directus } from '$lib/functions';
 	import { m } from '$lib/paraglide/messages.js';
+	import { base } from '$app/paths';
 
 	let { data } = $props();
 
@@ -389,7 +390,7 @@
 									>{#if col === 'title' || SVGS[row[col]]}
 										<a
 											href={localizeHref(
-												`/directories/detail/${row?.references?.[0]?.entities_related_id?.id ?? row.id}`
+												`${base}/directories/detail/${row?.references?.[0]?.entities_related_id?.id ?? row.id}`
 											)}
 											class:internal={row.internal}
 											title={row[col]}
