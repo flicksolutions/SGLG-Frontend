@@ -142,8 +142,10 @@ export function addAccordionListener(node) {
 
 export const hydrateTranslations = (fields, deep, lang) => {
 	if (lang !== 'de') {
-		// if we are not in default locale, we need to get the translations of the items - slug doesn't exist in translations
-		fields.push(...fields.filter((f) => f !== 'slug').map((f) => `translations.${f}`));
+		// if we are not in default locale, we need to get the translations of the items - slug and string don't exist in translations
+		fields.push(
+			...fields.filter((f) => f !== 'slug' && f !== 'string').map((f) => `translations.${f}`)
+		);
 		const trans = {
 			_filter: {
 				languages_code: {
