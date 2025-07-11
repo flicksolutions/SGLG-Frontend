@@ -1,0 +1,109 @@
+<script>
+	import { SVGS } from '$lib/constants';
+	import ContentBoxes from '$lib/components/ContentBoxes.svelte';
+	import { onMount } from 'svelte';
+	import { addAccordionListener, getBg, setBg, createLabel } from '$lib/functions';
+	import ImageGrid from '$lib/components/ImageGrid.svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { getLocale } from '$lib/paraglide/runtime';
+
+	export let data;
+	let { item } = data;
+
+	const setLinks = (arr) => {
+		if (Array.isArray(arr)) {
+			return arr.map((object) => {
+				let url = object.url.includes('http') ? object.url : `http://${object.url}`;
+				return `<a href="${url}" target="_blank">${url}</a>`;
+			});
+		}
+	};
+
+	const cleanProps = (dirtyItem) => {
+		const filterKeys = ['internal', 'referenced_by', 'references'];
+		let clean = Object.keys(dirtyItem)
+			.filter(
+				(key) => dirtyItem.itemtype.frontend_fields.includes(key) && !filterKeys.includes(key)
+			)
+			.reduce((obj, key) => {
+				//convert val to date
+				if (key.includes('date') && dirtyItem[key]) {
+					obj[key] =
+						dirtyItem.itemtype.directory === 'publications'
+							? new Date(dirtyItem[key]).getFullYear()
+							: new Date(dirtyItem[key]).toLocaleDateString(getLocale(), {
+									year: 'numeric',
+									month: 'numeric',
+									day: 'numeric'
+								});
+				} else if (key.includes('link')) {
+					obj[key] = setLinks(dirtyItem[key]);
+				} else {
+					obj[key] = dirtyItem[key];
+				}
+
+				return obj;
+			}, {});
+		if (dirtyItem.itemtype.directory === 'publications') {
+			clean = { title: clean.title, person: clean.person, ...clean };
+		}
+		return clean;
+	};
+
+	const frontEndProps = cleanProps(item);
+	const references = item?.referenced_by
+		.filter((ref) => ref.entities_id)
+		.map((ref) => {
+			return {
+				title: ref.entities_id.itemtype.directory,
+				content: cleanProps(ref.entities_id)
+			};
+		});
+
+	let windowWidth, featuredImg;
+
+	onMount(async () => {
+		if (windowWidth > 800) {
+			setBg(document.querySelector('body')); // set a new background image for the body
+		} else {
+			featuredImg = await getBg();
+		}
+		addAccordionListener(document.querySelectorAll('.accordion-item'));
+	});
+</script>
+
+<svelte:window bind:innerWidth={windowWidth} />
+
+<svelte:head>
+	<title>{item.title}</title>
+</svelte:head>
+
+{#if windowWidth > 800}
+	<div class="spacer" style="height: 10vw;"></div>
+{/if}
+
+<section class="content-layout">
+	<h1 class:internal={item.internal}>
+		{@html SVGS[item.itemtype.directory]}
+	</h1>
+	<div class="props">
+		<ContentBoxes content={frontEndProps} />
+		{#each references as ref}
+			<h3>{m[ref.title]({ count: 1 })}:</h3>
+			<ContentBoxes content={ref.content} />
+		{/each}
+	</div>
+	{#if item.files}
+		<ImageGrid images={item.files} />
+	{/if}
+	<button class="button" on:click={() => window.history.back()}>{m.back()}</button>
+</section>
+
+<style lang="scss">
+	.button {
+		@media (min-width: $medium) {
+			grid-column: 1;
+			grid-row: 1;
+		}
+	}
+</style>

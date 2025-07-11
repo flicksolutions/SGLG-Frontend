@@ -1,0 +1,145 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"page_title": "Page title",
+	"sign_in": "Sign in",
+	"sign_up": "Register for...",
+	"SGLG": "SRHS",
+	"review_title": "Reviewed of {title}",
+	"call_for_paper_title": "Call for Paper for {title}",
+	"date": "Date",
+	"title": "Title",
+	"person": "Person",
+	"event_place": "Location",
+	"event_type": "Type of Event",
+	"conference": "Conference",
+	"workshop": "Workshop",
+	"excursion": "Excursion",
+	"exhibition": "Exhibition",
+	"panel": "Panel",
+	"Tagung": "Conference",
+	"Workshop": "Workshop",
+	"Exkursion": "Excursion",
+	"Ausstellung": "Exhibition",
+	"Panel": "Panel",
+	"event_end_date": "End date to ",
+	"event_hosted_by": "Organizer",
+	"content": "Content",
+	"publication_type": "Type of publication",
+	"publications_publisher": "Publisher",
+	"publications_released_in": "In",
+	"publications_associated_instititutions": "Institution",
+	"itemtype": "Directory",
+	"files": "Files",
+	"referenced_by": "Reference",
+	"references": "Refers to",
+	"all": "All",
+	"onlySglg": "SRHS entries only",
+	"Dates": "date",
+	"from": "From",
+	"to": "To",
+	"query": "Search Keyword",
+	"search": "Apply selection",
+	"no entries": "No entries found",
+	"of": "of",
+	"per_page": "Entries per page",
+	"all_entries": "all Entries",
+	"call_for_paper": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Call for papers",
+				"countPlural=other": "Calls for papers"
+			}
+		}
+	],
+	"publications": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Publication",
+				"countPlural=other": "Publications"
+			}
+		}
+	],
+	"review": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Review",
+				"countPlural=other": "Reviews"
+			}
+		}
+	],
+	"event": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Event",
+				"countPlural=other": "Events"
+			}
+		}
+	],
+	"recension": "Review",
+	"home": "Home",
+	"back": "Back",
+	"vessel": "Vessel",
+	"link": "Link",
+	"news": "News",
+	"newsletter": "newsletter",
+	"directories": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Directory",
+				"countPlural=other": "Directories"
+			}
+		}
+	],
+	"control_menu": "Open / Close (menu)",
+	"call_for_papers": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Call for papers",
+				"countPlural=other": "Calls for papers"
+			}
+		}
+	],
+	"Tag": "day"
+}

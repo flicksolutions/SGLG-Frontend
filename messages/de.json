@@ -1,0 +1,148 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"page_title": "Seitentitel",
+	"sign_in": "Einloggen",
+	"sign_up": "etc",
+	"SGLG": "Schweizerische Gesellschaft für ländliche Geschichte",
+	"review_title": "Review von {title}",
+	"call_for_paper_title": "Call for Paper für {title}",
+	"date": "Datum",
+	"title": "Titel",
+	"person, title": "Person, Titel",
+	"person": "Personen",
+	"event_place": "Ort",
+	"event_type": "Veranstaltungsart",
+	"conference": "Tagung",
+	"workshop": "Workshop",
+	"excursion": "Exkursion",
+	"exhibition": "Ausstellung",
+	"panel": "Panel",
+	"Tagung": "Tagung",
+	"Workshop": "Workshop",
+	"Exkursion": "Exkursion",
+	"Ausstellung": "Ausstellung",
+	"Panel": "Panel",
+	"event_end_date": "End-Datum",
+	"event_hosted_by": "Veranstalter",
+	"content": "Inhalt",
+	"publication_type": "Publikationsart",
+	"publications_publisher": "Verlag",
+	"publications_released_in": "In",
+	"publications_associated_instititutions": "Institution",
+	"itemtype": "Verzeichnis",
+	"files": "Dateien",
+	"referenced_by": "Bezugnahme von",
+	"references": "Nimmt Bezug auf",
+	"all": "Alle",
+	"onlySglg": "Nur SGLG-Einträge",
+	"Dates": "Datum",
+	"from": "Von",
+	"to": "Bis",
+	"query": "Suchbegriff",
+	"search": "Auswahl anwenden",
+	"no entries": "Keine Einträge.",
+	"of": "von",
+	"per_page": "Einträge pro Seite",
+	"all_entries": "alle Einträge",
+	"call_for_papers": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Call for papers",
+				"countPlural=other": "Calls for papers"
+			}
+		}
+	],
+	"call_for_paper": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Call for papers",
+				"countPlural=other": "Calls for papers"
+			}
+		}
+	],
+	"publications": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Publikation",
+				"countPlural=other": "Publikationen"
+			}
+		}
+	],
+	"review": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Rezension",
+				"countPlural=other": "Rezensionen"
+			}
+		}
+	],
+	"event": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Veranstaltung",
+				"countPlural=other": "Veranstaltungen"
+			}
+		}
+	],
+	"recension": "Review",
+	"home": "Startseite",
+	"back": "Zurück",
+	"vessel": "Gefäss",
+	"link": "Link",
+	"news": "Aktuell",
+	"newsletter": "Newsletter",
+	"directories": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Verzeichnis",
+				"countPlural=other": "Verzeichnisse"
+			}
+		}
+	],
+	"isbn": "ISBN",
+	"person_title": "Person, Titel",
+	"control_menu": "Menü öffnen / schliessen",
+	"Tag": "Tag"
+}

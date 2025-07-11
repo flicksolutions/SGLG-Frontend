@@ -1,0 +1,143 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"page_title": "Titolo pagina",
+	"sign_in": "Accedi",
+	"sign_up": "Registrati",
+	"SGLG": "Società Svizzera di Storia Rurale",
+	"review_title": "recensione per {title}",
+	"call_for_paper_title": "Call for Paper per {title}",
+	"date": "Data",
+	"title": "Persona, titolo",
+	"person": "Persone ",
+	"event_place": "Luogo",
+	"event_type": "Tipo di evento",
+	"conference": "Convegno",
+	"workshop": "Seminario",
+	"excursion": "Gita",
+	"exhibition": "Esposizione",
+	"panel": "Panel",
+	"Tagung": "Convegno",
+	"Workshop": "Seminario",
+	"Exkursion": "Gita",
+	"Ausstellung": "Esposizione",
+	"Panel": "Panel",
+	"event_end_date": "Data fine",
+	"event_hosted_by": "Organizzatore",
+	"content": "Contenuto",
+	"publication_type": "Tipo di pubblicazione",
+	"publications_publisher": "Editore",
+	"publications_released_in": "In",
+	"publications_associated_instititutions": "Istituzione",
+	"itemtype": "Indice",
+	"files": "File",
+	"referenced_by": "Riferimento a",
+	"references": "Si riferisce a",
+	"all": "Tutti",
+	"onlySglg": "Solo registrazioni della SSSR",
+	"Dates": "Data",
+	"from": "Da",
+	"to": "A",
+	"query": "Termine di ricerca",
+	"search": "Applica ricerca",
+	"no entries": "Nessuna registrazione",
+	"of": "di",
+	"per_page": "Registrazioni per pagina",
+	"all_entries": "Tutti le Registrazioni",
+	"call_for_papers": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Call for papers",
+				"countPlural=other": "Calls for papers"
+			}
+		}
+	],
+	"call_for_paper": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Call for papers",
+				"countPlural=other": "Calls for papers"
+			}
+		}
+	],
+	"publications": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Pubblicazione",
+				"countPlural=other": "Pubblicazioni"
+			}
+		}
+	],
+	"review": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Recensione",
+				"countPlural=other": "Recensioni"
+			}
+		}
+	],
+	"event": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Evento",
+				"countPlural=other": "Eventi"
+			}
+		}
+	],
+	"recension": "Recensione",
+	"home": "Home page",
+	"back": "Indietro",
+	"vessel": "Recipiente",
+	"link": "Link",
+	"news": "News",
+	"newsletter": "newsletter",
+	"directories": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [],
+			"match": [
+				"Directory"
+			]
+		}
+	],
+	"control_menu": "Apri/Chiudi menu",
+	"isbn": "ISBN",
+	"Tag": "Giornata"
+}
