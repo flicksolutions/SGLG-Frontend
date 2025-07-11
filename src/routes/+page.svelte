@@ -4,9 +4,10 @@
 	import { setBg, getBg, directus, createLabel } from '$lib/functions';
 	import { SVGS } from '$lib/constants';
 	import { truncate } from 'htmlsave';
-	import { getLocale } from '$lib/paraglide/runtime';
+	import { getLocale, localizeHref } from '$lib/paraglide/runtime';
 	import { readSingleton } from '@directus/sdk';
 	import { m } from '$lib/paraglide/messages';
+	import { base } from '$app/paths';
 
 	let items = [];
 	let content = [];
@@ -104,7 +105,9 @@
 			{#each items as item}
 				<li class:internal={item.internal}>
 					<a
-						href={`${getLocale()}/directories/detail/${item?.references?.[0]?.entities_related_id?.id ?? item.id}`}
+						href={localizeHref(
+							`${base}/directories/detail/${item?.references?.[0]?.entities_related_id?.id ?? item.id}`
+						)}
 						class={item.itemtype.directory}
 					>
 						{#if SVGS[item.itemtype.directory]}
@@ -134,7 +137,7 @@
 				</li>
 			{/each}
 		</ol>
-		<a class="button" href={`${getLocale()}/directories`}>{m.all_entries()}</a>
+		<a class="button" href={localizeHref(`${base}/directories`)}>{m.all_entries()}</a>
 	</div>
 </section>
 {#each content as block}
