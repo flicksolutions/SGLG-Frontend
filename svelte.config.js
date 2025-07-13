@@ -3,20 +3,21 @@ import { sveltePreprocess } from 'svelte-preprocess';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	kit: {
-		adapter: adapter({
-			fallback: '404.html'
-		}),
-		paths: {
-			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
-		}
-	},
 	preprocess: sveltePreprocess({
 		scss: {
 			includePaths: ['src/lib/style'],
 			prependData: `@use 'theme.scss' as *;`
 		}
-	})
+	}),
+	kit: {
+		paths: {
+			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH,
+			relative: false
+		},
+		adapter: adapter({
+			fallback: '404.html'
+		})
+	}
 };
 
 export default config;
