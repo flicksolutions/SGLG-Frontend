@@ -29,7 +29,7 @@
 				//convert val to date
 				if (key.includes('date') && dirtyItem[key]) {
 					obj[key] =
-						dirtyItem.itemtype.directory === 'publications'
+						dirtyItem.itemtype?.directory === 'publications'
 							? new Date(dirtyItem[key]).getFullYear()
 							: new Date(dirtyItem[key]).toLocaleDateString(getLocale(), {
 									year: 'numeric',
@@ -44,7 +44,7 @@
 
 				return obj;
 			}, {});
-		if (dirtyItem.itemtype.directory === 'publications') {
+		if (dirtyItem.itemtype?.directory === 'publications') {
 			clean = { title: clean.title, person: clean.person, ...clean };
 		}
 		return clean;
@@ -55,7 +55,7 @@
 		.filter((ref) => ref.entities_id)
 		.map((ref) => {
 			return {
-				title: ref.entities_id.itemtype.directory,
+				title: ref.entities_id.itemtype?.directory,
 				content: cleanProps(ref.entities_id)
 			};
 		});
