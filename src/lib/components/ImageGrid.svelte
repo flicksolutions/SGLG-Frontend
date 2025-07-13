@@ -1,9 +1,10 @@
 <script>
+	import { preventDefault } from 'svelte/legacy';
 	import Lightbox from './Lightbox.svelte';
 	import { fit, parent_style } from '@leveluptuts/svelte-fit';
 
 	let { images, captions = [], overlay = [] } = $props();
-	const showLightbox = new Array(images.length).fill(false);
+	let showLightbox = $state(new Array(images.length).fill(false));
 	let parent = $state(null);
 
 	const setViewbox = (node) => {
@@ -20,7 +21,10 @@
 		<figure class="img">
 			<a
 				href={`https://misty-frank-flicksolutions-b4bb2a19.koyeb.app/assets/${img.directus_files_id.id}`}
-				on:click|preventDefault={() => (showLightbox[i] = !showLightbox[i])}
+				onclick={(e) => {
+					e.preventDefault();
+					showLightbox[i] = !showLightbox[i];
+				}}
 				target="_blank"
 			>
 				<img
