@@ -232,11 +232,10 @@ export const linkHandler = (link, targetLocale = null) => {
 	}
 
 	if (link === '/') {
+		console.log('base', localizeHref(base, targetLocale ? { locale: targetLocale } : {}));
 		return localizeHref(base, targetLocale ? { locale: targetLocale } : {});
 	}
 
-	if (link.startsWith('/')) {
-		return localizeHref(base + link.slice(1), targetLocale ? { locale: targetLocale } : {});
-	}
+	console.log(localizeHref(base + link, targetLocale ? { locale: targetLocale } : {}));
 	return localizeHref(base + link, targetLocale ? { locale: targetLocale } : {});
 };
