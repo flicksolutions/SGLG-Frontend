@@ -235,5 +235,8 @@ export const linkHandler = (link, targetLocale = null) => {
 		return localizeHref(base, targetLocale ? { locale: targetLocale } : {});
 	}
 
+	if (link.startsWith('/')) {
+		return localizeHref(base + link.slice(1), targetLocale ? { locale: targetLocale } : {});
+	}
 	return localizeHref(base + link, targetLocale ? { locale: targetLocale } : {});
 };
