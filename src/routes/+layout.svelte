@@ -16,7 +16,7 @@
 		const module = await import('/fonts/mtiFontTrackingCode.js?url');
 		FontTracker = module.default;
 	});
-	const segment = $derived(page.url.pathname.split('/').filter(Boolean).pop());
+	const segment = $derived(page.url.pathname.split('/').filter(Boolean).pop() ?? '');
 </script>
 
 <Header {segment} pages={pages.filter((p) => p.slug !== 'impressum')} />
