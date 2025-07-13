@@ -1,8 +1,8 @@
 <script>
-	import { locales, getLocale, setLocale, localizeHref } from '$lib/paraglide/runtime';
+	import { locales, getLocale, setLocale } from '$lib/paraglide/runtime';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
-	import { base } from '$app/paths';
+	import { linkHandler } from '$lib/functions';
 
 	function serialize(obj) {
 		var str = [];
@@ -19,7 +19,7 @@
 	{#each locales as lang}
 		<li>
 			<a
-				href={localizeHref(`${base}/${page.url.pathname}`, { locale: lang })}
+				href={linkHandler(`/${page.url.pathname}`, lang)}
 				class:selected={lang === getLocale()}
 				on:click|preventDefault={() => setLocale(lang)}>{lang.toUpperCase()}</a
 			>

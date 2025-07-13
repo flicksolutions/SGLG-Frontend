@@ -1,7 +1,8 @@
 import { createDirectus, readItems, rest, readFiles } from '@directus/sdk';
-import { locales } from '$lib/paraglide/runtime';
+import { locales, localizeHref } from '$lib/paraglide/runtime';
 import { get } from 'svelte/store';
 import { m } from '$lib/paraglide/messages';
+import { base } from '$app/paths';
 export const directus = createDirectus(
 	'https://misty-frank-flicksolutions-b4bb2a19.koyeb.app'
 ).with(rest());
@@ -224,3 +225,15 @@ export function createLabel(item) {
 			return `${person} ${title}`;
 	}
 }
+
+export const linkHandler = (link, targetLocale = null) => {
+	if (process.env.NODE_ENV === 'development') {
+		return localizeHref(link, targetLocale ? { locale: targetLocale } : {});
+	}
+
+	if (link === '/') {
+		return localizeHref(base, targetLocale ? { locale: targetLocale } : {});
+	}
+
+	return localizeHref(base + link, targetLocale ? { locale: targetLocale } : {});
+};

@@ -5,8 +5,7 @@
 	import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
 	import { faBars } from '@fortawesome/free-solid-svg-icons/faBars';
 	import { m } from '$lib/paraglide/messages.js';
-	import { localizeHref } from '$lib/paraglide/runtime';
-	import { base } from '$app/paths';
+	import { linkHandler } from '$lib/functions';
 	import logo from '$lib/svg/SGLG-Logo.svg';
 	let showMobileMenu = false;
 	let y = 0;
@@ -22,7 +21,7 @@
 
 <header class:showMobileMenu class:scrolled={y > 100}>
 	<div class="inner">
-		<a href={localizeHref(`${base}/`)} class:invisible={showMobileMenu}
+		<a href={linkHandler('/')} class:invisible={showMobileMenu}
 			><img class:invisible={showMobileMenu} src={logo} alt="Logo" /></a
 		>
 		<div class="titleLangContainer">

@@ -4,9 +4,8 @@
 
 	const bubble = createBubbler();
 	import { m } from '$lib/paraglide/messages.js';
-	import { localizeHref } from '$lib/paraglide/runtime';
 	import { page as pageStore } from '$app/state';
-	import { base } from '$app/paths';
+	import { linkHandler } from '$lib/functions';
 
 	/**
 	 * @typedef {Object} Props
@@ -61,7 +60,7 @@
 						: segment === page.slug
 							? 'page'
 							: undefined}
-					href={localizeHref(`${base}/${page.slug}`)}
+					href={linkHandler(`/${page.slug}`)}
 					onclick={bubble('click')}
 				>
 					{page.title}
@@ -73,8 +72,8 @@
 								<a
 									rel="prefetch"
 									aria-current={segment === subpage.slug ? 'page' : undefined}
-									href={localizeHref(
-										`${base}/${page.slug}${subpage.slug[0] === '?' ? '' : '#'}${subpage.slug}`
+									href={linkHandler(
+										`/${page.slug}${subpage.slug[0] === '?' ? '' : '#'}${subpage.slug}`
 									)}
 									onclick={bubble('click')}>{subpage.title}</a
 								>

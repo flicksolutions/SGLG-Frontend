@@ -4,10 +4,10 @@
 	import { setBg, getBg, directus, createLabel } from '$lib/functions';
 	import { SVGS } from '$lib/constants';
 	import { truncate } from 'htmlsave';
-	import { getLocale, localizeHref } from '$lib/paraglide/runtime';
+	import { getLocale } from '$lib/paraglide/runtime';
 	import { readSingleton } from '@directus/sdk';
 	import { m } from '$lib/paraglide/messages';
-	import { base } from '$app/paths';
+	import { linkHandler } from '$lib/functions';
 
 	let items = [];
 	let content = [];
@@ -105,8 +105,8 @@
 			{#each items as item}
 				<li class:internal={item.internal}>
 					<a
-						href={localizeHref(
-							`${base}/directories/detail/${item?.references?.[0]?.entities_related_id?.id ?? item.id}`
+						href={linkHandler(
+							`/directories/detail/${item?.references?.[0]?.entities_related_id?.id ?? item.id}`
 						)}
 						class={item.itemtype.directory}
 					>
@@ -137,7 +137,7 @@
 				</li>
 			{/each}
 		</ol>
-		<a class="button" href={localizeHref(`${base}/directories`)}>{m.all_entries()}</a>
+		<a class="button" href={linkHandler(`/directories`)}>{m.all_entries()}</a>
 	</div>
 </section>
 {#each content as block}
@@ -188,7 +188,7 @@
 			}
 			&.internal {
 				a:first-child,
-				a img {
+				:global(a img) {
 					color: $sglg-orange;
 					fill: $sglg-orange;
 				}

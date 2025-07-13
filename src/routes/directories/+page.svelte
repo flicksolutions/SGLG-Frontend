@@ -1,7 +1,7 @@
 <script>
 	import { preventDefault } from 'svelte/legacy';
 	import { setBg, getBg, createLabel } from '$lib/functions';
-	import { getLocale, localizeHref } from '$lib/paraglide/runtime';
+	import { getLocale } from '$lib/paraglide/runtime';
 	import { onMount } from 'svelte';
 	import Checkbox from '$lib/components/Checkbox.svelte';
 	import CheckboxGroup from '$lib/components/CheckboxGroup.svelte';
@@ -11,7 +11,7 @@
 	import { readItems } from '@directus/sdk';
 	import { directus } from '$lib/functions';
 	import { m } from '$lib/paraglide/messages.js';
-	import { base } from '$app/paths';
+	import { linkHandler } from '$lib/functions';
 
 	let { data } = $props();
 
@@ -389,8 +389,8 @@
 								<td
 									>{#if col === 'title' || SVGS[row[col]]}
 										<a
-											href={localizeHref(
-												`${base}/directories/detail/${row?.references?.[0]?.entities_related_id?.id ?? row.id}`
+											href={linkHandler(
+												`/directories/detail/${row?.references?.[0]?.entities_related_id?.id ?? row.id}`
 											)}
 											class:internal={row.internal}
 											title={row[col]}
