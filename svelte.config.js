@@ -11,8 +11,8 @@ const config = {
 	}),
 	kit: {
 		paths: {
-			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH,
-			relative: false
+			base: ''
+			// relative: false
 		},
 		adapter: adapter({
 			fallback: '404.html'
