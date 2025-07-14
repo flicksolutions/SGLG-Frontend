@@ -1,19 +1,18 @@
 <script>
 	import { onMount } from 'svelte';
 	import Sticker from '$lib/components/Sticker.svelte';
-	import { setBg, getBg, directus, createLabel } from '$lib/functions';
+	import { directus, createLabel } from '$lib/functions';
 	import { SVGS } from '$lib/constants';
 	import { truncate } from 'htmlsave';
 	import { getLocale } from '$lib/paraglide/runtime';
 	import { readSingleton } from '@directus/sdk';
 	import { m } from '$lib/paraglide/messages';
 	import { linkHandler } from '$lib/functions';
+	import { page } from '$app/state';
 
-	let items = [];
-	let content = [];
-	let bgContainer;
-	let windowWidth;
-	let featuredImg;
+	let items = $state([]);
+	let content = $state([]);
+	let windowWidth = $state(0);
 
 	//get the content
 	let fields = [
@@ -69,14 +68,6 @@
 			content = json.content;
 		}
 	});
-
-	onMount(async () => {
-		if (windowWidth > 800) {
-			setBg(document.querySelector('body')); // set a new background image for the body
-		} else {
-			featuredImg = await getBg();
-		}
-	});
 </script>
 
 <svelte:window bind:innerWidth={windowWidth} />
@@ -85,13 +76,10 @@
 	<title>{m.SGLG()}</title>
 </svelte:head>
 
-{#if featuredImg}
-	<div style="position: relative">
-		<Sticker /><img src={featuredImg} alt="featured" class="featured" />
-	</div>
-{:else}
-	<div class="spacer"><Sticker /></div>
-{/if}
+<div class="mobile-header">
+	<Sticker /><img src={page.data?.bgUrl} alt="featured" class="featured" />
+</div>
+<div class="spacer"><Sticker /></div>
 
 <section class="content-layout">
 	<h2>
@@ -152,6 +140,18 @@
 <!-- other content -->
 
 <style lang="scss">
+	.mobile-header {
+		position: relative;
+		@media screen and (min-width: $medium) {
+			display: none;
+		}
+	}
+	:global(.bg-image) {
+		display: none;
+		@media screen and (min-width: $medium) {
+			display: block;
+		}
+	}
 	.featured {
 		max-width: 100%;
 	}

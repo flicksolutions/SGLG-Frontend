@@ -123,12 +123,6 @@ export async function getBg() {
 	return `https://misty-frank-flicksolutions-b4bb2a19.koyeb.app/assets/${fileId}`;
 }
 
-export function setBg(node) {
-	getBg().then((url) => {
-		node.style.backgroundImage = `url("${url}")`;
-	});
-}
-
 export function checkLocale(lang) {
 	if (get(locales).includes(lang)) {
 		return { lang };

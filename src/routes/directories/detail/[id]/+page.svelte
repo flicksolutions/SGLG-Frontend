@@ -2,7 +2,7 @@
 	import { SVGS } from '$lib/constants';
 	import ContentBoxes from '$lib/components/ContentBoxes.svelte';
 	import { onMount } from 'svelte';
-	import { addAccordionListener, getBg, setBg, createLabel } from '$lib/functions';
+	import { addAccordionListener, createLabel } from '$lib/functions';
 	import ImageGrid from '$lib/components/ImageGrid.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { getLocale } from '$lib/paraglide/runtime';
@@ -60,27 +60,16 @@
 			};
 		});
 
-	let windowWidth, featuredImg;
-
 	onMount(async () => {
-		if (windowWidth > 800) {
-			setBg(document.querySelector('body')); // set a new background image for the body
-		} else {
-			featuredImg = await getBg();
-		}
 		addAccordionListener(document.querySelectorAll('.accordion-item'));
 	});
 </script>
-
-<svelte:window bind:innerWidth={windowWidth} />
 
 <svelte:head>
 	<title>{item.title}</title>
 </svelte:head>
 
-{#if windowWidth > 800}
-	<div class="spacer" style="height: 10vw;"></div>
-{/if}
+<div class="spacer" style="height: 10vw;"></div>
 
 <section class="content-layout">
 	<h1 class:internal={item.internal}>

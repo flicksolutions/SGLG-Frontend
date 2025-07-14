@@ -1,5 +1,5 @@
 import { readItems } from '@directus/sdk';
-import { directus, hydrateTranslations } from '$lib/functions';
+import { directus, hydrateTranslations, getBg } from '$lib/functions';
 import { getLocale } from '$lib/paraglide/runtime';
 
 export const prerender = true;
@@ -20,6 +20,7 @@ export async function load() {
 	};
 
 	try {
+		const bgUrl = await getBg();
 		const res = await directus.request(
 			readItems('pages', { ...hydrateTranslations(fields, deep, getLocale()) })
 		);
@@ -36,7 +37,7 @@ export async function load() {
 				return p;
 			}
 		});
-		return { pages };
+		return { pages, bgUrl };
 	} catch (err) {
 		console.log('err');
 		console.log(err);

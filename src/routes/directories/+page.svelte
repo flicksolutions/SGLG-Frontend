@@ -1,6 +1,6 @@
 <script>
 	import { preventDefault } from 'svelte/legacy';
-	import { setBg, getBg, createLabel } from '$lib/functions';
+	import { createLabel } from '$lib/functions';
 	import { getLocale } from '$lib/paraglide/runtime';
 	import { onMount } from 'svelte';
 	import Checkbox from '$lib/components/Checkbox.svelte';
@@ -41,8 +41,6 @@
 		lowerScroll = $state(),
 		upperScroll = $state();
 	let meta = $state(0);
-	let windowWidth = $state(),
-		featuredImg;
 	let pageLimit = $state('20');
 	const setCats = (queryparams) => {
 		if (Array.isArray(queryparams)) {
@@ -199,11 +197,6 @@
 	const dateLabels = $state([]);
 
 	onMount(async () => {
-		if (windowWidth > 800) {
-			setBg(document.querySelector('body')); // set a new background image for the body
-		} else {
-			featuredImg = await getBg();
-		}
 		if (!selectors.categories.length) {
 			console.log('no categories set, setting default');
 			selectors.categories = directoryObjects.map((d) => d.directory);
@@ -279,14 +272,10 @@
 	let maxPage = $derived(Math.ceil(meta / selectors.limit));
 </script>
 
-<svelte:window bind:innerWidth={windowWidth} />
-
 <svelte:head>
 	<title>{selectors.news ? m.newsletter() : m.directories({ count: 1 })}</title>
 </svelte:head>
-{#if windowWidth > 800}
-	<div class="spacer" style={selectors.news ? '' : 'height: 10vw'}></div>
-{/if}
+<div class="spacer" style={selectors.news ? '' : 'height: 10vw'}></div>
 <section class="filter-section">
 	{#if selectors.news}
 		<h1>{nlTitle}</h1>

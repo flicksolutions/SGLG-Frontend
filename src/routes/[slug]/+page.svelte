@@ -1,22 +1,15 @@
 <script>
 	import ImageGrid from '$lib/components/ImageGrid.svelte';
 	import { onMount } from 'svelte';
-	import { getBg, setBg, addAccordionListener } from '$lib/functions';
+	import { addAccordionListener } from '$lib/functions';
 	import { marked } from 'marked';
+	import { page } from '$app/state';
 
 	/** @type {{ data: import('./$types').PageData }} */
 	let { data } = $props();
 	let { meta, content } = data;
 
-	let windowWidth = $state(0);
-	let featuredImg = $state('');
-
 	onMount(async () => {
-		if (windowWidth > 800) {
-			setBg(document.querySelector('body')); // set a new background image for the body
-		} else {
-			featuredImg = await getBg();
-		}
 		addAccordionListener(document.querySelectorAll('.accordion-item'));
 	});
 </script>
@@ -25,15 +18,10 @@
 	<title>{meta.title}</title>
 </svelte:head>
 
-<svelte:window bind:innerWidth={windowWidth} />
-
-{#if featuredImg}
-	<div style="position: relative">
-		<img src="{featuredImg}?width={windowWidth}" alt="featured" class="featured" />
-	</div>
-{:else}
-	<div class="spacer"></div>
-{/if}
+<div class="mobile-header">
+	<img src={page.data?.bgUrl} alt="featured" class="featured" />
+</div>
+<div class="spacer"></div>
 
 <section class="content-layout">
 	<h1>{meta.title}</h1>
@@ -60,6 +48,18 @@
 </section>
 
 <style lang="scss">
+	.mobile-header {
+		position: relative;
+		@media screen and (min-width: $medium) {
+			display: none;
+		}
+	}
+	:global(.bg-image) {
+		display: none;
+		@media screen and (min-width: $medium) {
+			display: block;
+		}
+	}
 	.featured {
 		max-width: 100%;
 	}

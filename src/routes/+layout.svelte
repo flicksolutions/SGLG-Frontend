@@ -6,7 +6,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 
-	let { pages } = data;
+	let { pages, bgUrl } = data;
 	let FontTracker;
 
 	onMount(async () => {
@@ -19,6 +19,7 @@
 	const segment = $derived(page.url.pathname.split('/').filter(Boolean).pop() ?? '');
 </script>
 
+<img src={bgUrl} alt="Background" class="bg-image" />
 <Header {segment} pages={pages.filter((p) => p.slug !== 'impressum')} />
 <!-- Filtering out the Impressum for the Header -->
 
@@ -28,9 +29,28 @@
 
 <Footer {segment} {pages} />
 
-<style global>
-	@import '../lib/style/global.scss';
+<style global lang="scss">
+	@use '../lib/style/global.scss';
 	main {
 		margin-top: $header-height;
+	}
+
+	.bg-image {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		z-index: -1;
+		display: none;
+		@media screen and (min-width: $medium) {
+			display: block;
+		}
+	}
+
+	.mobile-header {
+		position: relative;
+		@media screen and (min-width: $medium) {
+			display: none;
+		}
 	}
 </style>
