@@ -40,6 +40,7 @@
 		top: 0;
 		left: 0;
 		width: 100vw;
+		height: auto;
 		z-index: -1;
 		display: none;
 		@media screen and (min-width: $medium) {
