@@ -137,8 +137,6 @@
 	</section>
 {/each}
 
-<!-- other content -->
-
 <style lang="scss">
 	.mobile-header {
 		position: relative;
