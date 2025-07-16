@@ -2,6 +2,7 @@
 	import { preventDefault } from 'svelte/legacy';
 	import Lightbox from './Lightbox.svelte';
 	import { fit, parent_style } from '@leveluptuts/svelte-fit';
+	import { ASSET_URL } from '$lib/constants';
 
 	let { images, captions = [], overlay = [] } = $props();
 	let showLightbox = $state(new Array(images.length).fill(false));
@@ -20,7 +21,7 @@
 	{#each images as img, i}
 		<figure class="img">
 			<a
-				href={`https://misty-frank-flicksolutions-b4bb2a19.koyeb.app/assets/${img.directus_files_id.id}`}
+				href={`${ASSET_URL}${img.directus_files_id.id}`}
 				onclick={(e) => {
 					e.preventDefault();
 					showLightbox[i] = !showLightbox[i];
@@ -28,7 +29,7 @@
 				target="_blank"
 			>
 				<img
-					src={`https://misty-frank-flicksolutions-b4bb2a19.koyeb.app/assets/${img.directus_files_id.id}?key=detail`}
+					src={`${ASSET_URL}${img.directus_files_id.id}?key=detail`}
 					alt={img.directus_files_id.title}
 				/>
 				{#if overlay[i]}
@@ -45,7 +46,7 @@
 		</figure>
 		{#if showLightbox[i]}
 			<Lightbox
-				img={`https://misty-frank-flicksolutions-b4bb2a19.koyeb.app/assets/${img.directus_files_id.id}`}
+				img={`${ASSET_URL}${img.directus_files_id.id}`}
 				alt={img.directus_files_id.title}
 				on:exitLightbox={() => (showLightbox[i] = !showLightbox[i])}
 			/>

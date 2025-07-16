@@ -12,6 +12,8 @@ export const SVGS = {
 	review
 };
 
+export const ASSET_URL = 'https://misty-frank-flicksolutions-b4bb2a19.koyeb.app/assets/';
+
 // async function createDirectory() {
 // 	return (await directus.items('directories').readByQuery()).data;
 // }

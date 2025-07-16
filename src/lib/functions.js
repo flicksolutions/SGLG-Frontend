@@ -2,6 +2,7 @@ import { createDirectus, readItems, rest, readFiles } from '@directus/sdk';
 import { locales, localizeHref } from '$lib/paraglide/runtime';
 import { get } from 'svelte/store';
 import { m } from '$lib/paraglide/messages';
+import { ASSET_URL } from './constants';
 // import { base } from '$app/paths';
 export const directus = createDirectus(
 	'https://misty-frank-flicksolutions-b4bb2a19.koyeb.app'
@@ -120,7 +121,7 @@ export async function getBg() {
 	);
 	const randomIndex = Math.floor(Math.random() * data.length);
 	const fileId = data[randomIndex].id;
-	return `https://misty-frank-flicksolutions-b4bb2a19.koyeb.app/assets/${fileId}`;
+	return `${ASSET_URL}${fileId}`;
 }
 
 export function checkLocale(lang) {

@@ -1,12 +1,25 @@
 <script>
 	import { m } from '$lib/paraglide/messages.js';
 	import { linkHandler } from '$lib/functions';
-	import { SVGS } from '$lib/constants';
+	import { ASSET_URL, SVGS } from '$lib/constants';
 	import { createLabel } from '$lib/functions';
+	import { getLocale } from '$lib/paraglide/runtime';
 
 	/** @type {{ data: import('./$types').PageData }} */
 	let { data } = $props();
 	const { items } = data;
+
+	const MAXNUMBEROFCOLUMNS = 3;
+	let galleryWidth = $state(300);
+
+	let dividedItems = $derived.by(() => {
+		let numberOfColumns = Math.min(MAXNUMBEROFCOLUMNS, Math.floor(galleryWidth / 150));
+		let result = Array.from({ length: numberOfColumns }, () => []);
+		items.forEach((item, idx) => {
+			result[idx % numberOfColumns].push(item);
+		});
+		return result;
+	});
 </script>
 
 <svelte:head>
@@ -27,24 +40,38 @@
 			Tagungen sowie die wichtigsten Publikationen von Mitgliedern unserer Gesellschaft.
 		</p>
 	</div>
-	<div class="content-inner">
-		<div>
-			{#each items as element}
-				<div class="bottom-line">
-					{@html SVGS[element.itemtype.directory]}<a
-						href={linkHandler(`/directory/detail/${element.id}`)}>{createLabel(element)}</a
-					>
-					<div></div>
-				</div>
-			{/each}
-		</div>
+	<div class="grid-container" bind:clientWidth={galleryWidth}>
+		{#each dividedItems as column}
+			<div class="column">
+				{#each column as element (element.id)}
+					<div class="element-container">
+						<a href={linkHandler(`/directory/detail/${element.id}`)}>
+							<img
+								src={`${ASSET_URL}${element?.image.id}?width=200&format=webp`}
+								alt={element?.image?.title}
+							/>
+						</a>
+						<a href={linkHandler(`/directory/detail/${element.id}`)}>
+							{@html SVGS[element.itemtype.directory]}
+							{createLabel(element)}
+						</a>
+						<div>
+							{element?.itemtype.directory === 'publications'
+								? new Date(element?.date).getFullYear()
+								: new Date(element?.date).toLocaleDateString(getLocale(), {
+										year: 'numeric',
+										month: 'numeric',
+										day: 'numeric'
+									})} | {m[element?.itemtype.directory]({ count: 1 })}
+						</div>
+					</div>
+				{/each}
+			</div>
+		{/each}
 	</div>
 </section>
 
 <style lang="scss">
-	.content-inner :global(svg) {
-		width: 22px;
-	}
 	.mobile-header {
 		position: relative;
 		@media screen and (min-width: $medium) {
@@ -60,7 +87,6 @@
 	.featured {
 		max-width: 100%;
 	}
-	h1,
 	h2 {
 		color: $sglg-orange;
 	}
@@ -76,23 +102,30 @@
 		}
 	}
 
-	.content-inner {
+	.grid-container {
 		grid-column: 1/-1;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		grid-gap: 1em;
+	}
+	.column {
+		display: grid;
+		grid-gap: 1em;
+		height: fit-content;
 	}
 
-	.bottom-line {
-		border-bottom: solid 1px $line-grey;
-		padding-bottom: 2em;
-		&:first-of-type {
-			border-top: solid 1px $line-grey;
+	.element-container {
+		img {
+			max-width: 100%;
 		}
-		@media (min-width: $medium) {
-			display: grid;
-			grid-template-columns: 3fr 9fr;
+		:global(svg) {
+			width: 22px;
+			fill: $dark-green;
+			margin-right: 0.5em;
 		}
 		:global(a) {
-			display: block;
-			margin-bottom: 14px;
+			color: $sglg-orange;
+			text-decoration: none;
 		}
 	}
 </style>

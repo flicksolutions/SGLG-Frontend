@@ -7,12 +7,15 @@ export async function load() {
 	const directoryObjects = await directus.request(readItems('directories'));
 
 	const config = {
-		fields: ['id', 'itemtype.directory', 'title', 'date', 'event_type'],
+		fields: ['id', 'itemtype.directory', 'title', 'date', 'event_type', 'image.id', 'image.title'],
 		filter: {
 			itemtype: {
 				directory: {
 					_in: directoryObjects.map((d) => d.directory)
 				}
+			},
+			image: {
+				_nnull: true
 			},
 			internal: {
 				_eq: true
@@ -35,6 +38,5 @@ export async function load() {
 	}
 
 	const items = await directus.request(readItems('entities', config));
-
 	return { items };
 }
