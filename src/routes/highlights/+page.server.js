@@ -1,6 +1,6 @@
 import { getLocale } from '$lib/paraglide/runtime';
 import { readItems } from '@directus/sdk';
-import { directus } from '$lib/functions';
+import { directus, replaceTranslations } from '$lib/functions';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load() {
@@ -37,6 +37,9 @@ export async function load() {
 		};
 	}
 
-	const items = await directus.request(readItems('entities', config));
+	const items = replaceTranslations(
+		await directus.request(readItems('entities', config)),
+		getLocale()
+	);
 	return { items };
 }
