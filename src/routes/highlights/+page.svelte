@@ -47,15 +47,17 @@
 					<div class="element-container">
 						<a href={linkHandler(`/directory/detail/${element.id}`)}>
 							<img
-								src={`${ASSET_URL}${element?.image.id}?width=200&format=webp`}
+								src={`${ASSET_URL}${element?.image.id}?width=430&format=webp`}
 								alt={element?.image?.title}
 							/>
 						</a>
 						<a href={linkHandler(`/directory/detail/${element.id}`)}>
-							{@html SVGS[element.itemtype.directory]}
-							{createLabel(element)}
+							<h4>
+								{@html SVGS[element.itemtype.directory]}
+								{createLabel(element)}
+							</h4>
 						</a>
-						<div>
+						<div class="meta">
 							{element?.itemtype.directory === 'publications'
 								? new Date(element?.date).getFullYear()
 								: new Date(element?.date).toLocaleDateString(getLocale(), {
@@ -107,6 +109,9 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 		grid-gap: 1em;
+		@media screen and (min-width: $medium) {
+			grid-gap: 2em;
+		}
 	}
 	.column {
 		display: grid;
@@ -115,8 +120,11 @@
 	}
 
 	.element-container {
+		margin-top: 2em;
 		img {
+			display: block;
 			max-width: 100%;
+			margin-bottom: 0.5em;
 		}
 		:global(svg) {
 			width: 22px;
@@ -126,6 +134,9 @@
 		:global(a) {
 			color: $sglg-orange;
 			text-decoration: none;
+		}
+		.meta {
+			margin-top: 0.5em;
 		}
 	}
 </style>
