@@ -146,13 +146,7 @@ button.button {
 	color: theme.$dark-green;
 	display: flex;
 	flex-direction: column;
-	img {
-		width: fit-content;
-		align-self: center;
-		@media (min-width: theme.$medium) {
-			align-self: normal;
-		}
-	}
+
 	@media (min-width: theme.$medium) {
 		display: grid;
 		grid-template-columns: 3fr 9fr 6fr;

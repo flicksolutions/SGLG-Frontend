@@ -110,6 +110,11 @@
 		margin-bottom: 2em;
 		max-width: 100%;
 		grid-row: span 2;
+		width: fit-content;
+		align-self: center;
+		@media (min-width: $medium) {
+			align-self: normal;
+		}
 	}
 
 	h1 {

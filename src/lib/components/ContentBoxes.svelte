@@ -40,7 +40,6 @@
 	*,
 	:global(a) {
 		color: $dark-green;
-		overflow-wrap: anywhere;
 	}
 	.bottom-line {
 		border-bottom: solid 1px $line-grey;
@@ -54,6 +53,7 @@
 		:global(a) {
 			display: block;
 			margin-bottom: 14px;
+			overflow-wrap: anywhere;
 		}
 	}
 </style>
