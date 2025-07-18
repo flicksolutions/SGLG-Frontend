@@ -1,9 +1,6 @@
 <script>
 	import Langswitch from './Langswitch.svelte';
 	import Nav from './Nav.svelte';
-	import Icon from 'fa-svelte';
-	import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
-	import { faBars } from '@fortawesome/free-solid-svg-icons/faBars';
 	import { m } from '$lib/paraglide/messages.js';
 	import { linkHandler } from '$lib/functions';
 	import logo from '$lib/svg/SGLG-Logo.svg';
@@ -44,7 +41,7 @@
 			aria-controls="menu"
 			aria-label={m.control_menu()}
 		>
-			<Icon icon={showMobileMenu ? faTimes : faBars} />
+			<i class="fa-solid {showMobileMenu ? 'fa-times' : 'fa-bars'}"></i>
 		</button>
 		<div class="nav" id="menu">
 			<Nav

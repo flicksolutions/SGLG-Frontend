@@ -32,10 +32,9 @@
 	},
 	"dependencies": {
 		"@directus/sdk": "^20.0.0",
-		"@fortawesome/free-solid-svg-icons": "^6.7.2",
+		"@fortawesome/fontawesome-free": "^6.7.2",
 		"@inlang/paraglide-js": "^2.2.0",
 		"@leveluptuts/svelte-fit": "^1.0.3",
-		"fa-svelte": "^3.1.0",
 		"htmlsave": "^3.0.0",
 		"marked": "^16.1.1"
 	},

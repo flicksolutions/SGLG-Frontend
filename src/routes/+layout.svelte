@@ -1,4 +1,6 @@
 <script>
+	import '@fortawesome/fontawesome-free/css/solid.min.css';
+	import '@fortawesome/fontawesome-free/css/fontawesome.min.css';
 	/** @type {{ data: import('./$types').LayoutData, children: import('svelte').Snippet }} */
 	let { data, children } = $props();
 	import Header from '$lib/components/Header.svelte';
