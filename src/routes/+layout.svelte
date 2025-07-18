@@ -7,9 +7,11 @@
 	import Footer from '$lib/components/Footer.svelte';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
+	import { onNavigate } from '$app/navigation';
 
 	let { pages, bgUrl } = data;
 	let FontTracker;
+	let randomIndex = $state(Math.floor(Math.random() * bgUrl.length));
 
 	onMount(async () => {
 		//code for font-tracking
@@ -18,10 +20,15 @@
 		const module = await import('/fonts/mtiFontTrackingCode.js?url');
 		FontTracker = module.default;
 	});
+	onNavigate(() => {
+		// Reset the random index on navigation to ensure a new image is shown
+		randomIndex = Math.floor(Math.random() * bgUrl.length);
+	});
 	const segment = $derived(page.url.pathname.split('/').filter(Boolean).pop() ?? '');
 </script>
 
-<img src={bgUrl} alt="Background" class="bg-image" />
+<!-- svelte-ignore hydration_attribute_changed -->
+<img src={bgUrl[randomIndex]} alt="Background" class="bg-image" />
 <Header {segment} pages={pages.filter((p) => p.slug !== 'impressum')} />
 <!-- Filtering out the Impressum for the Header -->
 

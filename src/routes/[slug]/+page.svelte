@@ -12,6 +12,7 @@
 	onMount(async () => {
 		addAccordionListener(document.querySelectorAll('.accordion-item'));
 	});
+	const randomIndex = Math.floor(Math.random() * page.data?.bgUrl.length);
 </script>
 
 <svelte:head>
@@ -19,7 +20,7 @@
 </svelte:head>
 
 <div class="mobile-header">
-	<img src={page.data?.bgUrl} alt="featured" class="featured" />
+	<img src={page.data?.bgUrl[randomIndex]} alt="featured" class="featured" />
 </div>
 <div class="spacer"></div>
 

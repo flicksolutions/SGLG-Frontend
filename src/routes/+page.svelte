@@ -68,6 +68,7 @@
 			content = json.content;
 		}
 	});
+	const randomIndex = Math.floor(Math.random() * page.data?.bgUrl.length);
 </script>
 
 <svelte:window bind:innerWidth={windowWidth} />
@@ -77,7 +78,7 @@
 </svelte:head>
 
 <div class="mobile-header">
-	<Sticker /><img src={page.data?.bgUrl} alt="featured" class="featured" />
+	<Sticker /><img src={page.data?.bgUrl[randomIndex]} alt="featured" class="featured" />
 </div>
 <div class="spacer"><Sticker /></div>
 

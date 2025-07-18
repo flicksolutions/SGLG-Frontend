@@ -1,10 +1,11 @@
 import { readItems } from '@directus/sdk';
 import { directus, hydrateTranslations, getBg } from '$lib/functions';
 import { getLocale } from '$lib/paraglide/runtime';
+import { error } from '@sveltejs/kit';
 
 export const prerender = true;
 
-/** @type {import('./$types').LayoutLoad} */
+/** @type {import('./$types').LayoutServerLoad} */
 export async function load() {
 	const fields = ['title', 'content.page_content_id.title', 'content.page_content_id.slug', 'slug'];
 	const deep = {
@@ -24,7 +25,6 @@ export async function load() {
 		const res = await directus.request(
 			readItems('pages', { ...hydrateTranslations(fields, deep, getLocale()) })
 		);
-		// const res = (await directus.items('pages').readByQuery(hydrateTranslations(fields,deep,params.lang))).data;
 		const pages = res.map((p) => {
 			if (p.translations?.length) {
 				p.translations[0].subPages = p.translations[0]?.content
@@ -39,8 +39,7 @@ export async function load() {
 		});
 		return { pages, bgUrl };
 	} catch (err) {
-		console.log('err');
 		console.log(err);
-		this.error(403, 'No Permission');
+		error(403, 'No Permission');
 	}
 }

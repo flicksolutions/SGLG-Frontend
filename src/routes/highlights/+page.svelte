@@ -20,6 +20,7 @@
 		});
 		return result;
 	});
+	const randomIndex = Math.floor(Math.random() * page.data?.bgUrl.length);
 </script>
 
 <svelte:head>
@@ -27,7 +28,7 @@
 </svelte:head>
 
 <div class="mobile-header">
-	<img src={data?.bgUrl} alt="featured" class="featured" />
+	<img src={data?.bgUrl[randomIndex]} alt="featured" class="featured" />
 </div>
 <div class="spacer"></div>
 

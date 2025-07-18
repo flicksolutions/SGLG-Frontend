@@ -119,9 +119,7 @@ export async function getBg() {
 			}
 		})
 	);
-	const randomIndex = Math.floor(Math.random() * data.length);
-	const fileId = data[randomIndex].id;
-	return `${ASSET_URL}${fileId}`;
+	return data.map((f) => `${ASSET_URL}${f.id}`);
 }
 
 export function checkLocale(lang) {
