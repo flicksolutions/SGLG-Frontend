@@ -1,5 +1,5 @@
 <script>
-	import { SVGS } from '$lib/constants';
+	import { SVGS, ASSET_URL } from '$lib/constants';
 	import ContentBoxes from '$lib/components/ContentBoxes.svelte';
 	import { onMount } from 'svelte';
 	import { addAccordionListener, createLabel } from '$lib/functions';
@@ -7,7 +7,7 @@
 	import { m } from '$lib/paraglide/messages';
 	import { getLocale } from '$lib/paraglide/runtime';
 
-	export let data;
+	let { data } = $props();
 	let { item } = data;
 
 	const setLinks = (arr) => {
@@ -74,7 +74,16 @@
 <section class="content-layout">
 	<h1 class:internal={item.internal}>
 		{@html SVGS[item.itemtype.directory]}
+		{item?.title}
 	</h1>
+
+	{#if item?.image}
+		<img
+			src={`${ASSET_URL}${item?.image.id}?width=750&height=350&fit=inside&format=webp`}
+			alt={item?.image?.title}
+		/>
+	{/if}
+
 	<div class="props">
 		<ContentBoxes content={frontEndProps} />
 		{#each references as ref}
@@ -85,14 +94,25 @@
 	{#if item.files}
 		<ImageGrid images={item.files} />
 	{/if}
-	<button class="button" on:click={() => window.history.back()}>{m.back()}</button>
+	<button class="button" onclick={() => window.history.back()}>{m.back()}</button>
 </section>
 
 <style lang="scss">
 	.button {
+		align-self: baseline;
 		@media (min-width: $medium) {
 			grid-column: 1;
 			grid-row: 1;
 		}
+	}
+
+	.content-layout img {
+		margin-bottom: 2em;
+		max-width: 100%;
+		grid-row: span 2;
+	}
+
+	h1 {
+		margin-top: 0;
 	}
 </style>

@@ -26,6 +26,7 @@
 	});
 	let menu = [
 		{ title: capitalize(m.home()), slug: '' },
+		{ title: capitalize(m.highlights_title_short()), slug: 'highlights' },
 		{
 			title: capitalize(m.directories({ count: 1 })),
 			slug: 'directories',
@@ -95,9 +96,11 @@
 		}
 		&.header {
 			.pages {
-				display: grid;
-				grid-template-columns: 1fr 1fr;
-				grid-auto-columns: 1fr;
+				// display: grid;
+				// grid-template-columns: 1fr 1fr;
+				// grid-auto-columns: 1fr;
+				display: flex;
+				flex-wrap: wrap;
 				ul {
 					@media (min-width: $medium) {
 						display: none;

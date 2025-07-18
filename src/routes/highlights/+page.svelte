@@ -4,6 +4,7 @@
 	import { ASSET_URL, SVGS } from '$lib/constants';
 	import { createLabel } from '$lib/functions';
 	import { getLocale } from '$lib/paraglide/runtime';
+	import { page } from '$app/state';
 
 	/** @type {{ data: import('./$types').PageData }} */
 	let { data } = $props();
@@ -28,7 +29,7 @@
 </svelte:head>
 
 <div class="mobile-header">
-	<img src={data?.bgUrl[randomIndex]} alt="featured" class="featured" />
+	<img src={page.data?.bgUrl[randomIndex]} alt="featured" class="featured" />
 </div>
 <div class="spacer"></div>
 
@@ -46,13 +47,13 @@
 			<div class="column">
 				{#each column as element (element.id)}
 					<div class="element-container">
-						<a href={linkHandler(`/directory/detail/${element.id}`)}>
+						<a href={linkHandler(`/directories/detail/${element.id}`)}>
 							<img
 								src={`${ASSET_URL}${element?.image.id}?width=430&format=webp`}
 								alt={element?.image?.title}
 							/>
 						</a>
-						<a href={linkHandler(`/directory/detail/${element.id}`)}>
+						<a href={linkHandler(`/directories/detail/${element.id}`)}>
 							<h4>
 								{@html SVGS[element.itemtype.directory]}
 								{createLabel(element)}

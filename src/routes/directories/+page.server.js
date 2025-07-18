@@ -2,7 +2,7 @@ import { directus, hydrateTranslations, replaceTranslations } from '$lib/functio
 import { getLocale } from '$lib/paraglide/runtime';
 import { readItems, readSingleton } from '@directus/sdk';
 
-/** @type {import('./$types').PageLoad} */
+/** @type {import('./$types').PageServerLoad} */
 export async function load() {
 	const directoryObjects = await directus.request(readItems('directories'));
 

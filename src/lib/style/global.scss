@@ -113,6 +113,9 @@ figure {
 .internal {
 	color: theme.$sglg-orange;
 	fill: theme.$sglg-orange;
+	svg {
+		fill: theme.$sglg-orange;
+	}
 }
 
 [type='submit'].button,
@@ -141,29 +144,41 @@ button.button {
 }
 .content-layout {
 	color: theme.$dark-green;
+	display: flex;
+	flex-direction: column;
+	img {
+		width: fit-content;
+		align-self: center;
+		@media (min-width: theme.$medium) {
+			align-self: normal;
+		}
+	}
 	@media (min-width: theme.$medium) {
 		display: grid;
-		grid-template-columns: 3fr 9fr;
+		grid-template-columns: 3fr 9fr 6fr;
+		grid-column-gap: 1em;
 	}
 	.button {
 		margin: 2em 0 0 0;
 		@media (min-width: theme.$medium) {
 			margin: 0;
-			align-self: center;
 		}
 	}
-	h1 {
-		svg {
-			max-width: 1em;
-			margin-right: 0.2em;
-			fill: theme.$dark-green;
-		}
+
+	svg {
+		max-width: 1em;
+		margin-right: 0.2em;
 	}
+
 	.props {
 		@media (min-width: theme.$medium) {
-			grid-column: 1/-1;
+			grid-column: span 2;
 		}
 	}
+}
+
+svg {
+	fill: theme.$dark-green;
 }
 
 .accordion-item {

@@ -43,7 +43,7 @@
 		>
 			<i class="fa-solid {showMobileMenu ? 'fa-times' : 'fa-bars'}"></i>
 		</button>
-		<div class="nav" id="menu">
+		<div class="nav">
 			<Nav
 				{pages}
 				{segment}
@@ -84,7 +84,7 @@
 			color: $dark-green;
 			& {
 				@media (min-width: $medium) {
-					grid-template-columns: 3fr 3fr 6fr;
+					grid-template-columns: 3fr 3fr 7fr;
 					grid-gap: 1em;
 				}
 			}
@@ -161,7 +161,7 @@
 	.nav {
 		display: none;
 		@media (min-width: $medium) {
-			display: block;
+			display: contents;
 		}
 	}
 </style>
