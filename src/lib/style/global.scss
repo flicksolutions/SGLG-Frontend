@@ -144,13 +144,10 @@ button.button {
 }
 .content-layout {
 	color: theme.$dark-green;
-	display: flex;
-	flex-direction: column;
 
 	@media (min-width: theme.$medium) {
 		display: grid;
-		grid-template-columns: 3fr 9fr 6fr;
-		grid-column-gap: 1em;
+		grid-template-columns: 3fr 9fr;
 	}
 	.button {
 		margin: 2em 0 0 0;

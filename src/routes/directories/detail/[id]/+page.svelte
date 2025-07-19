@@ -106,14 +106,22 @@
 		}
 	}
 
-	.content-layout img {
-		margin-bottom: 2em;
-		max-width: 100%;
-		grid-row: span 2;
-		width: fit-content;
-		align-self: center;
+	.content-layout {
+		display: flex;
+		flex-direction: column;
 		@media (min-width: $medium) {
-			align-self: normal;
+			grid-template-columns: 3fr 9fr 6fr;
+			grid-column-gap: 1em;
+		}
+		img {
+			margin-bottom: 2em;
+			max-width: 100%;
+			grid-row: span 2;
+			width: fit-content;
+			align-self: center;
+			@media (min-width: $medium) {
+				align-self: normal;
+			}
 		}
 	}
 

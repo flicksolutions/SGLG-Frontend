@@ -4,24 +4,7 @@
 	import { getLocale } from '$lib/paraglide/runtime';
 	import { readItems } from '@directus/sdk';
 
-	let label;
-	let link = '';
-
-	const fields = ['*'];
-	const deep = {};
-	directus
-		.request(
-			readItems('disturber', { limit: 1, ...hydrateTranslations(fields, deep, getLocale()) })
-		)
-		.then((i) => {
-			if (i[0] && getLocale() === 'de') {
-				label = marked(i[0].label);
-				link = i[0].link;
-			} else if (i[0]?.translations?.[0]) {
-				label = marked(i[0].translations[0]?.label);
-				link = i[0].translations[0]?.link;
-			}
-		});
+	let { label, link = '' } = $props();
 </script>
 
 {#if label}

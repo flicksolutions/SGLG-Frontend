@@ -3,8 +3,6 @@ import publications from '$lib/svg/Icon-Publikationen.svg?raw';
 import call_for_paper from '$lib/svg/Icon-Call-for-papers.svg?raw';
 import review from '$lib/svg/Icon-Rezensionen-Berichte.svg?raw';
 
-// import { directus } from './functions';
-
 export const SVGS = {
 	event,
 	publications,
@@ -13,9 +11,3 @@ export const SVGS = {
 };
 
 export const ASSET_URL = 'https://misty-frank-flicksolutions-b4bb2a19.koyeb.app/assets/';
-
-// async function createDirectory() {
-// 	return (await directus.items('directories').readByQuery()).data;
-// }
-
-// export const directories = createDirectory();
