@@ -2,17 +2,14 @@
 	import ImageGrid from '$lib/components/ImageGrid.svelte';
 	import { onMount } from 'svelte';
 	import { addAccordionListener } from '$lib/functions';
-	import { marked } from 'marked';
-	import { page } from '$app/state';
 
 	/** @type {{ data: import('./$types').PageData }} */
 	let { data } = $props();
-	let { meta, content } = data;
+	let { meta, content, randomIndex } = data;
 
 	onMount(async () => {
 		addAccordionListener(document.querySelectorAll('.accordion-item'));
 	});
-	const randomIndex = Math.floor(Math.random() * page.data?.bgUrl.length);
 </script>
 
 <svelte:head>
@@ -20,13 +17,13 @@
 </svelte:head>
 
 <div class="mobile-header">
-	<img src={page.data?.bgUrl[randomIndex]} alt="featured" class="featured" />
+	<img src={data?.bgUrl[randomIndex]} alt="featured" class="featured" />
 </div>
 <div class="spacer"></div>
 
 <section class="content-layout">
 	<h1>{meta.title}</h1>
-	<p class="description">{@html marked(meta.description || '')}</p>
+	<div class="description">{@html meta.description || ''}</div>
 	<div class="content-inner">
 		{#each content as element}
 			<div class="bottom-line">
@@ -41,6 +38,27 @@
 					{/if}
 					{#if element.text}
 						<div>{@html element.text}</div>
+					{/if}
+					{#if element.member_list}
+						<div class="accordion-item">
+							<h3>Mitglieder</h3>
+							<div class="accordion-content">
+								<ul class="member-list">
+									{#each element.member_list as member}
+										<li>
+											{#if member.Webseite}
+												<a href={member.Webseite} target="_blank" rel="noopener noreferrer">
+													{member.Name}
+													{member.Vorname}
+												</a>
+											{:else}
+												{member.Name} {member.Vorname}
+											{/if}
+										</li>
+									{/each}
+								</ul>
+							</div>
+						</div>
 					{/if}
 				</div>
 			</div>
@@ -97,6 +115,19 @@
 		:global(a) {
 			display: block;
 			margin-bottom: 14px;
+		}
+		.member-list {
+			display: grid;
+			padding: 0;
+			list-style-position: outside;
+			column-gap: 1.5rem;
+			row-gap: 0.5rem;
+			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			li {
+				a {
+					margin-bottom: inherit;
+				}
+			}
 		}
 	}
 </style>
