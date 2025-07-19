@@ -2,6 +2,7 @@
 	import ImageGrid from '$lib/components/ImageGrid.svelte';
 	import { onMount } from 'svelte';
 	import { addAccordionListener } from '$lib/functions';
+	import { m } from '$lib/paraglide/messages';
 
 	/** @type {{ data: import('./$types').PageData }} */
 	let { data } = $props();
