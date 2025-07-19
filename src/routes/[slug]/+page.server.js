@@ -29,7 +29,6 @@ export async function load({ params, fetch, parent }) {
 		if (!id) return null;
 		const res = await fetch(`${ASSET_URL}${id}?download=true`);
 		let list = await res.json();
-		console.log('fetched list');
 		if (list) {
 			if (!Array.isArray(list)) {
 				list = list.Sheet1;
