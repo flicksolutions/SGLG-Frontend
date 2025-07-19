@@ -36,10 +36,9 @@
 <section class="content-layout">
 	<h2>{m.highlights_title()}</h2>
 	<div class="description">
-		<h3>Erfahren Sie mehr darüber, was die SGLG bietet.</h3>
+		<h3>{m.highlights_subtitle()}</h3>
 		<p>
-			Hier finden Sie einen Auszug von Aktivitäten der SGLG, Exkursionen, von uns veranstaltete
-			Tagungen sowie die wichtigsten Publikationen von Mitgliedern unserer Gesellschaft.
+			{m.highlights_description()}
 		</p>
 	</div>
 	<div class="grid-container" bind:clientWidth={galleryWidth}>

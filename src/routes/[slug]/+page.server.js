@@ -43,7 +43,7 @@ export async function load({ params, fetch, parent }) {
 			content[0]?.content.map(async (c) => {
 				return {
 					...c.page_content_id,
-					member_list: await replaceWithList(c.page_content_id.member_list)
+					member_list: await replaceWithList(c.page_content_id?.member_list)
 				};
 			})
 		);

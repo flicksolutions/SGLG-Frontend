@@ -141,5 +141,6 @@
 			}
 		}
 	],
-	"Tag": "day"
+	"Tag": "day",
+	"members": "Members"
 }

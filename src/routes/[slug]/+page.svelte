@@ -29,7 +29,7 @@
 			<div class="bottom-line">
 				<h2 id={element.slug}>{element.title}</h2>
 				<div>
-					{#if element.imagegrid_img.length}
+					{#if element?.imagegrid_img?.length}
 						<ImageGrid
 							images={element.imagegrid_img}
 							captions={element?.imagegrid_texts.map((t) => t.caption)}
@@ -41,7 +41,7 @@
 					{/if}
 					{#if element.member_list}
 						<div class="accordion-item">
-							<h3>Mitglieder</h3>
+							<h3>{m.members()}</h3>
 							<div class="accordion-content">
 								<ul class="member-list">
 									{#each element.member_list as member}
@@ -118,13 +118,13 @@
 		}
 		.member-list {
 			display: grid;
-			padding: 0;
-			list-style-position: outside;
+			padding-left: 1em;
 			column-gap: 1.5rem;
 			row-gap: 0.5rem;
 			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 			li {
 				a {
+					display: inline;
 					margin-bottom: inherit;
 				}
 			}
