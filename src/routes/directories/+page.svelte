@@ -30,6 +30,31 @@
 		limit: 20
 	});
 	let allDocumentsAdded = $state(false);
+	const setCats = (queryparams) => {
+		if (Array.isArray(queryparams)) {
+			selectors.categories = queryparams;
+		} else if (typeof queryparams === 'string' && queryparams) {
+			selectors.categories = [queryparams];
+		} else if (!selectors.categories.length) {
+			selectors.categories = directories.map((d) => d.directory);
+		}
+	};
+	const setNews = (i) => {
+		selectors.news = i;
+		if (i) {
+			selectors.categories = directories.map((d) => d.directory);
+		}
+	};
+	let pageLimit = $state('20');
+	$effect.pre(() => {
+		selectors.limit = parseInt(pageLimit);
+	});
+	$effect.pre(() => {
+		if (pageStore.url.searchParams.getAll('cat[]').length) {
+			setCats(pageStore.url.searchParams.getAll('cat[]'));
+		}
+		setNews(pageStore.url.searchParams.get('news') === '');
+	});
 	let filteredItems = $derived.by(() => {
 		//react to changes in selectors
 		let results;
@@ -96,22 +121,6 @@
 	let scrollW = $state(),
 		lowerScroll = $state(),
 		upperScroll = $state();
-	let pageLimit = $state('20');
-	const setCats = (queryparams) => {
-		if (Array.isArray(queryparams)) {
-			selectors.categories = queryparams;
-		} else if (typeof queryparams === 'string' && queryparams) {
-			selectors.categories = [queryparams];
-		} else if (!selectors.categories.length) {
-			selectors.categories = directories.map((d) => d.directory);
-		}
-	};
-	const setNews = (i) => {
-		selectors.news = i;
-		if (i) {
-			selectors.categories = directories.map((d) => d.directory);
-		}
-	};
 
 	const sortResults = (val) => {
 		if (selectors.sort === val) {
@@ -129,7 +138,6 @@
 		if (minisearch?.documentCount <= 1) {
 			allDocumentsAdded = new Promise((resolve) => {
 				minisearch.addAllAsync(data.allItems).then(() => {
-					console.log(minisearch.documentCount, 'documents added to minisearch');
 					resolve();
 				});
 			});
@@ -172,15 +180,6 @@
 			console.log('cannot change page!');
 		}
 	};
-	$effect(() => {
-		selectors.limit = parseInt(pageLimit);
-	});
-	$effect(() => {
-		if (pageStore.url.searchParams.getAll('cat[]').length) {
-			setCats(pageStore.url.searchParams.getAll('cat[]'));
-		}
-		setNews(pageStore.url.searchParams.get('news') === '');
-	});
 	let checkboxes = $derived(
 		directories
 			.map((d) => d.directory)
