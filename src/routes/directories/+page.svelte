@@ -34,6 +34,8 @@
 	let filteredItems = $derived.by(() => {
 		//react to changes in selectors
 		let results = data.allItems;
+
+		// search
 		if (allDocumentsAdded && selectors.query) {
 			const searchResults = minisearch.search(selectors.query, {
 				prefix: true
@@ -41,6 +43,16 @@
 			console.log(searchResults);
 			results = searchResults.map((r) => data.allItems.find((item) => item.id === r.id));
 		}
+
+		// filter
+		results = results.filter((doc) => {
+			if (selectors.onlySglg && !doc.internal) return false;
+			if (selectors.news && doc.published_in !== currentNl) return false; // probably not needed, double check
+			if (selectors.dateFrom && new Date(doc.date) < new Date(selectors.dateFrom)) return false;
+			if (selectors.dateTo && new Date(doc.date) > new Date(selectors.dateTo)) return false;
+			if (selectors.categories.length && !selectors.categories.includes(doc.itemtype)) return false;
+			return true;
+		});
 		// console.log(minisearch.documentCount, results);
 		return results;
 	});
@@ -83,19 +95,19 @@
 		} else if (typeof queryparams === 'string' && queryparams) {
 			selectors.categories = [queryparams];
 		} else if (!selectors.categories.length) {
-			selectors.categories = directories;
+			selectors.categories = directories.map((d) => d.directory);
 		}
 	};
 	const setNews = (i) => {
 		selectors.news = i;
 		if (i) {
-			selectors.categories = directories;
+			selectors.categories = directories.map((d) => d.directory);
 		}
 	};
 
 	let results;
 	async function getResults({
-		categories: cats = directories,
+		categories: cats = directories.map((d) => d.directory),
 		onlySglg = false,
 		news = false,
 		dateFrom = '',
@@ -228,7 +240,7 @@
 		}
 		if (!selectors.categories.length) {
 			console.log('no categories set, setting default');
-			selectors.categories = directories;
+			selectors.categories = directories.map((d) => d.directory);
 			setResults();
 		}
 	});
