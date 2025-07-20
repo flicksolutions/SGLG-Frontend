@@ -4,7 +4,26 @@ import { readItems, readSingleton } from '@directus/sdk';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load() {
-	const directoryObjects = await directus.request(readItems('directories'));
+	const directories = await directus.request(readItems('directories'));
+	let allItems = await directus.request(
+		readItems('entities', {
+			fields: [
+				'id',
+				'itemtype.directory',
+				'references.entities_related_id.title',
+				'references.entities_related_id.id',
+				...Array.from(new Set(directories.flatMap((d) => d.frontend_fields)))
+			],
+			limit: -1
+		})
+	);
+
+	allItems = allItems.map((item) => {
+		if (item.itemtype?.directory) {
+			item.itemtype = item.itemtype.directory;
+		}
+		return item;
+	});
 
 	const {
 		string: currentNl,
@@ -18,5 +37,5 @@ export async function load() {
 		),
 		getLocale()
 	);
-	return { directoryObjects, currentNl, nlDescription, nlTitle };
+	return { directories, currentNl, nlDescription, nlTitle, allItems };
 }

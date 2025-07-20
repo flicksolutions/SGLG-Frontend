@@ -8,12 +8,24 @@
 	import { SVGS } from '$lib/constants';
 	import { marked } from 'marked';
 	import { page as pageStore } from '$app/state';
-	import { readItems } from '@directus/sdk';
-	import { directus } from '$lib/functions';
 	import { m } from '$lib/paraglide/messages.js';
 	import { linkHandler } from '$lib/functions';
+	import MiniSearch from 'minisearch';
 
 	let { data } = $props();
+	let { directories, currentNl, nlDescription = '', nlTitle = '' } = data;
+	let minisearch = $state(
+		new MiniSearch({
+			fields: ['title', 'person', 'event_place', 'publications_series', 'isbn', 'content'],
+			storeFields: 'id'
+		})
+	);
+	const getItems = async (params) => {
+		return data.allItems;
+	};
+	const getCount = (params) => {
+		return data.allItems.length;
+	};
 
 	let selectors = $state({
 		categories: [],
@@ -28,13 +40,13 @@
 	});
 	/** @type {import('./$types').Snapshot<string>} */
 	export const snapshot = {
-		capture: () => selectors,
-		restore: (value) => (selectors = value)
+		capture: () => ({ selectors, minisearch }),
+		restore: (value) => {
+			selectors = value.selectors;
+			minisearch = value.minisearch;
+		}
 	};
 
-	let { directoryObjects, currentNl, nlDescription = '', nlTitle = '' } = data;
-
-	let directories = directoryObjects.map((d) => d.directory);
 	let table = $state([]);
 	let columns = $state([]);
 	let scrollW = $state(),
@@ -48,19 +60,19 @@
 		} else if (typeof queryparams === 'string' && queryparams) {
 			selectors.categories = [queryparams];
 		} else if (!selectors.categories.length) {
-			selectors.categories = directoryObjects.map((d) => d.directory);
+			selectors.categories = directories;
 		}
 	};
 	const setNews = (i) => {
 		selectors.news = i;
 		if (i) {
-			selectors.categories = directoryObjects.map((d) => d.directory);
+			selectors.categories = directories;
 		}
 	};
 
 	let results;
 	async function getResults({
-		categories: cats = directoryObjects.map((d) => d.directory),
+		categories: cats = directories,
 		onlySglg = false,
 		news = false,
 		dateFrom = '',
@@ -71,9 +83,7 @@
 		limit
 	}) {
 		let returnColumns, returnTable;
-		let categoryFields = cats.flatMap(
-			(c) => directoryObjects.find((o) => o.directory === c)?.frontend_fields
-		);
+		let categoryFields = cats.flatMap((c) => directories.find((o) => o === c)?.frontend_fields);
 		let fields = [
 			'id',
 			'itemtype.directory',
@@ -120,32 +130,24 @@
 				}
 			};
 		}
-		const answer = await directus.request(
-			readItems('entities', {
-				fields: fields,
-				filter,
-				search: query,
-				page,
-				sort,
-				limit
-			})
-		);
+		const answer = await getItems({
+			fields: fields,
+			filter,
+			search: query,
+			page,
+			sort,
+			limit
+		});
 		returnTable = answer;
-		meta = (
-			await directus.request(
-				readItems('entities', {
-					filter,
-					aggregate: { count: '*' },
-					search: query
-				})
-			)
-		)[0].count;
+		meta = getCount({
+			filter,
+			search: query
+		});
 
 		//create columns
 		returnColumns = returnTable[0] ? Object.keys(returnTable[0]) : [];
 		let emptyCols = {};
 		returnTable.forEach((row) => {
-			row.itemtype = row.itemtype.directory;
 			for (let col in row) {
 				if (!row[col]) {
 					if (!emptyCols[col]) {
@@ -196,10 +198,20 @@
 
 	const dateLabels = $state([]);
 
+	let allDocumentsAdded = $state(Promise.resolve());
+
 	onMount(async () => {
+		if (minisearch?.documentCount <= 1) {
+			allDocumentsAdded = new Promise((resolve) => {
+				minisearch.addAllAsync(data.allItems).then(() => {
+					console.log(minisearch.documentCount, 'documents added to minisearch');
+					resolve();
+				});
+			});
+		}
 		if (!selectors.categories.length) {
 			console.log('no categories set, setting default');
-			selectors.categories = directoryObjects.map((d) => d.directory);
+			selectors.categories = directories;
 			setResults();
 		}
 	});
@@ -254,12 +266,10 @@
 	});
 	let checkboxes = $derived(
 		directories
-			.map((d) => {
-				return { value: d, label: d };
-			})
+			.map((d) => d.directory)
 			.sort((a, b) => {
-				let labelA = m[a.label]({ count: 1 });
-				let labelB = m[b.label]({ count: 1 });
+				let labelA = m[a]({ count: 1 });
+				let labelB = m[b]({ count: 1 });
 				if (labelA < labelB) {
 					return -1;
 				}
@@ -420,15 +430,15 @@
 				disabled={!(selectors.page > 1)}
 				onclick={() => changePage(selectors.page - 1)}>{@html '<'}</button
 			>
-			<span style="margin: 0 1em"
-				>{selectors.limit * (selectors.page - 1) + 1} - {selectors.limit * (selectors.page - 1) +
+			<span style="margin: 0 1em">
+				{selectors.limit * (selectors.page - 1) + 1} - {selectors.limit * (selectors.page - 1) +
 					selectors.limit <
 				meta
 					? selectors.limit * (selectors.page - 1) + selectors.limit
 					: meta}
 				{m.of()}
-				{meta}</span
-			>
+				{meta}
+			</span>
 			<button
 				class="button arrow"
 				disabled={!(selectors.page < maxPage)}
