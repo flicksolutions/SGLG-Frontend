@@ -36,7 +36,8 @@
 		"@inlang/paraglide-js": "^2.2.0",
 		"@leveluptuts/svelte-fit": "^1.0.3",
 		"htmlsave": "^3.0.0",
-		"marked": "^16.1.1"
+		"marked": "^16.1.1",
+		"minisearch": "^7.1.2"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
