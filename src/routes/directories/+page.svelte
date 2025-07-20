@@ -20,11 +20,21 @@
 			storeFields: 'id'
 		})
 	);
+	let filteredItems = $state(data.allItems);
 	const getItems = async (params) => {
-		return data.allItems;
+		// {
+		// 	filter,
+		// 	search: query,
+		// 	page,
+		// 	sort,
+		// 	limit
+		// }
+
+		let filteredItems = data.allItems.slice(0, params.limit);
+		return filteredItems;
 	};
 	const getCount = (params) => {
-		return data.allItems.length;
+		return filteredItems.length;
 	};
 
 	let selectors = $state({
@@ -350,80 +360,74 @@
 		>
 			<div style="height: 10px; width: {scrollW}px;"></div>
 		</div>
-		<div
-			class="overflow-container"
-			bind:this={lowerScroll}
-			onscroll={() => (upperScroll.scrollLeft = lowerScroll.scrollLeft)}
-		>
-			<table bind:clientWidth={scrollW}>
-				<colgroup>
-					<col span="1" style="width: 1%; white-space: nowrap;" />
-					<col span="1" style="width: 22px;" />
-					<col span="1" style="" />
-					<col span="1" style="width: 1%; white-space: nowrap;" />
-				</colgroup>
-				<tbody>
+		<table bind:clientWidth={scrollW}>
+			<colgroup>
+				<col span="1" style="width: 1%; white-space: nowrap;" />
+				<col span="1" style="width: 22px;" />
+				<col span="1" style="" />
+				<col span="1" style="width: 1%; white-space: nowrap;" />
+			</colgroup>
+			<tbody>
+				<tr>
+					{#each columns as col}
+						{#if sortable(col)}
+							<th
+								onclick={() => sortResults(col === 'title' ? 'person' : col)}
+								class:selected={col === selectors.sort.substring(selectors.sort.indexOf('-') + 1)}
+								class="sortable"
+								><!-- instead of the title field, we sort for person, specific request...-->
+								{col === 'itemtype'
+									? ''
+									: col === 'title'
+										? m['person, title']()
+										: m[col]()}&nbsp;{@html arrow(col)}</th
+							>
+						{:else}
+							<th>{m[col]()}</th>
+						{/if}
+					{/each}
+				</tr>
+				{#each table as row (row.id)}
 					<tr>
-						{#each columns as col}
-							{#if sortable(col)}
-								<th
-									onclick={() => sortResults(col === 'title' ? 'person' : col)}
-									class:selected={col === selectors.sort.substring(selectors.sort.indexOf('-') + 1)}
-									class="sortable"
-									><!-- instead of the title field, we sort for person, specific request...-->
-									{col === 'itemtype'
-										? ''
-										: col === 'title'
-											? m['person, title']()
-											: m[col]()}&nbsp;{@html arrow(col)}</th
-								>
-							{:else}
-								<th>{m[col]()}</th>
-							{/if}
+						{#each columns as col (col)}
+							<td
+								>{#if col === 'title' || SVGS[row[col]]}
+									<a
+										href={linkHandler(
+											`/directories/detail/${row?.references?.[0]?.entities_related_id?.id ?? row.id}`
+										)}
+										class:internal={row.internal}
+										title={row[col]}
+										aria-label={row[col]}
+									>
+										{#if col !== 'title'}
+											{@html SVGS[row[col]]}
+										{:else}
+											{createLabel(row)}
+										{/if}
+									</a>
+								{:else if col.includes('date') && row[col]}
+									{row.itemtype === 'publications'
+										? new Date(row[col]).getFullYear()
+										: new Date(row[col]).toLocaleDateString(getLocale(), {
+												year: 'numeric',
+												month: 'numeric',
+												day: 'numeric'
+											})}
+								{:else if (!Array.isArray(row[col]) && row[col]) || (Array.isArray(row[col]) && row[col].length)}
+									{#if Array.isArray(row[col])}
+										{row[col].length}
+									{:else}
+										{@html row[col]}
+									{/if}
+								{/if}</td
+							>
 						{/each}
 					</tr>
-					{#each table as row (row.id)}
-						<tr>
-							{#each columns as col (col)}
-								<td
-									>{#if col === 'title' || SVGS[row[col]]}
-										<a
-											href={linkHandler(
-												`/directories/detail/${row?.references?.[0]?.entities_related_id?.id ?? row.id}`
-											)}
-											class:internal={row.internal}
-											title={row[col]}
-											aria-label={row[col]}
-										>
-											{#if col !== 'title'}
-												{@html SVGS[row[col]]}
-											{:else}
-												{createLabel(row)}
-											{/if}
-										</a>
-									{:else if col.includes('date') && row[col]}
-										{row.itemtype === 'publications'
-											? new Date(row[col]).getFullYear()
-											: new Date(row[col]).toLocaleDateString(getLocale(), {
-													year: 'numeric',
-													month: 'numeric',
-													day: 'numeric'
-												})}
-									{:else if (!Array.isArray(row[col]) && row[col]) || (Array.isArray(row[col]) && row[col].length)}
-										{#if Array.isArray(row[col])}
-											{row[col].length}
-										{:else}
-											{@html row[col]}
-										{/if}
-									{/if}</td
-								>
-							{/each}
-						</tr>
-					{/each}
-					<tr></tr>
-				</tbody>
-			</table>
-		</div>
+				{/each}
+				<tr></tr>
+			</tbody>
+		</table>
 		<p style="float: left;margin-right: 1em;">
 			<button
 				class="button arrow"
