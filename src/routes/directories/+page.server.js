@@ -5,25 +5,27 @@ import { readItems, readSingleton } from '@directus/sdk';
 /** @type {import('./$types').PageServerLoad} */
 export async function load() {
 	const directories = await directus.request(readItems('directories'));
-	let allItems = await directus.request(
-		readItems('entities', {
-			fields: [
-				'id',
-				'itemtype.directory',
-				'references.entities_related_id.title',
-				'references.entities_related_id.id',
-				...Array.from(new Set(directories.flatMap((d) => d.frontend_fields)))
-			],
-			limit: -1
-		})
-	);
-
-	allItems = allItems.map((item) => {
+	const fields = [
+		'id',
+		'itemtype.directory',
+		'references.entities_related_id.title',
+		'references.entities_related_id.id',
+		...Array.from(new Set(directories.flatMap((d) => d.frontend_fields)))
+	];
+	const flatDirectory = (item) => {
 		if (item.itemtype?.directory) {
 			item.itemtype = item.itemtype.directory;
 		}
 		return item;
-	});
+	};
+
+	let allItems = await directus.request(
+		readItems('entities', {
+			fields,
+			limit: -1
+		})
+	);
+	allItems = allItems.map(flatDirectory);
 
 	const {
 		string: currentNl,
@@ -37,5 +39,17 @@ export async function load() {
 		),
 		getLocale()
 	);
-	return { directories, currentNl, nlDescription, nlTitle, allItems };
+	let nlItems = await directus.request(
+		readItems('entities', {
+			filter: {
+				published_in: {
+					_eq: currentNl
+				}
+			},
+			fields,
+			limit: -1
+		})
+	);
+	nlItems = nlItems.map(flatDirectory);
+	return { directories, currentNl, nlDescription, nlTitle, nlItems, allItems };
 }

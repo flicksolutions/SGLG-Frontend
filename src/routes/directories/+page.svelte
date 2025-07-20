@@ -29,31 +29,39 @@
 		page: 1,
 		limit: 20
 	});
-	$inspect(selectors);
+	$inspect(currentNl);
 	let allDocumentsAdded = $state(false);
 	let filteredItems = $derived.by(() => {
 		//react to changes in selectors
-		let results = data.allItems;
+		let results;
+		if (selectors.news) {
+			results = data.nlItems;
+		} else {
+			results = data.allItems;
+		}
 
 		// search
-		if (allDocumentsAdded && selectors.query) {
+		if (!selectors.news && allDocumentsAdded && selectors.query) {
 			const searchResults = minisearch.search(selectors.query, {
 				prefix: true
 			});
-			console.log(searchResults);
 			results = searchResults.map((r) => data.allItems.find((item) => item.id === r.id));
 		}
 
 		// filter
-		results = results.filter((doc) => {
-			if (selectors.onlySglg && !doc.internal) return false;
-			if (selectors.news && doc.published_in !== currentNl) return false; // probably not needed, double check
-			if (selectors.dateFrom && new Date(doc.date) < new Date(selectors.dateFrom)) return false;
-			if (selectors.dateTo && new Date(doc.date) > new Date(selectors.dateTo)) return false;
-			if (selectors.categories.length && !selectors.categories.includes(doc.itemtype)) return false;
-			return true;
-		});
-		// console.log(minisearch.documentCount, results);
+		if (selectors.news) {
+			results = results.filter((doc) => !selectors.onlySglg || doc.internal);
+		} else {
+			results = results.filter((doc) => {
+				if (selectors.onlySglg && !doc.internal) return false;
+				if (selectors.news && doc.published_in !== currentNl) return false; // probably not needed, double check
+				if (selectors.dateFrom && new Date(doc.date) < new Date(selectors.dateFrom)) return false;
+				if (selectors.dateTo && new Date(doc.date) > new Date(selectors.dateTo)) return false;
+				if (selectors.categories.length && !selectors.categories.includes(doc.itemtype))
+					return false;
+				return true;
+			});
+		}
 		return results;
 	});
 	let meta = $derived(filteredItems.length);
