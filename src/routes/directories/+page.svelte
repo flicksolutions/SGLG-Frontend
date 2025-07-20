@@ -29,7 +29,6 @@
 		page: 1,
 		limit: 20
 	});
-	$inspect(currentNl);
 	let allDocumentsAdded = $state(false);
 	let filteredItems = $derived.by(() => {
 		//react to changes in selectors
@@ -62,6 +61,17 @@
 				return true;
 			});
 		}
+
+		// sort
+		if (selectors.sort) {
+			const sortField = selectors.sort.startsWith('-') ? selectors.sort.slice(1) : selectors.sort;
+			const sortOrder = selectors.sort.startsWith('-') ? -1 : 1;
+			results = results.sort((a, b) => {
+				if (a[sortField] < b[sortField]) return -1 * sortOrder;
+				if (a[sortField] > b[sortField]) return 1 * sortOrder;
+				return 0;
+			});
+		}
 		return results;
 	});
 	let meta = $derived(filteredItems.length);
@@ -70,12 +80,6 @@
 		filteredItems.slice((selectors.page - 1) * selectors.limit, selectors.page * selectors.limit)
 	);
 	const getItems = async (params) => {
-		// {
-		// 	filter,
-		// 	search: query,
-		// 	sort,
-		// }
-
 		return paginatedItems;
 	};
 
