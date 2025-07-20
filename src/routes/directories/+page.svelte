@@ -19,7 +19,7 @@
 		storeFields: 'id'
 	});
 	let selectors = $state({
-		categories: [],
+		categories: directories.map((d) => d.directory),
 		onlySglg: false,
 		news: false,
 		dateFrom: '',
@@ -216,7 +216,7 @@
 					on:click={() => {
 						selectors.categories.length === directories.length
 							? (selectors.categories = [])
-							: (selectors.categories = directories);
+							: (selectors.categories = directories.map((d) => d.directory));
 					}}
 				>
 					<span class="icon-placeholder"></span>{m.all()}</Checkbox
