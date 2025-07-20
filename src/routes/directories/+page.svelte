@@ -14,29 +14,10 @@
 
 	let { data } = $props();
 	let { directories, currentNl, nlDescription = '', nlTitle = '' } = data;
-	let minisearch = $state(
-		new MiniSearch({
-			fields: ['title', 'person', 'event_place', 'publications_series', 'isbn', 'content'],
-			storeFields: 'id'
-		})
-	);
-	let filteredItems = $state(data.allItems);
-	const getItems = async (params) => {
-		// {
-		// 	filter,
-		// 	search: query,
-		// 	page,
-		// 	sort,
-		// 	limit
-		// }
-
-		let filteredItems = data.allItems.slice(0, params.limit);
-		return filteredItems;
-	};
-	const getCount = (params) => {
-		return filteredItems.length;
-	};
-
+	let minisearch = new MiniSearch({
+		fields: ['title', 'person', 'event_place', 'publications_series', 'isbn', 'content'],
+		storeFields: 'id'
+	});
 	let selectors = $state({
 		categories: [],
 		onlySglg: false,
@@ -48,12 +29,45 @@
 		page: 1,
 		limit: 20
 	});
+	$inspect(selectors);
+	let allDocumentsAdded = $state(false);
+	let filteredItems = $derived.by(() => {
+		//react to changes in selectors
+		let results = data.allItems;
+		if (allDocumentsAdded && selectors.query) {
+			const searchResults = minisearch.search(selectors.query, {
+				prefix: true
+			});
+			console.log(searchResults);
+			results = searchResults.map((r) => data.allItems.find((item) => item.id === r.id));
+		}
+		// console.log(minisearch.documentCount, results);
+		return results;
+	});
+	let meta = $derived(filteredItems.length);
+	let maxPage = $derived(Math.ceil(meta / selectors.limit));
+	let paginatedItems = $derived(
+		filteredItems.slice((selectors.page - 1) * selectors.limit, selectors.page * selectors.limit)
+	);
+	const getItems = async (params) => {
+		// {
+		// 	filter,
+		// 	search: query,
+		// 	sort,
+		// }
+
+		return paginatedItems;
+	};
+
 	/** @type {import('./$types').Snapshot<string>} */
 	export const snapshot = {
-		capture: () => ({ selectors, minisearch }),
+		capture: () => ({ selectors, minisearch: JSON.stringify(minisearch) }),
 		restore: (value) => {
 			selectors = value.selectors;
-			minisearch = value.minisearch;
+			minisearch = MiniSearch.loadJSON(value.minisearch, {
+				fields: ['title', 'person', 'event_place', 'publications_series', 'isbn', 'content'],
+				storeFields: 'id'
+			});
 		}
 	};
 
@@ -62,7 +76,6 @@
 	let scrollW = $state(),
 		lowerScroll = $state(),
 		upperScroll = $state();
-	let meta = $state(0);
 	let pageLimit = $state('20');
 	const setCats = (queryparams) => {
 		if (Array.isArray(queryparams)) {
@@ -149,10 +162,6 @@
 			limit
 		});
 		returnTable = answer;
-		meta = getCount({
-			filter,
-			search: query
-		});
 
 		//create columns
 		returnColumns = returnTable[0] ? Object.keys(returnTable[0]) : [];
@@ -207,8 +216,6 @@
 	const hideElement = (e) => (e.target.style.display = 'none');
 
 	const dateLabels = $state([]);
-
-	let allDocumentsAdded = $state(Promise.resolve());
 
 	onMount(async () => {
 		if (minisearch?.documentCount <= 1) {
@@ -289,7 +296,6 @@
 				return 0;
 			})
 	);
-	let maxPage = $derived(Math.ceil(meta / selectors.limit));
 </script>
 
 <svelte:head>
@@ -459,7 +465,13 @@
 		</p>
 		<p style="line-height: 32px;">
 			{m['per_page']()}:
-			<select name="limit" bind:value={pageLimit}>
+			<select
+				name="limit"
+				bind:value={pageLimit}
+				onchange={() => {
+					selectors.page = 1;
+				}}
+			>
 				<option>20</option>
 				<option>50</option>
 				<option>100</option>
