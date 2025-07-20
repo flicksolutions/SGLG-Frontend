@@ -69,6 +69,10 @@ button:hover {
 		height: calc(80vh - 120px);
 	}
 }
+.featured {
+	max-width: 100%;
+	height: auto;
+}
 section {
 	@include theme.gutters;
 	@include theme.max-width;

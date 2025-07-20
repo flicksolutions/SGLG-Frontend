@@ -100,9 +100,6 @@
 			display: block;
 		}
 	}
-	.featured {
-		max-width: 100%;
-	}
 	ol {
 		padding: 0;
 		list-style: none;

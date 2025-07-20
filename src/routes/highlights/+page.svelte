@@ -87,9 +87,6 @@
 			display: block;
 		}
 	}
-	.featured {
-		max-width: 100%;
-	}
 	h2 {
 		color: $sglg-orange;
 	}
