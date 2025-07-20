@@ -79,9 +79,7 @@
 	let paginatedItems = $derived(
 		filteredItems.slice((selectors.page - 1) * selectors.limit, selectors.page * selectors.limit)
 	);
-	const getItems = async (params) => {
-		return paginatedItems;
-	};
+	const columns = ['date', 'itemtype', 'title', 'event_place'];
 
 	/** @type {import('./$types').Snapshot<string>} */
 	export const snapshot = {
@@ -95,8 +93,6 @@
 		}
 	};
 
-	let table = $state([]);
-	let columns = $state([]);
 	let scrollW = $state(),
 		lowerScroll = $state(),
 		upperScroll = $state();
@@ -117,124 +113,12 @@
 		}
 	};
 
-	let results;
-	async function getResults({
-		categories: cats = directories.map((d) => d.directory),
-		onlySglg = false,
-		news = false,
-		dateFrom = '',
-		dateTo = '',
-		query = '',
-		page = 1,
-		sort = '-date',
-		limit
-	}) {
-		let returnColumns, returnTable;
-		let categoryFields = cats.flatMap((c) => directories.find((o) => o === c)?.frontend_fields);
-		let fields = [
-			'id',
-			'itemtype.directory',
-			'references.entities_related_id.title',
-			'references.entities_related_id.id'
-		];
-		if (categoryFields[0]) {
-			fields = [...fields, ...new Set(categoryFields)];
-		}
-		let deep = {};
-
-		let filter = {
-			itemtype: {
-				directory: {
-					_in: cats
-				}
-			}
-		};
-		if (onlySglg) {
-			filter.internal = {
-				_eq: true
-			};
-		}
-		if (news) {
-			filter.published_in = {
-				_eq: currentNl
-			};
-		}
-		if (dateFrom && dateTo) {
-			filter.date = { _between: [dateFrom, dateTo] };
-		} else if (dateFrom) {
-			filter.date = { _gte: dateFrom };
-		} else if (dateTo) {
-			filter.date = { _lte: dateTo };
-		}
-
-		if (getLocale() !== 'de') {
-			fields.push('translations.*');
-			deep.translations = {
-				_filter: {
-					languages_code: {
-						_eq: getLocale()
-					}
-				}
-			};
-		}
-		const answer = await getItems({
-			fields: fields,
-			filter,
-			search: query,
-			page,
-			sort,
-			limit
-		});
-		returnTable = answer;
-
-		//create columns
-		returnColumns = returnTable[0] ? Object.keys(returnTable[0]) : [];
-		let emptyCols = {};
-		returnTable.forEach((row) => {
-			for (let col in row) {
-				if (!row[col]) {
-					if (!emptyCols[col]) {
-						emptyCols[col] = 1;
-					} else {
-						emptyCols[col] += 1;
-					}
-				}
-			}
-		});
-		//remove empty cols from the array (and link since we don't want to show that)
-		for (const [key, value] of Object.entries(emptyCols)) {
-			if (value >= returnTable.length) {
-				const filterKeys = ['link', 'id', 'internal'];
-				returnColumns = returnColumns.filter((r) => r !== key && !filterKeys.includes(r));
-			}
-		}
-		if (!returnColumns?.title) returnColumns.splice(2, 0, 'title');
-		//sort returnColumns
-		const optimal = ['date', 'itemtype', 'title', 'person', 'event_place'];
-		returnColumns = [
-			...optimal.filter((v) => returnColumns.includes(v)),
-			...returnColumns.filter((v) => !optimal.includes(v))
-		];
-		return { returnColumns, returnTable };
-	}
-
-	const loadMore = async (val) => {
-		selectors.page += val;
-		table = [...table, ...(await getResults(selectors)).returnTable];
-	};
-
-	const setResults = async () => {
-		const { returnTable, returnColumns } = await getResults(selectors);
-		table = returnTable;
-		columns = ['date', 'itemtype', 'title', 'event_place'];
-	};
 	const sortResults = (val) => {
 		if (selectors.sort === val) {
 			selectors.sort = `-${val}`;
 		} else {
 			selectors.sort = val;
 		}
-		setResults();
 	};
 
 	const hideElement = (e) => (e.target.style.display = 'none');
@@ -253,7 +137,6 @@
 		if (!selectors.categories.length) {
 			console.log('no categories set, setting default');
 			selectors.categories = directories.map((d) => d.directory);
-			setResults();
 		}
 	});
 
@@ -273,7 +156,7 @@
 		return '';
 	};
 	const sortable = (col) => {
-		for (const row of table) {
+		for (const row of paginatedItems) {
 			if (row[col] == null) {
 			} else {
 				return typeof row[col] === 'string';
@@ -285,8 +168,6 @@
 	const changePage = (targetPage) => {
 		if (targetPage <= maxPage && targetPage >= 1) {
 			selectors.page = targetPage;
-			console.log('changePage');
-			setResults();
 		} else {
 			console.log('cannot change page!');
 		}
@@ -299,11 +180,6 @@
 			setCats(pageStore.url.searchParams.getAll('cat[]'));
 		}
 		setNews(pageStore.url.searchParams.get('news') === '');
-	});
-	$effect(() => {
-		if (selectors && selectors.categories.length) {
-			setResults();
-		}
 	});
 	let checkboxes = $derived(
 		directories
@@ -332,7 +208,7 @@
 	{:else}
 		<h1>{m.directories({ count: 1 })}</h1>
 	{/if}
-	<form class="filters" onsubmit={preventDefault(setResults)}>
+	<form class="filters">
 		{#if !selectors.news}
 			<div class="category-selectors">
 				<Checkbox
@@ -422,7 +298,7 @@
 							{/if}
 						{/each}
 					</tr>
-					{#each table as row (row.id)}
+					{#each paginatedItems as row (row.id)}
 						<tr>
 							{#each columns as col (col)}
 								<td
