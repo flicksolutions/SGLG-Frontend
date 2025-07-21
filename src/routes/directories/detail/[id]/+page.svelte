@@ -71,7 +71,7 @@
 
 <div class="spacer" style="height: 10vw;"></div>
 
-<section class="content-layout">
+<section class={['content-layout', item?.image && 'has-image']}>
 	<h1 class:internal={item.internal}>
 		{@html SVGS[item.itemtype.directory]}
 		{item?.title}
@@ -109,10 +109,13 @@
 	.content-layout {
 		display: flex;
 		flex-direction: column;
-		@media (min-width: $medium) {
-			display: grid;
-			grid-template-columns: 3fr 9fr 6fr;
-			grid-column-gap: 1em;
+
+		&.has-image {
+			@media (min-width: $medium) {
+				display: grid;
+				grid-template-columns: 3fr 9fr 6fr;
+				grid-column-gap: 1em;
+			}
 		}
 		img {
 			margin-bottom: 2em;

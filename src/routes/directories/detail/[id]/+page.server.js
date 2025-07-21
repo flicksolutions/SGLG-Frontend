@@ -12,7 +12,8 @@ export async function load({ params }) {
 			'referenced_by.entities_id.itemtype.*',
 			'files.directus_files_id',
 			'image.id',
-			'image.title'
+			'image.title',
+			'image.type'
 		];
 		let item = replaceTranslations(
 			await directus.request(
@@ -25,9 +26,13 @@ export async function load({ params }) {
 			console.log('theres no title! returning the referenced object instead.', params.id);
 			item = await directus.request(
 				readItem('entities', item.references?.[0].entities_related_id, {
-					fields: ['*', 'itemtype.*', 'image.id', 'image.title']
+					fields: ['*', 'itemtype.*', 'image.id', 'image.title', 'image.type']
 				})
 			);
+		}
+
+		if (item.image.type.endsWith('pdf')) {
+			delete item.image; // Remove the id for PDF images to avoid broken links
 		}
 		return { item };
 	} catch (err) {
