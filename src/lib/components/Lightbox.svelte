@@ -3,19 +3,20 @@
 
 	export let img;
 	export let alt;
+	export let show = false;
 
 	const dispatch = createEventDispatcher();
 
 	const exit = () => dispatch('exitLightbox');
 </script>
 
-<div on:click={() => exit()}>
+<div on:click={() => exit()} class={{ show }}>
 	<img src={img} {alt} />
 </div>
 
 <style lang="scss">
 	div {
-		display: block;
+		display: none;
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -31,5 +32,8 @@
 			top: 50%;
 			transform: translate(-50%, -50%);
 		}
+	}
+	.show {
+		display: block;
 	}
 </style>

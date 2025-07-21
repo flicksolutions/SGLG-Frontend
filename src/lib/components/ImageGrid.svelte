@@ -44,13 +44,12 @@
 				<figcaption>{@html captions[i]}</figcaption>
 			{/if}
 		</figure>
-		{#if showLightbox[i]}
-			<Lightbox
-				img={`${ASSET_URL}${img.directus_files_id.id}`}
-				alt={img.directus_files_id.title}
-				on:exitLightbox={() => (showLightbox[i] = !showLightbox[i])}
-			/>
-		{/if}
+		<Lightbox
+			img={`${ASSET_URL}${img.directus_files_id.id}`}
+			alt={img.directus_files_id.title}
+			on:exitLightbox={() => (showLightbox[i] = !showLightbox[i])}
+			show={showLightbox[i]}
+		/>
 	{/each}
 </div>
 
