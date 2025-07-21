@@ -46,12 +46,14 @@
 			<div class="column">
 				{#each column as element (element.id)}
 					<div class="element-container">
-						<a href={linkHandler(`/directories/detail/${element.id}`)}>
-							<img
-								src={`${ASSET_URL}${element?.image.id}?width=430&format=webp`}
-								alt={element?.image?.title}
-							/>
-						</a>
+						{#if element?.image}
+							<a href={linkHandler(`/directories/detail/${element.id}`)}>
+								<img
+									src={`${ASSET_URL}${element?.image.id}?width=430&format=webp`}
+									alt={element?.image?.title}
+								/>
+							</a>
+						{/if}
 						<a href={linkHandler(`/directories/detail/${element.id}`)}>
 							<h4>
 								{@html SVGS[element.itemtype.directory]}

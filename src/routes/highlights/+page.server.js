@@ -7,7 +7,16 @@ export async function load() {
 	const directoryObjects = await directus.request(readItems('directories'));
 
 	const config = {
-		fields: ['id', 'itemtype.directory', 'title', 'date', 'event_type', 'image.id', 'image.title'],
+		fields: [
+			'id',
+			'itemtype.directory',
+			'title',
+			'date',
+			'event_type',
+			'image.id',
+			'image.title',
+			'image.type'
+		],
 		filter: {
 			itemtype: {
 				directory: {
@@ -40,6 +49,12 @@ export async function load() {
 	const items = replaceTranslations(
 		await directus.request(readItems('entities', config)),
 		getLocale()
-	);
+	).map((item) => {
+		if (item.image.type.endsWith('pdf')) {
+			delete item.image; // Remove the id for PDF images to avoid broken links
+		}
+		return item;
+	});
+
 	return { items };
 }
