@@ -110,6 +110,7 @@
 		display: flex;
 		flex-direction: column;
 		@media (min-width: $medium) {
+			display: grid;
 			grid-template-columns: 3fr 9fr 6fr;
 			grid-column-gap: 1em;
 		}
