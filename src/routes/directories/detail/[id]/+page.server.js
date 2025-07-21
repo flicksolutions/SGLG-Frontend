@@ -1,6 +1,7 @@
 import { directus, hydrateTranslations, replaceTranslations } from '$lib/functions';
 import { getLocale } from '$lib/paraglide/runtime';
 import { readItem, readItems } from '@directus/sdk';
+import { error } from '@sveltejs/kit';
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params }) {
 	try {
@@ -31,13 +32,13 @@ export async function load({ params }) {
 			);
 		}
 
-		if (item.image.type.endsWith('pdf')) {
+		if (item?.image?.type.endsWith('pdf')) {
 			delete item.image; // Remove the id for PDF images to avoid broken links
 		}
 		return { item };
 	} catch (err) {
 		console.log(err);
-		this.error(403, 'No Permission');
+		error(403, 'No Permission');
 	}
 }
 

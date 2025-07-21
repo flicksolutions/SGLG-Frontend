@@ -50,7 +50,7 @@ export async function load() {
 		await directus.request(readItems('entities', config)),
 		getLocale()
 	).map((item) => {
-		if (item.image.type.endsWith('pdf')) {
+		if (item?.image?.type.endsWith('pdf')) {
 			delete item.image; // Remove the id for PDF images to avoid broken links
 		}
 		return item;
