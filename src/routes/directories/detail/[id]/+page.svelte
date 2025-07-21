@@ -79,7 +79,7 @@
 
 	{#if item?.image}
 		<img
-			src={`${ASSET_URL}${item?.image.id}?width=750&height=350&fit=inside&format=webp`}
+			src={`${ASSET_URL}${item?.image?.id || item?.image}?width=750&height=350&fit=inside&format=webp`}
 			alt={item?.image?.title}
 		/>
 	{/if}

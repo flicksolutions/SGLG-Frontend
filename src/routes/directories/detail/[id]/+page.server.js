@@ -25,7 +25,7 @@ export async function load({ params }) {
 			console.log('theres no title! returning the referenced object instead.', params.id);
 			item = await directus.request(
 				readItem('entities', item.references?.[0].entities_related_id, {
-					fields: ['*', 'itemtype.*']
+					fields: ['*', 'itemtype.*', 'image.id', 'image.title']
 				})
 			);
 		}
