@@ -4,6 +4,7 @@ import { error } from '@sveltejs/kit';
 import { getLocale } from '$lib/paraglide/runtime';
 import { ASSET_URL } from '$lib/constants';
 import { marked } from 'marked';
+import { m } from '$lib/paraglide/messages';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params, fetch, parent }) {
@@ -50,7 +51,7 @@ export async function load({ params, fetch, parent }) {
 				console.log(l.memberlists_id);
 				const list = await replaceWithList(l.memberlists_id.listfile);
 				return {
-					title: l.memberlists_id.title,
+					title: m[l.memberlists_id.title](),
 					member_list: list || []
 				};
 			}) || [])

@@ -142,5 +142,7 @@
 		}
 	],
 	"Tag": "day",
-	"members": "Members"
+	"members": "Members",
+	"institutions": "institutions",
+	"people": "people"
 }

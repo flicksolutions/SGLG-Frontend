@@ -139,5 +139,7 @@
 	],
 	"control_menu": "Apri/Chiudi menu",
 	"isbn": "ISBN",
-	"Tag": "Giornata"
+	"Tag": "Giornata",
+	"institutions": "Istituzioni",
+	"people": "persone"
 }
