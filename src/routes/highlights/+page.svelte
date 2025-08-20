@@ -10,7 +10,7 @@
 	let { data } = $props();
 	const { items } = data;
 
-	const MAXNUMBEROFCOLUMNS = 3;
+	const MAXNUMBEROFCOLUMNS = 5;
 	let galleryWidth = $state(300);
 
 	let dividedItems = $derived.by(() => {
