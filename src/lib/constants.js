@@ -10,4 +10,5 @@ export const SVGS = {
 	review
 };
 
-export const ASSET_URL = 'https://misty-frank-flicksolutions-b4bb2a19.koyeb.app/assets/';
+// export const ASSET_URL = 'https://misty-frank-flicksolutions-b4bb2a19.koyeb.app/assets/';
+export const ASSET_URL = '/img/';
