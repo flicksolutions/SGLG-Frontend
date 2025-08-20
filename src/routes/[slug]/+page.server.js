@@ -30,7 +30,7 @@ export async function load({ params, fetch, parent }) {
 	);
 	const replaceWithList = async (id) => {
 		if (!id) return null;
-		const res = await fetch(`${ASSET_URL}${id}/download=true`);
+		const res = await fetch(`${ASSET_URL}${id}==download=true`);
 		let list = await res.json();
 		if (list) {
 			if (!Array.isArray(list)) {

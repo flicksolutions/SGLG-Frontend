@@ -49,7 +49,7 @@
 						{#if element?.image}
 							<a href={linkHandler(`/directories/detail/${element.id}`)}>
 								<img
-									src={`${ASSET_URL}${element?.image.id}/width=430&format=webp`}
+									src={`${ASSET_URL}${element?.image.id}==width=430&format=webp`}
 									alt={element?.image?.title}
 								/>
 							</a>
