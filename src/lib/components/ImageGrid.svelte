@@ -29,7 +29,7 @@
 				target="_blank"
 			>
 				<img
-					src={`${ASSET_URL}${img.directus_files_id.id}?key=detail`}
+					src={`${ASSET_URL}${img.directus_files_id.id}/key=detail`}
 					alt={img.directus_files_id.title}
 				/>
 				{#if overlay[i]}
