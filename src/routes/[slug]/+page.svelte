@@ -41,25 +41,20 @@
 						<div>{@html element.text}</div>
 					{/if}
 					{#if element.member_list}
-						<div class="accordion-item">
-							<h3>{m.members()}</h3>
-							<div class="accordion-content">
-								<ul class="member-list">
-									{#each element.member_list as member}
-										<li>
-											{#if member.Webseite}
-												<a href={member.Webseite} target="_blank" rel="noopener noreferrer">
-													{member.Name}
-													{member.Vorname}
-												</a>
-											{:else}
-												{member.Name} {member.Vorname}
-											{/if}
-										</li>
-									{/each}
-								</ul>
-							</div>
-						</div>
+						<ul class="member-list">
+							{#each element.member_list as member}
+								<li>
+									{#if member.Webseite}
+										<a href={member.Webseite} target="_blank" rel="noopener noreferrer">
+											{member.Name}
+											{member.Vorname}
+										</a>
+									{:else}
+										{member.Name} {member.Vorname}
+									{/if}
+								</li>
+							{/each}
+						</ul>
 					{/if}
 				</div>
 			</div>

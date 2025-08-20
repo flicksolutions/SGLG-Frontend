@@ -48,7 +48,6 @@ export async function load({ params, fetch, parent }) {
 				};
 			}) || []),
 			...(content[0]?.lists.map(async (l) => {
-				console.log(l.memberlists_id);
 				const list = await replaceWithList(l.memberlists_id.listfile);
 				return {
 					title: m[l.memberlists_id.title](),
