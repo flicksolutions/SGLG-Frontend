@@ -13,7 +13,11 @@
 	import MiniSearch from 'minisearch';
 
 	let { data } = $props();
-	let { directories, currentNl, nlDescription = '', nlTitle = '' } = data;
+	let directories = $derived(data.directories);
+	let currentNl = $derived(data.currentNl);
+	let nlDescription = $derived(data.nlDescription || '');
+	let nlTitle = $derived(data.nlTitle || '');
+
 	let minisearch = new MiniSearch({
 		fields: ['title', 'person', 'event_place', 'publications_series', 'isbn', 'content'],
 		storeFields: 'id'

@@ -6,7 +6,9 @@
 
 	/** @type {{ data: import('./$types').PageData }} */
 	let { data } = $props();
-	let { meta, content, randomIndex } = data;
+	let meta = $derived(data.meta);
+	let content = $derived(data.content);
+	let randomIndex = $derived(data.randomIndex);
 
 	onMount(async () => {
 		addAccordionListener(document.querySelectorAll('.accordion-item'));

@@ -9,7 +9,8 @@
 	import { page } from '$app/state';
 	import { onNavigate } from '$app/navigation';
 
-	let { pages, bgUrl } = data;
+	let pages = $derived(data.pages);
+	let bgUrl = $derived(data.bgUrl);
 	let FontTracker;
 	let randomIndex = $state(Math.floor(Math.random() * bgUrl.length));
 

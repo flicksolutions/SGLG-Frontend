@@ -8,7 +8,6 @@
 
 	/** @type {{ data: import('./$types').PageData }} */
 	let { data } = $props();
-	const { items } = data;
 
 	const MAXNUMBEROFCOLUMNS = 5;
 	let galleryWidth = $state(300);
@@ -16,7 +15,7 @@
 	let dividedItems = $derived.by(() => {
 		let numberOfColumns = Math.min(MAXNUMBEROFCOLUMNS, Math.floor(galleryWidth / 150));
 		let result = Array.from({ length: numberOfColumns }, () => []);
-		items.forEach((item, idx) => {
+		data.items.forEach((item, idx) => {
 			result[idx % numberOfColumns].push(item);
 		});
 		return result;

@@ -11,7 +11,11 @@
 	import { page } from '$app/state';
 
 	let { data } = $props();
-	let { disturberLabel, disturberLink, items, content, randomIndex } = data;
+	let disturberLabel = $derived(data.disturberLabel);
+	let disturberLink = $derived(data.disturberLink);
+	let items = $derived(data.items);
+	let content = $derived(data.content);
+	let randomIndex = $derived(data.randomIndex);
 
 	let windowWidth = $state(0);
 </script>

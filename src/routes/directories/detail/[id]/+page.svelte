@@ -8,7 +8,7 @@
 	import { getLocale } from '$lib/paraglide/runtime';
 
 	let { data } = $props();
-	let { item } = data;
+	let item = $derived(data.item);
 
 	const setLinks = (arr) => {
 		if (Array.isArray(arr)) {
