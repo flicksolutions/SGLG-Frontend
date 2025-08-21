@@ -6,7 +6,8 @@ export async function GET({ params, fetch }) {
 	const splitPath = path.split('==');
 	const renderedPath = splitPath[0];
 	const renderedSearchParams = new URLSearchParams(splitPath[1] || '');
-	return fetch(
+	const res = await fetch(
 		`https://misty-frank-flicksolutions-b4bb2a19.koyeb.app/assets/${renderedPath}?${renderedSearchParams.toString()}`
 	);
+	return new Response(res.body);
 }
