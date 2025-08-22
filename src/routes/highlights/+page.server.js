@@ -1,10 +1,34 @@
 import { getLocale } from '$lib/paraglide/runtime';
-import { readItems } from '@directus/sdk';
+import { readItems, readSingleton } from '@directus/sdk';
 import { directus, replaceTranslations } from '$lib/functions';
+import { marked } from 'marked';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load() {
 	const directoryObjects = await directus.request(readItems('directories'));
+	const content = replaceTranslations(
+		await directus.request(
+			readSingleton('Highlights', {
+				fields: [
+					'title',
+					'description',
+					'columns',
+					'translations.description',
+					'translations.title'
+				],
+				deep: {
+					translations: {
+						_filter: {
+							languages_code: {
+								_eq: getLocale()
+							}
+						}
+					}
+				}
+			})
+		),
+		getLocale()
+	);
 
 	const config = {
 		fields: [
@@ -56,5 +80,12 @@ export async function load() {
 		return item;
 	});
 
-	return { items };
+	return {
+		content: {
+			title: content.title,
+			columns: content.columns,
+			description: marked(content.description)
+		},
+		items
+	};
 }

@@ -9,8 +9,8 @@
 	/** @type {{ data: import('./$types').PageData }} */
 	let { data } = $props();
 
-	const MAXNUMBEROFCOLUMNS = 5;
-	let galleryWidth = $state(300);
+	const MAXNUMBEROFCOLUMNS = data.content?.columns || 5;
+	let galleryWidth = $state(600);
 
 	let dividedItems = $derived.by(() => {
 		let numberOfColumns = Math.min(MAXNUMBEROFCOLUMNS, Math.floor(galleryWidth / 150));
@@ -24,7 +24,7 @@
 </script>
 
 <svelte:head>
-	<title>{m.highlights_title()}</title>
+	<title>{data.content?.title}</title>
 </svelte:head>
 
 <div class="mobile-header">
@@ -33,12 +33,9 @@
 <div class="spacer"></div>
 
 <section class="content-layout">
-	<h2>{m.highlights_title()}</h2>
+	<h2>{data.content?.title}</h2>
 	<div class="description">
-		<h3>{m.highlights_subtitle()}</h3>
-		<p>
-			{m.highlights_description()}
-		</p>
+		{@html data.content?.description}
 	</div>
 	<div class="grid-container" bind:clientWidth={galleryWidth}>
 		{#each dividedItems as column}
