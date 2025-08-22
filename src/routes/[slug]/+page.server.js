@@ -34,7 +34,7 @@ export async function load({ params, fetch, parent }) {
 		let list = await res.json();
 		if (list) {
 			if (!Array.isArray(list)) {
-				list = list.Sheet1;
+				list = list[Object.keys(list)[0]];
 			}
 			return list;
 		}
