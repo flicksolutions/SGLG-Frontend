@@ -3,9 +3,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: ['upgrade-sveltekit']
+  workflow_dispatch:
   repository_dispatch:
     types: ['deploy']
-  workflow_dispatch:
 
 jobs:
   build_site:
