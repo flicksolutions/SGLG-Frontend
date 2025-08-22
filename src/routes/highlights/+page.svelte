@@ -47,6 +47,7 @@
 								<img
 									src={`${ASSET_URL}${element?.image.id}==width=430&format=webp`}
 									alt={element?.image?.title}
+									loading="eager"
 								/>
 							</a>
 						{/if}
