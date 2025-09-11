@@ -1,4 +1,5 @@
 export const prerender = true;
+import { PUBLIC_API } from '$env/static/public';
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ params, fetch }) {
@@ -7,7 +8,7 @@ export async function GET({ params, fetch }) {
 	const renderedPath = splitPath[0];
 	const renderedSearchParams = new URLSearchParams(splitPath[1] || '');
 	const res = await fetch(
-		`https://misty-frank-flicksolutions-b4bb2a19.koyeb.app/assets/${renderedPath}?${renderedSearchParams.toString()}`
+		`${PUBLIC_API}/assets/${renderedPath}?${renderedSearchParams.toString()}`
 	);
 	return new Response(res.body);
 }

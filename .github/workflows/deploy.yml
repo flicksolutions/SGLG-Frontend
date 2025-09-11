@@ -7,6 +7,9 @@ on:
   repository_dispatch:
     types: ['deploy']
 
+env:
+  PUBLIC_API: ${{ vars.PUBLIC_API }}
+
 jobs:
   build_site:
     runs-on: ubuntu-latest
@@ -72,12 +75,12 @@ jobs:
         run: |
           curl -sS -X POST \
             -H 'Content-Type: application/json' \
-            -d '{"message":"deployment succesfull", "user": ${{ github.event.client_payload.user }}}' \
-            'https://misty-frank-flicksolutions-b4bb2a19.koyeb.app/flows/trigger/333701d7-8690-4574-a9c2-dfc841e6ccd0'
+            -d '{"message":"deployment succesfull", "user": "${{ github.event.client_payload.user }}"}' \
+            '${{ env.PUBLIC_API }}/flows/trigger/333701d7-8690-4574-a9c2-dfc841e6ccd0'
       - name: Notify external service (failure)
         if: ${{ needs.deploy.result != 'success' }}
         run: |
           curl -sS -X POST \
             -H 'Content-Type: application/json' \
-            -d '{"message":"deployment failed", "user": ${{ github.event.client_payload.user }}}' \
-            'https://misty-frank-flicksolutions-b4bb2a19.koyeb.app/flows/trigger/333701d7-8690-4574-a9c2-dfc841e6ccd0'
+            -d '{"message":"deployment failed", "user": "${{ github.event.client_payload.user }}"}' \
+            '${{ env.PUBLIC_API }}/flows/trigger/333701d7-8690-4574-a9c2-dfc841e6ccd0'

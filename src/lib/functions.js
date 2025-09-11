@@ -3,10 +3,9 @@ import { locales, localizeHref } from '$lib/paraglide/runtime';
 import { get } from 'svelte/store';
 import { m } from '$lib/paraglide/messages';
 import { ASSET_URL } from './constants';
+import { PUBLIC_API } from '$env/static/public';
 // import { base } from '$app/paths';
-export const directus = createDirectus(
-	'https://misty-frank-flicksolutions-b4bb2a19.koyeb.app'
-).with(rest());
+export const directus = createDirectus(PUBLIC_API).with(rest());
 
 export async function getItems({
 	locale = 'de',
