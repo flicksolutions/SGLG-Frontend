@@ -66,7 +66,7 @@ jobs:
   report:
     needs: deploy
     runs-on: ubuntu-latest
-    if: ${{ always() }}
+    if: ${{ github.event.client_payload.user }}
     steps:
       - name: Report deployment
         run: echo "Deployed to ${{ needs.deploy.outputs.page_url }}"
