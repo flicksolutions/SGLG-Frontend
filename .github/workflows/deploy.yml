@@ -64,21 +64,21 @@ jobs:
         uses: actions/deploy-pages@v4
 
   report:
-    needs: deploy
+    needs: build_site
     runs-on: ubuntu-latest
     if: ${{ github.event.client_payload.user }}
     steps:
       - name: Report deployment
-        run: echo "Deployed to ${{ needs.deploy.outputs.page_url }}"
+        run: echo "Deployed to ${{ needs.build_site.outputs.page_url }}"
       - name: Notify external service (success)
-        if: ${{ needs.deploy.result == 'success' }}
+        if: ${{ needs.build_site.result == 'success' }}
         run: |
           curl -sS -X POST \
             -H 'Content-Type: application/json' \
             -d '{"message":"deployment succesfull", "user": "${{ github.event.client_payload.user }}"}' \
             '${{ env.PUBLIC_API }}/flows/trigger/333701d7-8690-4574-a9c2-dfc841e6ccd0'
       - name: Notify external service (failure)
-        if: ${{ needs.deploy.result != 'success' }}
+        if: ${{ needs.build_site.result != 'success' }}
         run: |
           curl -sS -X POST \
             -H 'Content-Type: application/json' \
