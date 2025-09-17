@@ -66,7 +66,7 @@
 				>
 					{page.title}
 				</a>
-				{#if page.subPages}
+				{#if page?.subPages?.length > 0}
 					<ul>
 						{#each page.subPages as subpage}
 							<li>
