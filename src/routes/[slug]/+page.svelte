@@ -42,6 +42,22 @@
 					{#if element.text}
 						<div>{@html element.text}</div>
 					{/if}
+					{#if element.member_list}
+						<ul class="member-list">
+							{#each element.member_list as member}
+								<li>
+									{#if member.Webseite}
+										<a href={member.Webseite} target="_blank" rel="noopener noreferrer">
+											{member.Name}
+											{member.Vorname}
+										</a>
+									{:else}
+										{member.Name} {member.Vorname}
+									{/if}
+								</li>
+							{/each}
+						</ul>
+					{/if}
 				</div>
 			</div>
 		{/each}
