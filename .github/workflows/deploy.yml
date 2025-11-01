@@ -2,10 +2,10 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ['upgrade-sveltekit', 'master']
+    branches: ["upgrade-sveltekit", "master"]
   workflow_dispatch:
   repository_dispatch:
-    types: ['deploy']
+    types: ["deploy"]
 
 env:
   PUBLIC_API: ${{ vars.PUBLIC_API }}
@@ -34,9 +34,9 @@ jobs:
 
       - name: build
         env:
-          BASE_PATH: '/${{ github.event.repository.name }}'
+          BASE_PATH: "/${{ github.event.repository.name }}"
           # BASE_PATH: ''
-          NODE_OPTIONS: '--max_old_space_size=9000'
+          NODE_OPTIONS: "--max_old_space_size=9000"
         run: |
           pnpm run build
 
@@ -44,7 +44,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # this should match the `pages` option in your adapter-static options
-          path: 'build/'
+          path: "build/"
 
   deploy:
     needs: build_site
@@ -64,9 +64,9 @@ jobs:
         uses: actions/deploy-pages@v4
 
   report:
+    if: ${{ always() && github.event.client_payload.user }}
     needs: build_site
     runs-on: ubuntu-latest
-    if: ${{ github.event.client_payload.user }}
     steps:
       - name: Report deployment
         run: echo "Deployed to ${{ needs.build_site.outputs.page_url }}"
@@ -75,7 +75,7 @@ jobs:
         run: |
           curl -sS -X POST \
             -H 'Content-Type: application/json' \
-            -d '{"message":"deployment succesfull", "user": "${{ github.event.client_payload.user }}"}' \
+            -d '{"message":"deployment successful", "user": "${{ github.event.client_payload.user }}"}' \
             '${{ env.PUBLIC_API }}/flows/trigger/333701d7-8690-4574-a9c2-dfc841e6ccd0'
       - name: Notify external service (failure)
         if: ${{ needs.build_site.result != 'success' }}
