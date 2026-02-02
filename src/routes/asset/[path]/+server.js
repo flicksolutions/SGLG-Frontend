@@ -11,9 +11,12 @@ export async function GET({ params, fetch }) {
 		`${PUBLIC_API}/assets/${renderedPath}?${renderedSearchParams.toString()}`
 	);
 	console.log('Fetching asset:', `${renderedPath}?${renderedSearchParams.toString()}`);
-	return new Response(res.body, {
+	const body = await res.arrayBuffer();
+	const headers = new Headers(res.headers);
+	headers.delete('Content-Length');
+	return new Response(body, {
 		status: res.status,
 		statusText: res.statusText,
-		headers: res.headers
+		headers
 	});
 }
