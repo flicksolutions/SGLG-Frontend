@@ -10,5 +10,9 @@ export async function GET({ params, fetch }) {
 	const res = await fetch(
 		`${PUBLIC_API}/assets/${renderedPath}?${renderedSearchParams.toString()}`
 	);
-	return new Response(res.body);
+	return new Response(res.body, {
+		status: res.status,
+		statusText: res.statusText,
+		headers: res.headers
+	});
 }
