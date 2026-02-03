@@ -7,8 +7,8 @@ export async function GET({ params, fetch }) {
 	const splitPath = path.split('==');
 	const renderedPath = splitPath[0];
 	const renderedSearchParams = new URLSearchParams(splitPath[1] || '');
-	const res = await fetch(
+	const body = await fetch(
 		`${PUBLIC_API}/assets/${renderedPath}?${renderedSearchParams.toString()}`
-	);
-	return new Response(res.body);
+	).then((res) => res.body);
+	return new Response(body);
 }
