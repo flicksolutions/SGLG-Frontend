@@ -7,6 +7,7 @@ export const prerender = true;
 
 /** @type {import('./$types').LayoutServerLoad} */
 export async function load() {
+	console.log('Loading layout');
 	const fields = ['title', 'content.page_content_id.title', 'content.page_content_id.slug', 'slug'];
 	const deep = {
 		content: {

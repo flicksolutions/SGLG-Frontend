@@ -5,6 +5,7 @@ import { marked } from 'marked';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load() {
+	console.log('Loading highlights');
 	const directoryObjects = await directus.request(readItems('directories'));
 	const content = replaceTranslations(
 		await directus.request(

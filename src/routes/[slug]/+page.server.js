@@ -8,6 +8,7 @@ import { m } from '$lib/paraglide/messages';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params, fetch, parent }) {
+	console.log('Loading page with slug:', params.slug);
 	const content = replaceTranslations(
 		await directus.request(
 			readItems('pages', {

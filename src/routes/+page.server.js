@@ -7,6 +7,7 @@ import { m } from '$lib/paraglide/messages';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ parent }) {
+	console.log('Loading homepage');
 	const disturberData = await directus.request(
 		readItems('disturber', { limit: 1, ...hydrateTranslations(['*'], {}, getLocale()) })
 	);

@@ -4,6 +4,7 @@ import { readItem, readItems } from '@directus/sdk';
 import { error } from '@sveltejs/kit';
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params }) {
+	console.log('Loading directory detail with id:', params.id);
 	try {
 		let fields = [
 			'*',
