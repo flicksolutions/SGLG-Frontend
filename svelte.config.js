@@ -19,7 +19,7 @@ const config = {
 		}),
 		prerender: {
 			handleHttpError: 'warn',
-			concurrency: 10
+			concurrency: 1
 		}
 	}
 };
