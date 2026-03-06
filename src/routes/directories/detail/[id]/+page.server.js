@@ -4,7 +4,6 @@ import { readItem, readItems } from '@directus/sdk';
 import { error } from '@sveltejs/kit';
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params }) {
-	console.log('Loading directory detail with id:', params.id);
 	try {
 		let fields = [
 			'*',
@@ -25,7 +24,6 @@ export async function load({ params }) {
 		);
 
 		if (item.references?.[0]?.entities_related_id) {
-			console.log('theres no title! returning the referenced object instead.', params.id);
 			item = await directus.request(
 				readItem('entities', item.references?.[0].entities_related_id, {
 					fields: ['*', 'itemtype.*', 'image.id', 'image.title', 'image.type']

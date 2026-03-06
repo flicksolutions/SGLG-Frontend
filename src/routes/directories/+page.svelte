@@ -147,7 +147,6 @@
 			});
 		}
 		if (!selectors.categories.length) {
-			console.log('no categories set, setting default');
 			selectors.categories = directories.map((d) => d.directory);
 		}
 	});

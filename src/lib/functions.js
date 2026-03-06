@@ -57,9 +57,6 @@ function createNestedFilter(parts, val) {
 const createReadObject = (collection, locale, fields, filter, translatedFields, sortP) => {
 	const readItem = { fields: [], filter: {}, sort: sortP };
 
-	console.log('fields is:');
-	console.log(fields);
-
 	//settings dependend on super
 	if (collection.super) {
 		//set filter depending on super
@@ -227,15 +224,5 @@ export function createLabel(item) {
 }
 
 export const linkHandler = (link, targetLocale = null) => {
-	// if (process.env.NODE_ENV === 'development') {
 	return localizeHref(link, targetLocale ? { locale: targetLocale } : {});
-	// }
-
-	// if (link === '/') {
-	// 	console.log('base', localizeHref(base, targetLocale ? { locale: targetLocale } : {}));
-	// 	return localizeHref(base, targetLocale ? { locale: targetLocale } : {});
-	// }
-
-	// console.log(localizeHref(base + link, targetLocale ? { locale: targetLocale } : {}));
-	// return localizeHref(base + link, targetLocale ? { locale: targetLocale } : {});
 };

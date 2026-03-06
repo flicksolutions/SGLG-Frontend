@@ -4,7 +4,6 @@ import { readItems, readSingleton } from '@directus/sdk';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load() {
-	console.log('Loading directories');
 	const directories = await directus.request(readItems('directories'));
 	const fields = [
 		'id',
