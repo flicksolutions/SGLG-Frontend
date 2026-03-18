@@ -5,7 +5,28 @@ import { m } from '$lib/paraglide/messages';
 import { ASSET_URL } from './constants';
 import { PUBLIC_API } from '$env/static/public';
 // import { base } from '$app/paths';
-export const directus = createDirectus(PUBLIC_API).with(rest());
+
+const MAX_RETRIES = 3;
+const RETRY_STATUS_CODES = [502, 503];
+
+export async function fetchWithRetry(url, options, fetch = globalThis.fetch) {
+	for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+		const response = await fetch(url, options);
+		if (RETRY_STATUS_CODES.includes(response.status) && attempt < MAX_RETRIES) {
+			const delay = Math.pow(2, attempt + 1) * 1000; // 2s, 4s, 8s
+			console.warn(
+				`[retry] ${response.status} from ${url} — retrying in ${delay / 1000}s (attempt ${attempt + 1}/${MAX_RETRIES})`
+			);
+			await new Promise((resolve) => setTimeout(resolve, delay));
+			continue;
+		}
+		return response;
+	}
+}
+
+export const directus = createDirectus(PUBLIC_API).with(
+	rest({ globals: { fetch: fetchWithRetry } })
+);
 
 export async function getItems({
 	locale = 'de',
