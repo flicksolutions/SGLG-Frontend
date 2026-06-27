@@ -37,10 +37,5 @@
 		"htmlsave": "^3.0.0",
 		"marked": "^16.4.2",
 		"minisearch": "^7.2.0"
-	},
-	"pnpm": {
-		"onlyBuiltDependencies": [
-			"esbuild"
-		]
 	}
 }
