@@ -1,11 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 36 26.2" style="enable-background:new 0 0 36 26.2;" xml:space="preserve">
-<style type="text/css">
-	.st17{stroke:#004444;}
-</style>
-<g id="Ebene_1">
-	<line class="st17" x1="30.7" y1="0.4" x2="5.3" y2="25.8"/>
-	<line class="st17" x1="30.7" y1="25.8" x2="5.3" y2="0.4"/>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" version="1.0" viewBox="0 0 36 26.2" style="enable-background:new 0 0 36 26.2" xml:space="preserve"><style type="text/css">.st17{stroke:#044}</style><g id="Ebene_1"><line x1="30.7" x2="5.3" y1=".4" y2="25.8" class="st17"/><line x1="30.7" x2="5.3" y1="25.8" y2=".4" class="st17"/></g></svg>
