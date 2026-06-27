@@ -2,8 +2,15 @@
 	import Nav from './Nav.svelte';
 	import Langswitch from './Langswitch.svelte';
 	import logo from '$lib/svg/SGLG-Logo.svg';
-	export let segment;
-	export let pages;
+	import { getLocale } from '$lib/paraglide/runtime';
+
+	let { pages, segment } = $props();
+
+	let sggLogo = $derived.by(async () => {
+		return await import(`$lib/svg/SGG-sektion-ps-${getLocale()}.svg`).then(
+			(module) => module.default
+		);
+	});
 </script>
 
 <footer>
@@ -11,12 +18,9 @@
 		<div class="inner">
 			<div class="branding">
 				<img src={logo} alt="Logo" />
-				<div class="titles">
-					<p>Schweizerische Gesellschaft für ländliche Geschichte</p>
-					<p>Société suisse d’histoire rurale</p>
-					<p>Società svizzera di storia rurale</p>
-					<p>Swiss Rural History Society</p>
-				</div>
+				{#await sggLogo then path}
+					<img src={path} alt="SGG Logo" class="sgg-logo" />
+				{/await}
 			</div>
 			<div class="langswitch">
 				<Langswitch />
@@ -27,6 +31,10 @@
 </footer>
 
 <style lang="scss">
+	img.sgg-logo {
+		width: 100%;
+		max-width: unset;
+	}
 	.langswitch {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -44,7 +52,7 @@
 				margin-top: 0;
 			}
 		}
-		img {
+		img:not(.sgg-logo) {
 			width: 60%;
 		}
 		@media (min-width: $medium) {
