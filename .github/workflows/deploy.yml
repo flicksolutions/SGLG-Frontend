@@ -9,6 +9,7 @@ on:
 
 env:
   PUBLIC_API: ${{ vars.PUBLIC_API }}
+  PUBLIC_MEMBERSHIP_FORM_ENDPOINT: ${{ vars.PUBLIC_MEMBERSHIP_FORM_ENDPOINT }}
 
 jobs:
   build_site:

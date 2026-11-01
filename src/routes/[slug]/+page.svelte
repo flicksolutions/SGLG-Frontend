@@ -1,5 +1,6 @@
 <script>
 	import ImageGrid from '$lib/components/ImageGrid.svelte';
+	import MembershipForm from '$lib/components/MembershipForm.svelte';
 	import { onMount } from 'svelte';
 	import { addAccordionListener } from '$lib/functions';
 	import { m } from '$lib/paraglide/messages';
@@ -41,6 +42,9 @@
 					{/if}
 					{#if element.text}
 						<div>{@html element.text}</div>
+					{/if}
+					{#if element?.membership_form}
+						<MembershipForm />
 					{/if}
 					{#if element.member_list}
 						<ul class="member-list">

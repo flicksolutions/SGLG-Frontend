@@ -144,5 +144,18 @@
 	"Tag": "day",
 	"members": "Members",
 	"institutions": "institutions",
-	"people": "people"
+	"people": "people",
+	"membership_individual": "I want to become an individual member (50.- per year).",
+	"membership_collective": "We apply for collective membership (100.- per year).",
+	"membership_institution": "Institution/Organisation",
+	"membership_last_name": "Last Name",
+	"membership_first_name": "First Name",
+	"membership_email": "Email",
+	"membership_postal_code": "Postal Code",
+	"membership_address": "Address",
+	"membership_city": "City",
+	"membership_send": "Send",
+	"membership_sending": "Sending …",
+	"membership_success": "Thank you! Your application has been sent.",
+	"membership_error": "Your application could not be sent. Please try again."
 }

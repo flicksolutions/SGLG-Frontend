@@ -151,5 +151,18 @@
 	"highlights_subtitle": "Erfahren Sie mehr darüber, was die SGLG bietet.",
 	"highlights_description": "Hier finden Sie einen Auszug von Aktivitäten der SGLG, Exkursionen, von uns veranstaltete\r\n\t\t\tTagungen sowie die wichtigsten Publikationen von Mitgliedern unserer Gesellschaft.",
 	"institutions": "Institutionen",
-	"people": "Personen"
+	"people": "Personen",
+	"membership_individual": "Ich möchte Einzelmitglied werden (50.- jährlich).",
+	"membership_collective": "Wir stellen Antrag auf Kollektivmitgliedschaft (100.- jährlich).",
+	"membership_institution": "Institution/Organisation",
+	"membership_last_name": "Name",
+	"membership_first_name": "Vorname",
+	"membership_email": "E-Mail",
+	"membership_postal_code": "PLZ",
+	"membership_address": "Adresse",
+	"membership_city": "Ort",
+	"membership_send": "Senden",
+	"membership_sending": "Wird gesendet …",
+	"membership_success": "Vielen Dank! Ihr Antrag wurde gesendet.",
+	"membership_error": "Ihr Antrag konnte nicht gesendet werden. Bitte versuchen Sie es erneut."
 }

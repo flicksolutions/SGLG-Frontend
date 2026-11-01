@@ -144,5 +144,18 @@
 	"isbn": "ISBN",
 	"Tag": "jour",
 	"institutions": "institutions",
-	"people": "personnes"
+	"people": "personnes",
+	"membership_individual": "Je souhaite devenir membre individuel (50.- par an).",
+	"membership_collective": "Adhésion en tant qu'institution (100.- par an).",
+	"membership_institution": "Institution/organisation",
+	"membership_last_name": "Nom",
+	"membership_first_name": "Prénom",
+	"membership_email": "E-mail",
+	"membership_postal_code": "Code postal",
+	"membership_address": "Adresse",
+	"membership_city": "Ville",
+	"membership_send": "Envoyer",
+	"membership_sending": "Envoi en cours …",
+	"membership_success": "Merci ! Votre demande a bien été envoyée.",
+	"membership_error": "Votre demande n'a pas pu être envoyée. Veuillez réessayer."
 }

@@ -141,5 +141,18 @@
 	"isbn": "ISBN",
 	"Tag": "Giornata",
 	"institutions": "Istituzioni",
-	"people": "persone"
+	"people": "persone",
+	"membership_individual": "Persona singola: Desidero diventare membro individuale (50.- all'anno).",
+	"membership_collective": "Istituzione: Desideriamo aderire come membro collettivo (100.- all'anno).",
+	"membership_institution": "Istituzione/organizzazione",
+	"membership_last_name": "Cognome",
+	"membership_first_name": "Nome",
+	"membership_email": "Email",
+	"membership_postal_code": "CAP",
+	"membership_address": "Indirizzo",
+	"membership_city": "Città",
+	"membership_send": "Invia",
+	"membership_sending": "Invio in corso …",
+	"membership_success": "Grazie! La sua richiesta è stata inviata.",
+	"membership_error": "Non è stato possibile inviare la richiesta. La preghiamo di riprovare."
 }
