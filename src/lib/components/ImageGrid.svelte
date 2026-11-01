@@ -1,24 +1,14 @@
 <script>
-	import { preventDefault } from 'svelte/legacy';
 	import Lightbox from './Lightbox.svelte';
 	import { fit } from '@leveluptuts/svelte-fit';
 	import { ASSET_URL } from '$lib/constants';
 
 	let { images, captions = [], overlay = [] } = $props();
 	let showLightbox = $state(new Array(images.length).fill(false));
-	let parent = $state(null);
-
-	const setViewbox = (node) => {
-		$effect(() => {
-			const bbox = node.querySelector('text').getBBox();
-			/* Apply bounding box values to SVG element as viewBox */
-			node.setAttribute('viewBox', [bbox.x, bbox.y, bbox.width, bbox.height].join(' '));
-		});
-	};
 </script>
 
 <div class="img-grid">
-	{#each images as img, i}
+	{#each images as img, i (img.directus_files_id.id + i)}
 		<figure class="img">
 			<a
 				href={`${ASSET_URL}${img.directus_files_id.id}`}
@@ -33,7 +23,7 @@
 					alt={img.directus_files_id.title}
 				/>
 				{#if overlay[i]}
-					<div class="overlay" bind:this={parent}>
+					<div class="overlay">
 						<div class="inner" use:fit={{ min_size: 3, max_size: 30 }}>
 							{@html overlay[i]}
 						</div>
