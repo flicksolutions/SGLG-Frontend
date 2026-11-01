@@ -1,6 +1,7 @@
 <script>
 	import { preventDefault } from 'svelte/legacy';
 	import Lightbox from './Lightbox.svelte';
+	import { fit } from '@leveluptuts/svelte-fit';
 	import { ASSET_URL } from '$lib/constants';
 
 	let { images, captions = [], overlay = [] } = $props();
