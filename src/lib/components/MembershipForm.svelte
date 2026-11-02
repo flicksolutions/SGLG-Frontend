@@ -1,6 +1,6 @@
 <script>
 	import { m } from '$lib/paraglide/messages';
-	import { PUBLIC_MEMBERSHIP_FORM_ENDPOINT } from '$env/static/public';
+	import { PUBLIC_MEMBERSHIP_FORM_ENDPOINT, PUBLIC_TURNSTILE_SITE_KEY } from '$env/static/public';
 
 	const ENDPOINT = PUBLIC_MEMBERSHIP_FORM_ENDPOINT;
 
@@ -89,6 +89,8 @@
 				placeholder={m.membership_city()}
 				aria-label={m.membership_city()}
 			/>
+			<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+			<div class="cf-turnstile" data-sitekey={PUBLIC_TURNSTILE_SITE_KEY}></div>
 			<input
 				class="button"
 				type="submit"
