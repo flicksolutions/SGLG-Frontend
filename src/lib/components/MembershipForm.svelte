@@ -30,7 +30,7 @@
 	<p class="feedback" role="status">{m.membership_success()}</p>
 {:else}
 	<form action={ENDPOINT} method="POST" onsubmit={handleSubmit}>
-		<p>
+		<div>
 			<label>
 				<input name="member" type="radio" value="Einzel" bind:group={member} />
 				{m.membership_individual()}
@@ -39,8 +39,8 @@
 				<input name="member" type="radio" value="Kollektiv" bind:group={member} />
 				{m.membership_collective()}
 			</label>
-		</p>
-		<p>
+		</div>
+		<div>
 			<input
 				name="institution"
 				type="text"
@@ -97,7 +97,7 @@
 				value={status === 'sending' ? m.membership_sending() : m.membership_send()}
 				disabled={status === 'sending'}
 			/>
-		</p>
+		</div>
 		<input name="_gotcha" type="hidden" />
 	</form>
 	{#if status === 'error'}
